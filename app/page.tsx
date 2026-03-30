@@ -487,7 +487,7 @@ export default function HomePage() {
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <div className="mb-3 flex items-center justify-between gap-2">
-                        <label className="text-sm font-medium text-slate-700">
+                        git add -A && git commit -m "fix: resolve accessibility and ARIA errors for lighthouse score" && git push                        <label htmlFor="missed-inquiries" className="text-sm font-medium text-slate-700">
                           Average daily missed WhatsApp inquiries
                         </label>
                         <span className="text-sm font-semibold text-[var(--accent)]">
@@ -495,6 +495,8 @@ export default function HomePage() {
                         </span>
                       </div>
                       <input
+                        id="missed-inquiries"
+                        aria-label="Average daily missed WhatsApp inquiries"
                         type="range"
                         min={1}
                         max={50}
@@ -569,6 +571,7 @@ export default function HomePage() {
                         <button
                           key={scenario.id}
                           type="button"
+                          aria-pressed={isActive}
                           onClick={() => setActiveScenarioId(scenario.id)}
                           className={`w-full rounded-2xl border px-4 py-3 text-left transition-colors ${
                             isActive
@@ -677,6 +680,7 @@ export default function HomePage() {
                     <button
                       key={site.id}
                       type="button"
+                      aria-pressed={isActive}
                       onClick={() => setActivePortfolioId(site.id)}
                       className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
                         isActive
