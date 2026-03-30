@@ -834,11 +834,11 @@ export default function HomePage() {
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
-                <p className="mt-2 font-medium text-slate-100">[Your Business Address]</p>
+                <p className="mt-2 font-medium text-slate-100">Not Disclosed</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">[Your Contact Number]</p>
+                <p className="mt-2 font-medium text-slate-100">Undisclosed</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
