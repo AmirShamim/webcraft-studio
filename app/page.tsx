@@ -310,7 +310,7 @@ export default function HomePage() {
         const nextIndex = (currentIndex + 1) % conversionScenarios.length;
         return conversionScenarios[nextIndex].id;
       });
-    }, 3000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [activeScenarioId]);
 
