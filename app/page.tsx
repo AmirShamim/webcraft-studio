@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useMemo, useState, useSyncExternalStore, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -303,6 +303,17 @@ export default function HomePage() {
     };
   }, [conversionRate, dailyMissedInquiries, effectiveAverageCustomerValue]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActiveScenarioId((prevId) => {
+        const currentIndex = conversionScenarios.findIndex((s) => s.id === prevId);
+        const nextIndex = (currentIndex + 1) % conversionScenarios.length;
+        return conversionScenarios[nextIndex].id;
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [activeScenarioId]);
+
   const formattedLostMonthlyRevenue = formatCurrency(
     revenueModel.lostRevenue,
     currencyLocale,
@@ -487,7 +498,7 @@ export default function HomePage() {
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <div className="mb-3 flex items-center justify-between gap-2">
-                        git add -A && git commit -m "fix: resolve accessibility and ARIA errors for lighthouse score" && git push                        <label htmlFor="missed-inquiries" className="text-sm font-medium text-slate-700">
+                        <label htmlFor="missed-inquiries" className="text-sm font-medium text-slate-700">
                           Average daily missed WhatsApp inquiries
                         </label>
                         <span className="text-sm font-semibold text-[var(--accent)]">
@@ -555,59 +566,83 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <label className="text-sm font-medium text-slate-700">Performance scenario</label>
-                    <span className="inline-flex w-fit items-center rounded-full bg-[var(--accent)]/10 px-2.5 py-1 text-sm font-semibold text-[var(--accent)]">
-                      {conversionRate}%
-                    </span>
-                  </div>
+                <div className="flex flex-col gap-4">
+                  {conversionScenarios.map((scenario) => {
+                    const isActive = scenario.id === activeScenario.id;
 
-                  <div className="space-y-2.5">
-                    {conversionScenarios.map((scenario) => {
-                      const isActive = scenario.id === activeScenario.id;
+                    return (
+                      <button
+                        key={scenario.id}
+                        type="button"
+                        aria-pressed={isActive}
+                        onClick={() => setActiveScenarioId(scenario.id)}
+                        className={`group relative w-full overflow-hidden rounded-3xl border text-left transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                          isActive
+                            ? 'border-[var(--accent)] bg-white p-6 shadow-[0_12px_40px_-15px_rgba(47,123,255,0.15)] sm:p-7'
+                            : 'border-slate-200 bg-slate-50 p-5 hover:border-slate-300 hover:bg-white'
+                        }`}
+                      >
+                        {isActive && (
+                          <motion.div
+                            key={scenario.id}
+                            initial={{ width: 0 }}
+                            animate={{ width: '100%' }}
+                            transition={{ duration: 3, ease: 'linear' }}
+                            className="absolute bottom-0 left-0 h-1 bg-[var(--accent)] opacity-20"
+                          />
+                        )}
 
-                      return (
-                        <button
-                          key={scenario.id}
-                          type="button"
-                          aria-pressed={isActive}
-                          onClick={() => setActiveScenarioId(scenario.id)}
-                          className={`w-full rounded-2xl border px-4 py-3 text-left transition-colors ${
-                            isActive
-                              ? 'border-[var(--accent)] bg-[var(--accent)]/5'
-                              : 'border-slate-300 bg-white hover:border-slate-400'
-                          }`}
+                        <div className="flex items-center justify-between gap-4">
+                          <h3
+                            className={`text-lg font-semibold transition-colors sm:text-xl ${
+                              isActive ? 'text-[var(--accent)]' : 'text-slate-700 group-hover:text-slate-900'
+                            }`}
+                          >
+                            {scenario.title}
+                          </h3>
+                          <span
+                            className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-bold transition-colors ${
+                              isActive
+                                ? 'bg-[var(--accent)] text-white'
+                                : 'bg-slate-200 text-slate-600 group-hover:bg-slate-300 group-hover:text-slate-900'
+                            }`}
+                          >
+                            {scenario.rate}% Rate
+                          </span>
+                        </div>
+
+                        <motion.div
+                          initial={false}
+                          animate={{ height: isActive ? 'auto' : 0, opacity: isActive ? 1 : 0 }}
+                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden"
                         >
-                          <div className="flex items-center justify-between gap-3">
-                            <p className="text-sm font-semibold text-slate-900">{scenario.title}</p>
-                            <p className="text-sm font-semibold text-[var(--accent)]">{scenario.rate}%</p>
-                          </div>
-                          <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                          <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
                             {scenario.description}
                           </p>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">
-                    Benchmark scenarios are provided to keep projections practical and business-friendly.
+
+                          <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                            <p className="text-sm leading-relaxed text-slate-700">
+                              Estimated missed conversions/month:{' '}
+                              <span className="font-semibold text-slate-900">
+                                {Math.max(1, Math.round(revenueModel.monthlyConvertedCustomers))}
+                              </span>
+                            </p>
+                            <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                              Automation can recover approximately{' '}
+                              <span className="font-semibold text-[var(--accent)]">
+                                {Math.round(revenueModel.automationRecoveryRate * 100)}%
+                              </span>{' '}
+                              of this lost revenue opportunity.
+                            </p>
+                          </div>
+                        </motion.div>
+                      </button>
+                    );
+                  })}
+                  <p className="mt-2 text-center text-xs leading-relaxed text-slate-400">
+                    Auto-cycles every 3s. Select an option to pause. Benchmark scenarios are provided to keep projections practical.
                   </p>
-                  <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-sm leading-relaxed text-slate-700">
-                      Scenario selected: <span className="font-semibold">{activeScenario.title}</span> ({revenueModel.safeConversionRate}% benchmark conversion).
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                      Estimated missed conversions per month:{' '}
-                      <span className="font-semibold text-slate-900">
-                        {Math.max(1, Math.round(revenueModel.monthlyConvertedCustomers))}
-                      </span>
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                      Automation can recover approximately{' '}
-                      {Math.round(revenueModel.automationRecoveryRate * 100)}% of this missed opportunity.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
