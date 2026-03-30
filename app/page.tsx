@@ -641,7 +641,7 @@ export default function HomePage() {
                     );
                   })}
                   <p className="mt-2 text-center text-xs leading-relaxed text-slate-400">
-                    Auto-cycles every 3s. Select an option to pause. Benchmark scenarios are provided to keep projections practical.
+                    Auto-cycles every 5s. Select an option to pause. Benchmark scenarios are provided to keep projections practical.
                   </p>
                 </div>
               </div>
