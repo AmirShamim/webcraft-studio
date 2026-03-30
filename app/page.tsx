@@ -336,14 +336,14 @@ export default function HomePage() {
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <a
-              href="tel:+917011190158"
+              href="#contact"
               className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 min-[520px]:inline-flex sm:px-4 sm:text-sm"
             >
               <Phone className="h-3.5 w-3.5" />
-              +91 70111 90158
+              Contact Us
             </a>
             <a
-              href="tel:+917011190158"
+              href="#contact"
               aria-label="Call Al Astoora"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 min-[520px]:hidden"
             >
@@ -799,11 +799,11 @@ export default function HomePage() {
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
-                <p className="mt-2 font-medium text-slate-100">4th, 52/C, MN Block Lane, New Steel Work, Jamia Nagar, New Delhi, Delhi 110025</p>
+                <p className="mt-2 font-medium text-slate-100">[Your Business Address]</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">+91 70111 90158</p>
+                <p className="mt-2 font-medium text-slate-100">[Your Contact Number]</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
