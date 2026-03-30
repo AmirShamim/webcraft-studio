@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css'; // Global styles
 
 const inter = Inter({
@@ -7,20 +7,16 @@ const inter = Inter({
   variable: '--font-sans',
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-display',
-});
-
 export const metadata: Metadata = {
-  title: 'WebCraft Studio | Premium Digital Agency',
-  description: 'We design and develop blazing-fast, conversion-optimized websites for ambitious brands.',
+  title: 'Al Astoora | WhatsApp Automation For Local Businesses',
+  description:
+    'Al Astoora builds high-converting automation systems for local businesses to capture leads, handle FAQs, and book customers 24/7.',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${inter.variable} ${plusJakartaSans.variable}`}>
-      <body suppressHydrationWarning className="font-sans bg-[#05050A] text-zinc-400 antialiased selection:bg-white/10 selection:text-white">
+    <html lang="en" className={inter.variable}>
+      <body suppressHydrationWarning className="font-sans antialiased">
         {children}
       </body>
     </html>
