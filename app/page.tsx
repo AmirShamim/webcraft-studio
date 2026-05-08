@@ -834,11 +834,14 @@ export default function HomePage() {
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
-                <p className="mt-2 font-medium text-slate-100">Not Disclosed</p>
+                <p className="mt-2 font-medium text-slate-100">4th, 52/C</p>
+                <p className="mt-2 font-medium text-slate-100">MN Block Lana, New Steel Work</p>
+                <p className="mt-2 font-medium text-slate-100">Jamia Nagar, New Delhi</p>
+                <p className="mt-2 font-medium text-slate-100">Delhi, 110025</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">Undisclosed</p>
+                <p className="mt-2 font-medium text-slate-100">+91-7011190158</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
