@@ -835,7 +835,7 @@ export default function HomePage() {
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
                 <p className="mt-2 font-medium text-slate-100">4th, 52/C</p>
-                <p className="mt-2 font-medium text-slate-100">MN Block Lana, New Steel Work</p>
+                <p className="mt-2 font-medium text-slate-100">MN Block Lane, New Steel Work</p>
                 <p className="mt-2 font-medium text-slate-100">Jamia Nagar, New Delhi</p>
                 <p className="mt-2 font-medium text-slate-100">Delhi, 110025</p>
               </div>
