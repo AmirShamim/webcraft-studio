@@ -820,7 +820,7 @@ export default function HomePage() {
               Legal and Compliance Footer
             </p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Al Astoora Formal Business Identity
+              Al Astoora
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-300">
               The details below are intentionally displayed in a formal format for Meta and Google
