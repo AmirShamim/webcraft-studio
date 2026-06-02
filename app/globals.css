@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-	--accent: #2f7bff;
-	--accent-strong: #1b64eb;
+	--accent: #10b981; /* Premium Emerald for WhatsApp vibe */
+	--accent-glow: rgba(16, 185, 129, 0.15);
+	--accent-strong: #059669;
+	--accent-blue: #3b82f6;
+	--accent-blue-glow: rgba(59, 130, 246, 0.15);
+	--slate-950: #030712;
+	--slate-900: #0f172a;
+	--slate-800: #1e293b;
 }
 
 html {
@@ -10,17 +16,67 @@ html {
 }
 
 body {
-	background:
-		radial-gradient(circle at 0% 0%, rgba(47, 123, 255, 0.1), transparent 36%),
-		radial-gradient(circle at 100% 100%, rgba(47, 123, 255, 0.08), transparent 33%),
-		#f8fafc;
-	color: #0f172a;
+	background-color: var(--slate-950);
+	color: #f1f5f9;
 	text-rendering: optimizeLegibility;
+	overflow-x: hidden;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+	background: rgba(15, 23, 42, 0.45);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-hover {
+	transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.glass-panel-hover:hover {
+	background: rgba(15, 23, 42, 0.6);
+	border-color: rgba(16, 185, 129, 0.25);
+	box-shadow: 0 12px 40px -12px rgba(16, 185, 129, 0.15);
+}
+
+/* Ambient glows */
+.glow-wrapper {
+	position: relative;
+}
+
+.bg-hex-grid {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0 L56 16.16 L56 48.5 L28 64.66 L0 48.5 L0 16.16 Z M28 97 L56 80.84 L56 48.5 L28 64.66 L0 48.5 L0 80.84 Z' stroke='rgba(255,255,255,0.015)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+	background-size: 56px 97px;
+}
+
+.glow-element-emerald {
+	position: absolute;
+	filter: blur(100px);
+	background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+	pointer-events: none;
+	opacity: 0.12;
+}
+
+.glow-element-blue {
+	position: absolute;
+	filter: blur(100px);
+	background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+	pointer-events: none;
+	opacity: 0.12;
 }
 
 ::selection {
-	background: rgba(47, 123, 255, 0.22);
-	color: #0f172a;
+	background: rgba(16, 185, 129, 0.3);
+	color: #ffffff;
+}
+
+/* Range input customizing */
+input[type='range'] {
+	-webkit-appearance: none;
+	appearance: none;
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 9999px;
+	height: 6px;
 }
 
 input[type='range']::-webkit-slider-thumb {
@@ -29,8 +85,14 @@ input[type='range']::-webkit-slider-thumb {
 	width: 18px;
 	border-radius: 9999px;
 	background: var(--accent);
-	border: 2px solid #f8fafc;
-	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.3);
+	border: 2px solid var(--slate-950);
+	box-shadow: 0 0 12px var(--accent);
+	cursor: pointer;
+	transition: transform 0.1s ease;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+	transform: scale(1.2);
 }
 
 input[type='range']::-moz-range-thumb {
@@ -38,6 +100,28 @@ input[type='range']::-moz-range-thumb {
 	width: 18px;
 	border-radius: 9999px;
 	background: var(--accent);
-	border: 2px solid #f8fafc;
-	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.3);
+	border: 2px solid var(--slate-950);
+	box-shadow: 0 0 12px var(--accent);
+	cursor: pointer;
+	transition: transform 0.1s ease;
 }
+
+input[type='range']::-moz-range-thumb:hover {
+	transform: scale(1.2);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-track {
+	background: var(--slate-950);
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(16, 185, 129, 0.4);
+}
+

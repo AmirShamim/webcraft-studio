@@ -1,0 +1,74 @@
+'use client';
+
+import Link from 'next/link';
+import { MessageSquare } from 'lucide-react';
+
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="border-t border-slate-900 bg-slate-950 text-slate-400 py-12 md:py-16">
+      <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+          <div className="md:col-span-2 space-y-4">
+            <Link href="/" className="flex items-center gap-2.5 group w-fit">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+                <MessageSquare className="h-4 w-4" />
+              </span>
+              <span className="text-base font-semibold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                Al Astoora
+              </span>
+            </Link>
+            <p className="max-w-sm text-sm leading-relaxed text-slate-400">
+              We design and engineer bespoke WhatsApp & Instagram automation infrastructure using Meta's official Cloud API. Stop losing revenue to delayed responses.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-4">
+              Company
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              <li>
+                <Link href="/" className="hover:text-emerald-400 transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-emerald-400 transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-4">
+              Legal
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              <li>
+                <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-emerald-400 transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta's Official Developer Ecosystem.</p>
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-slate-300 font-medium">Meta Verified Partner API Ready</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
