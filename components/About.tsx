@@ -76,7 +76,7 @@ export default function About() {
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
-                <p className="mt-2 font-medium text-slate-100">GSTIN: 07RFVPS6101B1ZZ</p>
+                <h2 className="mt-2 font-medium text-slate-100">GSTIN: 07RFVPS6101B1ZZ</h2>
               </div>
             </div>
 
