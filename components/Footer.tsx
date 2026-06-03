@@ -9,6 +9,30 @@ export default function Footer() {
   return (
     <footer className="border-t border-slate-900 bg-slate-950 text-slate-400 py-12 md:py-16">
       <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
+
+            <div className="mt-7 grid gap-4 text-sm md:grid-cols-4 mb-8">
+              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Legal Business Name</p>
+                <p className="mt-2 font-medium text-slate-100">Al Astoora</p>
+              </div>
+              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-100">
+                  4th, 52/C, MN Block Lane, New Steel Work,<br />
+                  Jamia Nagar, New Delhi,<br />
+                  South East Delhi, Delhi - 110025
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
+                <p className="mt-2 font-medium text-slate-100">+91-7011190158</p>
+              </div>
+              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
+                <h2 className="mt-2 font-medium text-slate-100">GSTIN: 07RFVPS6101B1ZZ</h2>
+              </div>
+            </div>
+
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="md:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2.5 group w-fit">
