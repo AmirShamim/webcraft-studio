@@ -161,7 +161,7 @@ export default function PortfolioShowcase() {
   const activeChat = chatSimulations[activeTab] ?? chatSimulations.gyms;
 
   return (
-    <section className="bg-slate-950 py-20 md:py-28 relative overflow-hidden border-t border-slate-900">
+    <section id="portfolio" className="bg-slate-950 py-20 md:py-28 relative overflow-hidden border-t border-slate-900">
       
       {/* Lights */}
       <div className="absolute top-0 right-0 h-[400px] w-[400px] rounded-full bg-blue-500/[0.04] blur-[100px] pointer-events-none" />

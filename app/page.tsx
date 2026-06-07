@@ -1,5 +1,3 @@
-'use client';
-
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import ROICalculator from '@/components/ROICalculator';
@@ -7,6 +5,7 @@ import PortfolioShowcase from '@/components/PortfolioShowcase';
 import Services from '@/components/Services';
 import PlatformComparison from '@/components/PlatformComparison';
 import About from '@/components/About';
+import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
@@ -22,6 +21,7 @@ export default function HomePage() {
         <Services />
         <PlatformComparison />
         <About />
+        <FAQ />
       </main>
 
       <Footer />

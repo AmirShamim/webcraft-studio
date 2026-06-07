@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { ArrowLeft, MessageSquare } from 'lucide-react';
 import Header from '@/components/Header';
@@ -38,7 +36,7 @@ export default function TermsPage() {
 
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed font-sans">
             <p>
-              Welcome to Al Astoora ("Agency", "we", "us", "our"). By accessing our website, purchasing our automation setups, or utilizing our custom API engineering services, you agree to comply with and be bound by the following Terms of Service.
+              Welcome to Al Astoora (&quot;Agency&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By accessing our website, purchasing our automation setups, or utilizing our custom API engineering services, you agree to comply with and be bound by the following Terms of Service.
             </p>
 
             <h2 className="text-lg font-bold text-white pt-4">1. Scope of Services</h2>

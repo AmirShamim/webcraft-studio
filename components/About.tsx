@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { CheckCircle2, MessageCircle } from 'lucide-react';
 
 export default function About() {
@@ -26,7 +23,7 @@ export default function About() {
               Al Astoora was founded to solve a critical issue: local businesses spend massive budgets on Instagram, Facebook, and Google ads, only to lose high-intent leads because of delayed response times. 
             </p>
             <p className="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
-              We eliminate the delay by integrating direct, enterprise-grade automated front desks using Meta's Official APIs. Your leads are greeted, cataloged, and booked in less than 2 seconds, 24/7/365.
+              We eliminate the delay by integrating direct, enterprise-grade automated front desks using Meta&apos;s Official APIs. Your leads are greeted, cataloged, and booked in less than 2 seconds, 24/7/365.
             </p>
           </div>
 

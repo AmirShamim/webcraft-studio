@@ -32,7 +32,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="bg-slate-950 py-20 md:py-28 relative overflow-hidden border-t border-slate-900">
+    <section id="services" className="bg-slate-950 py-20 md:py-28 relative overflow-hidden border-t border-slate-900">
       
       {/* Background radial glow */}
       <div className="absolute top-1/2 left-0 h-[400px] w-[400px] rounded-full bg-emerald-500/[0.03] blur-[120px] pointer-events-none" />
@@ -48,7 +48,7 @@ export default function Services() {
             Conversational architecture built for customer generation.
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            We don't build generic chatbots. We design custom automated systems engineered to increase conversions, lower human error, and save hundreds of hours weekly.
+            We don&apos;t build generic chatbots. We design custom automated systems engineered to increase conversions, lower human error, and save hundreds of hours weekly.
           </p>
         </div>
 

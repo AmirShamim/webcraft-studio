@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { ArrowLeft, MessageSquare } from 'lucide-react';
 import Header from '@/components/Header';
@@ -53,7 +51,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-lg font-bold text-white pt-4">3. Meta API & Third-party Compliance</h2>
             <p>
-              Our custom communication architecture relies on Meta's Official Cloud API. All message streams are subject to Meta’s Business Messaging Policy. We configure secure HTTPS endpoints for webhooks to protect all database transactions.
+              Our custom communication architecture relies on Meta&apos;s Official Cloud API. All message streams are subject to Meta&rsquo;s Business Messaging Policy. We configure secure HTTPS endpoints for webhooks to protect all database transactions.
             </p>
 
             <h2 className="text-lg font-bold text-white pt-4">4. Your Rights & Contacts</h2>

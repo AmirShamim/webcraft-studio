@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { MessageSquare, Phone, Send, ArrowLeft, Shield } from 'lucide-react';
 import Header from '@/components/Header';

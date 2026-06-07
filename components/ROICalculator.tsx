@@ -78,6 +78,7 @@ function AnimatedNumber({ value, locale, currency }: { value: number; locale: st
 
     animationFrameId = requestAnimationFrame(updateNumber);
     return () => cancelAnimationFrame(animationFrameId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const formatted = new Intl.NumberFormat(locale, {
@@ -99,10 +100,6 @@ export default function ROICalculator() {
 
   const effectiveAverageCustomerValue = averageCustomerValue ?? activeMarket.defaultCustomerValue;
 
-  // Reset custom customer value when market changes to match default currency scale
-  useEffect(() => {
-    setAverageCustomerValue(null);
-  }, [marketKey]);
 
   const activeScenario = useMemo(
     () =>
@@ -185,7 +182,10 @@ export default function ROICalculator() {
               <select
                 id="market-select"
                 value={marketKey}
-                onChange={(e) => setMarketKey(e.target.value)}
+                onChange={(e) => {
+                  setMarketKey(e.target.value);
+                  setAverageCustomerValue(null);
+                }}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
               >
                 {Object.entries(marketConfigs).map(([key, config]) => (

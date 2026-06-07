@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Check, X, ShieldAlert, Sparkles } from 'lucide-react';
 
 export default function PlatformComparison() {
@@ -21,7 +18,7 @@ export default function PlatformComparison() {
             Zero platform fees. Absolute stack ownership.
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Stop paying monthly rent on subscription software. We build your automation on Meta's official API so you own the code and customer database completely.
+            Stop paying monthly rent on subscription software. We build your automation on Meta&apos;s official API so you own the code and customer database completely.
           </p>
         </div>
 

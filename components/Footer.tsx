@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { MessageSquare } from 'lucide-react';
 
@@ -44,7 +42,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">
-              We design and engineer bespoke WhatsApp & Instagram automation infrastructure using Meta's official Cloud API. Stop losing revenue to delayed responses.
+              We design and engineer bespoke WhatsApp & Instagram automation infrastructure using Meta&apos;s official Cloud API. Stop losing revenue to delayed responses.
             </p>
           </div>
 
@@ -86,7 +84,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta's Official Developer Ecosystem.</p>
+          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-slate-300 font-medium">Meta Verified Partner API Ready</span>
