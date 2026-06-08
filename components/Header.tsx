@@ -4,12 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MessageSquare, Phone, X, Menu } from 'lucide-react';
-
 const navSections = [
   { id: 'roi', label: 'ROI Calculator' },
   { id: 'portfolio', label: 'Case Studies' },
   { id: 'services', label: 'Features' },
-  { id: 'faq', label: 'FAQ' },
 ];
 
 export default function Header() {
@@ -20,9 +18,9 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isInsightsActive = pathname?.startsWith('/insights');
+  const isFaqActive = pathname === '/faq';
   const isLogoActive = pathname === '/' && isAtTop;
   const showActiveSection = pathname === '/' && !isAtTop ? activeSection : '';
-
   // Track scroll position for header styling
   useEffect(() => {
     const onScroll = () => {
@@ -130,40 +128,57 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navSections.map((section) => {
-              const isActive = showActiveSection === section.id;
-              return (
-                <Link
-                  key={section.id}
-                  href={`/#${section.id}`}
-                  onClick={(e) => handleNavClick(e, section.id)}
-                  className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                    isActive
-                      ? 'text-emerald-400'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {section.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-4 rounded-full bg-emerald-500 transition-all" />
-                  )}
-                </Link>
-              );
-            })}
-            <Link
-              href="/insights"
-              className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                isInsightsActive
-                  ? 'text-emerald-400'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Insights
-              {isInsightsActive && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-4 rounded-full bg-emerald-500 transition-all" />
-              )}
-            </Link>
+          <nav className="hidden lg:flex items-center gap-1.5">
+            {/* Scrollable sections */}
+            <div className="flex items-center gap-0.5">
+              {navSections.map((section) => {
+                const isActive = showActiveSection === section.id;
+                return (
+                  <Link
+                    key={section.id}
+                    href={`/#${section.id}`}
+                    onClick={(e) => handleNavClick(e, section.id)}
+                    className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? 'text-emerald-400 font-semibold'
+                        : 'text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    {section.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-4 rounded-full bg-emerald-500 transition-all" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Vertical Separator */}
+            <div className="h-4 w-[1px] bg-slate-800/80 mx-1.5" />
+
+            {/* Separate routes / page links */}
+            <div className="flex items-center gap-1 bg-slate-900/35 px-1.5 py-1 rounded-full border border-slate-900">
+              <Link
+                href="/faq"
+                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
+                  isFaqActive
+                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
+                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                }`}
+              >
+                FAQ
+              </Link>
+              <Link
+                href="/insights"
+                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
+                  isInsightsActive
+                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
+                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                }`}
+              >
+                Insights
+              </Link>
+            </div>
           </nav>
 
           {/* Right CTA group */}
@@ -253,20 +268,37 @@ export default function Header() {
                 </Link>
               );
             })}
-            <Link
-              href="/insights"
-              onClick={() => setMobileOpen(false)}
-              className={`w-full flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
-                isInsightsActive
-                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                  : 'text-slate-300 hover:bg-slate-900/60 hover:text-white border-transparent'
-              }`}
-            >
-              <span>Insights</span>
-              {isInsightsActive && (
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              )}
-            </Link>
+
+            {/* Separator for page routes */}
+            <div className="py-2">
+              <div className="border-t border-slate-900/80" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/faq"
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
+                  isFaqActive
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
+                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
+                }`}
+              >
+                FAQ
+              </Link>
+              <Link
+                href="/insights"
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
+                  isInsightsActive
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
+                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
+                }`}
+              >
+                Insights
+              </Link>
+            </div>
+
             <div className="pt-4 border-t border-slate-900 mt-3 flex flex-col gap-2">
               <Link
                 href="/contact"

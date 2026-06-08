@@ -5,7 +5,6 @@ import PortfolioShowcase from '@/components/PortfolioShowcase';
 import Services from '@/components/Services';
 import PlatformComparison from '@/components/PlatformComparison';
 import About from '@/components/About';
-import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
@@ -21,7 +20,6 @@ export default function HomePage() {
         <Services />
         <PlatformComparison />
         <About />
-        <FAQ />
       </main>
 
       <Footer />
