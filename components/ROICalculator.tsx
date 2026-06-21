@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, Calculator, ChevronRight, Check } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 type ConversionScenario = {
   id: string;
@@ -134,6 +135,17 @@ export default function ROICalculator() {
     };
   }, [conversionRate, dailyMissedInquiries, effectiveAverageCustomerValue]);
 
+  function trackRoiEngagement(action: string, properties: Record<string, string | number> = {}) {
+    trackEvent('roi_calculator_engaged', {
+      action,
+      market: marketKey,
+      daily_missed_inquiries: dailyMissedInquiries,
+      average_customer_value: effectiveAverageCustomerValue,
+      scenario: activeScenarioId,
+      ...properties,
+    });
+  }
+
   // Autocycle scenarios
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -183,8 +195,10 @@ export default function ROICalculator() {
                 id="market-select"
                 value={marketKey}
                 onChange={(e) => {
-                  setMarketKey(e.target.value);
+                  const nextMarket = e.target.value;
+                  setMarketKey(nextMarket);
                   setAverageCustomerValue(null);
+                  trackRoiEngagement('market_changed', { market: nextMarket });
                 }}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
               >
@@ -212,7 +226,13 @@ export default function ROICalculator() {
                 min={1}
                 max={50}
                 value={dailyMissedInquiries}
-                onChange={(e) => setDailyMissedInquiries(Number(e.target.value))}
+                onChange={(e) => {
+                  const nextValue = Number(e.target.value);
+                  setDailyMissedInquiries(nextValue);
+                  trackRoiEngagement('daily_missed_inquiries_changed', {
+                    daily_missed_inquiries: nextValue,
+                  });
+                }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
               <div className="flex justify-between text-[10px] text-slate-600 mt-2">
@@ -236,7 +256,11 @@ export default function ROICalculator() {
                   value={effectiveAverageCustomerValue}
                   onChange={(e) => {
                     const nextVal = Number(e.target.value);
-                    setAverageCustomerValue(Number.isFinite(nextVal) ? Math.max(0, nextVal) : 0);
+                    const safeValue = Number.isFinite(nextVal) ? Math.max(0, nextVal) : 0;
+                    setAverageCustomerValue(safeValue);
+                    trackRoiEngagement('average_customer_value_changed', {
+                      average_customer_value: safeValue,
+                    });
                   }}
                   className="w-full bg-transparent text-base font-bold text-slate-100 outline-none"
                 />
@@ -308,7 +332,13 @@ export default function ROICalculator() {
                 return (
                   <button
                     key={scenario.id}
-                    onClick={() => setActiveScenarioId(scenario.id)}
+                    onClick={() => {
+                      setActiveScenarioId(scenario.id);
+                      trackRoiEngagement('conversion_scenario_selected', {
+                        scenario: scenario.id,
+                        conversion_rate: scenario.rate,
+                      });
+                    }}
                     className={`w-full relative overflow-hidden text-left p-4.5 rounded-2xl border transition-all duration-300 ${
                       isActive
                         ? 'border-emerald-500/40 bg-slate-900/60 shadow-lg shadow-emerald-500/[0.02]'

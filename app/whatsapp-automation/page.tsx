@@ -207,6 +207,9 @@ export default function WhatsAppAutomationPage() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/contact"
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label="automation_hero_book_demo"
+                  data-analytics-location="whatsapp_automation_hero"
                   className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-7 py-4 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
                 >
                   Book a Demo
@@ -214,6 +217,9 @@ export default function WhatsAppAutomationPage() {
                 </Link>
                 <Link
                   href="/insights/official-meta-cloud-api-vs-unofficial-tools"
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label="automation_hero_api_difference"
+                  data-analytics-location="whatsapp_automation_hero"
                   className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/40 px-7 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
                 >
                   See the official API difference
@@ -407,6 +413,9 @@ export default function WhatsAppAutomationPage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/contact"
+                data-analytics-event="primary_cta_clicked"
+                data-analytics-label="automation_bottom_book_demo"
+                data-analytics-location="whatsapp_automation_bottom_cta"
                 className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-7 py-4 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
               >
                 Book a Demo
@@ -416,6 +425,9 @@ export default function WhatsAppAutomationPage() {
                 href="https://wa.me/917011190158?text=Hi%20I%20want%20to%20automate%20WhatsApp%20for%20my%20business"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-analytics-event="whatsapp_clicked"
+                data-analytics-label="automation_bottom_whatsapp"
+                data-analytics-location="whatsapp_automation_bottom_cta"
                 className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/40 px-7 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
               >
                 <MessageSquare className="h-4 w-4" />

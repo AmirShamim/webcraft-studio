@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import { Inter } from 'next/font/google';
+import AnalyticsProvider from '@/components/AnalyticsProvider';
 import './globals.css'; // Global styles
 
 const inter = Inter({
@@ -164,6 +165,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         />
       </head>
       <body suppressHydrationWarning className="font-sans antialiased">
+        <AnalyticsProvider />
         {children}
       </body>
     </html>

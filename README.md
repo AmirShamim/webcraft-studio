@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/35087b2a-f522-4c7d-89d2-f380a
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Analytics fallback
+
+The site initializes PostHog with the managed Al Astoora analytics project by default. If managed analytics provisioning is unavailable, set `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, and `NEXT_PUBLIC_POSTHOG_UI_HOST` in the deployment environment with a founder-provided public PostHog project key and host.
