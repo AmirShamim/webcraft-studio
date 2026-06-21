@@ -57,6 +57,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/whatsapp-automation" className="hover:text-emerald-400 transition-colors">
+                  WhatsApp Automation
+                </Link>
+              </li>
+              <li>
                 <Link href="/faq" className="hover:text-emerald-400 transition-colors">
                   FAQ
                 </Link>
