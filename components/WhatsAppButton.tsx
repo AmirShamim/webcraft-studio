@@ -12,6 +12,9 @@ export default function WhatsAppButton() {
         href="https://wa.me/917011190158?text=Hi%20I%20want%20to%20see%20a%20demo"
         target="_blank"
         rel="noopener noreferrer"
+        data-analytics-event="whatsapp_clicked"
+        data-analytics-label="floating_whatsapp_demo"
+        data-analytics-location="floating_button"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl shadow-emerald-500/20"

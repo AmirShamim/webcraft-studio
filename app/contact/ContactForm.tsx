@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 const whatsappNumber = '917011190158';
 
@@ -51,6 +52,13 @@ export default function ContactForm() {
       message: String(formData.get('message') || ''),
     };
     const submittedUrl = buildWhatsAppUrl(submittedForm);
+
+    trackEvent('contact_form_handoff_submitted', {
+      business_type: submittedForm.business,
+      has_name: submittedForm.name.trim().length > 0,
+      has_email: submittedForm.email.trim().length > 0,
+      project_goals_length: submittedForm.message.trim().length,
+    });
 
     setStatus('Opening WhatsApp with your project details filled in.');
 
@@ -150,6 +158,9 @@ export default function ContactForm() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        data-analytics-event="whatsapp_clicked"
+        data-analytics-label="contact_form_fallback"
+        data-analytics-location="contact_form"
         className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
       >
         <MessageSquare className="h-4 w-4 text-emerald-400" />
