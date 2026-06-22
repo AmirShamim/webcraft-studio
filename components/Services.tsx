@@ -1,7 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MessageSquare, Zap, Shield, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, MessageSquare, Zap, Shield, Sparkles } from 'lucide-react';
+
+import { verticalAutomationPages } from '@/lib/vertical-automation-pages';
 
 const services = [
   {
@@ -75,6 +78,29 @@ export default function Services() {
                 </p>
               </div>
             </motion.article>
+          ))}
+        </div>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          {verticalAutomationPages.map((page) => (
+            <Link
+              key={page.slug}
+              href={`/whatsapp-automation/${page.slug}`}
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label={`services_${page.slug}_vertical_page`}
+              data-analytics-location="homepage_services"
+              className="group flex items-center justify-between gap-5 rounded-2xl border border-slate-800 bg-slate-900/40 px-5 py-4 transition-all hover:border-emerald-500/40 hover:bg-slate-900/70"
+            >
+              <span>
+                <span className="block text-sm font-semibold text-white">
+                  {page.title}
+                </span>
+                <span className="mt-1 block text-xs leading-relaxed text-slate-400">
+                  {page.primaryUseCase}
+                </span>
+              </span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-emerald-400 transition-transform group-hover:translate-x-1" />
+            </Link>
           ))}
         </div>
 
