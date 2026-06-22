@@ -76,6 +76,33 @@ const ownershipPoints = [
   'Your only recurring message cost is paid directly through Meta where applicable.',
 ];
 
+const answerSnippets = [
+  {
+    icon: MessageSquare,
+    question: "What is Al Astoora's WhatsApp automation service?",
+    answer:
+      'Al Astoora builds a custom WhatsApp Cloud API automation stack for local service businesses. It replies to common questions, captures lead details, routes booking requests, shares PDFs, and syncs customer records to tools like Google Sheets, Notion, a CRM, or a custom database.',
+  },
+  {
+    icon: ShieldCheck,
+    question: 'How does the official Meta Cloud API setup work?',
+    answer:
+      'Al Astoora configures the approved Meta Cloud API, webhook routing, message templates, business profile flow, and handoff logic so your WhatsApp number runs on a server-side setup rather than a QR-code browser session.',
+  },
+  {
+    icon: Settings2,
+    question: 'Who owns the automation stack and customer data?',
+    answer:
+      'Your business keeps the automation flow, integration logic, and customer records. Al Astoora builds the setup around your operation instead of locking conversations inside a generic shared inbox.',
+  },
+  {
+    icon: Building2,
+    question: 'Which businesses are the best fit?',
+    answer:
+      'The best fit is a local service business that already gets inquiries, bookings, menu requests, PDFs, appointment questions, or follow-ups through WhatsApp and needs faster first replies.',
+  },
+];
+
 const linkedInsights = [
   {
     href: '/insights/official-meta-cloud-api-vs-unofficial-tools',
@@ -145,7 +172,7 @@ function buildJsonLd() {
       {
         '@type': 'FAQPage',
         '@id': 'https://alastoora.tech/whatsapp-automation#faq',
-        mainEntity: faqItems.map((item) => ({
+        mainEntity: [...answerSnippets, ...faqItems].map((item) => ({
           '@type': 'Question',
           name: item.question,
           acceptedAnswer: {
@@ -260,6 +287,34 @@ export default function WhatsAppAutomationPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-slate-900 bg-slate-950 py-16 md:py-24">
+          <div className="mx-auto max-w-6xl px-5 md:px-8">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400">
+                Quick answers
+              </span>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                Short answers for buyers comparing WhatsApp automation.
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
+                These are the core service details: what gets built, how the official API setup works, who owns the stack, and when Al Astoora is the right fit.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {answerSnippets.map((item) => (
+                <article key={item.question} className="glass-panel glass-panel-hover rounded-2xl p-6 sm:p-8">
+                  <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-400">
+                    <item.icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold tracking-tight text-white">{item.question}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-400">{item.answer}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
