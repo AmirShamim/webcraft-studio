@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { verticalAutomationPages } from '@/lib/vertical-automation-pages';
 
 export const metadata: Metadata = {
   title: 'WhatsApp Automation for Local Service Businesses | Al Astoora',
@@ -311,6 +312,47 @@ export default function WhatsAppAutomationPage() {
                   <Building2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
                   <p className="text-sm leading-relaxed text-slate-300">{useCase}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-slate-900 bg-slate-950 py-16 md:py-24">
+          <div className="mx-auto max-w-6xl px-5 md:px-8">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                Booking pages
+              </span>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                Start with the booking flow that matches your business.
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
+                These focused pages show how the same official WhatsApp automation stack handles common appointment and lead-capture jobs in local service businesses.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {verticalAutomationPages.map((page) => (
+                <Link
+                  key={page.slug}
+                  href={`/whatsapp-automation/${page.slug}`}
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label={`automation_vertical_${page.slug}`}
+                  data-analytics-location="whatsapp_automation_verticals"
+                  className="glass-panel glass-panel-hover group flex min-h-[230px] flex-col rounded-2xl p-6 sm:p-8"
+                >
+                  <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+                    <CalendarCheck2 className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-xl font-semibold tracking-tight text-white transition-colors group-hover:text-emerald-400">
+                    {page.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{page.metaDescription}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
+                    Open page
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
               ))}
             </div>
           </div>

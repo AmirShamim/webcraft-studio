@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getAllInsightSlugs } from '@/lib/pseo-data';
+import { getAllVerticalAutomationSlugs } from '@/lib/vertical-automation-pages';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://alastoora.tech';
@@ -59,5 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...corePages, ...insightPages];
+  const verticalAutomationPages: MetadataRoute.Sitemap = getAllVerticalAutomationSlugs().map((slug) => ({
+    url: `${baseUrl}/whatsapp-automation/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.85,
+  }));
+
+  return [...corePages, ...verticalAutomationPages, ...insightPages];
 }
