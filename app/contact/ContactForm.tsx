@@ -1,8 +1,15 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
+import {
+  ROI_ESTIMATE_STORAGE_KEY,
+  formatRoiCurrency,
+  formatRoiEstimateForMessage,
+  parseStoredRoiEstimate,
+  type RoiEstimate,
+} from '@/lib/roi-handoff';
 
 const whatsappNumber = '917011190158';
 
@@ -20,7 +27,15 @@ const initialFormState: FormState = {
   message: '',
 };
 
-function buildWhatsAppUrl(form: FormState) {
+function buildWhatsAppUrl(form: FormState, roiEstimate: RoiEstimate | null = null) {
+  const roiLines = roiEstimate
+    ? [
+        '',
+        'ROI calculator estimate:',
+        ...formatRoiEstimateForMessage(roiEstimate),
+      ]
+    : [];
+
   const text = [
     'Hi Al Astoora, I want to discuss WhatsApp automation for my business.',
     '',
@@ -28,6 +43,7 @@ function buildWhatsAppUrl(form: FormState) {
     `Email: ${form.email || '[your email]'}`,
     `Business type: ${form.business}`,
     `Project goals: ${form.message || '[what you want to automate]'}`,
+    ...roiLines,
   ].join('\n');
 
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
@@ -36,7 +52,24 @@ function buildWhatsAppUrl(form: FormState) {
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [status, setStatus] = useState('');
-  const whatsappUrl = useMemo(() => buildWhatsAppUrl(form), [form]);
+  const [roiEstimate, setRoiEstimate] = useState<RoiEstimate | null>(null);
+  const whatsappUrl = useMemo(() => buildWhatsAppUrl(form, roiEstimate), [form, roiEstimate]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      try {
+        const storedEstimate = parseStoredRoiEstimate(
+          window.localStorage.getItem(ROI_ESTIMATE_STORAGE_KEY),
+        );
+
+        setRoiEstimate(storedEstimate);
+      } catch {
+        setRoiEstimate(null);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   function updateField(field: keyof FormState, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -51,13 +84,17 @@ export default function ContactForm() {
       business: String(formData.get('business') || initialFormState.business),
       message: String(formData.get('message') || ''),
     };
-    const submittedUrl = buildWhatsAppUrl(submittedForm);
+    const submittedUrl = buildWhatsAppUrl(submittedForm, roiEstimate);
 
     trackEvent('contact_form_handoff_submitted', {
       business_type: submittedForm.business,
       has_name: submittedForm.name.trim().length > 0,
       has_email: submittedForm.email.trim().length > 0,
       project_goals_length: submittedForm.message.trim().length,
+      has_roi_estimate: Boolean(roiEstimate),
+      roi_market: roiEstimate?.market,
+      roi_lost_monthly_revenue: roiEstimate ? Math.round(roiEstimate.lostMonthlyRevenue) : undefined,
+      roi_recoverable_monthly_revenue: roiEstimate ? Math.round(roiEstimate.recoverableMonthlyRevenue) : undefined,
     });
 
     setStatus('Opening WhatsApp with your project details filled in.');
@@ -142,6 +179,33 @@ export default function ContactForm() {
         />
       </div>
 
+      {roiEstimate && (
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            Calculator estimate included
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-300">
+            Your WhatsApp message will include{' '}
+            <span className="font-semibold text-white">
+              {formatRoiCurrency(
+                roiEstimate.lostMonthlyRevenue,
+                roiEstimate.locale,
+                roiEstimate.currency,
+              )}
+            </span>{' '}
+            in estimated lost monthly revenue and{' '}
+            <span className="font-semibold text-white">
+              {formatRoiCurrency(
+                roiEstimate.recoverableMonthlyRevenue,
+                roiEstimate.locale,
+                roiEstimate.currency,
+              )}
+            </span>{' '}
+            in estimated recoverable revenue.
+          </p>
+        </div>
+      )}
+
       <button
         type="submit"
         className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98] shadow-md shadow-emerald-500/10 cursor-pointer"
@@ -151,7 +215,9 @@ export default function ContactForm() {
       </button>
 
       <p className="text-center text-xs leading-relaxed text-slate-500" aria-live="polite">
-        {status || 'This opens WhatsApp with your project details prefilled. No new account is needed.'}
+        {status || (roiEstimate
+          ? 'This opens WhatsApp with your project details and calculator estimate prefilled.'
+          : 'This opens WhatsApp with your project details prefilled. No new account is needed.')}
       </p>
 
       <a
