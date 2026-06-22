@@ -6,9 +6,29 @@ import {
   getInsightBySlug,
   type InsightPage,
 } from '@/lib/pseo-data';
-import { ArrowRight, CheckCircle2, ChevronDown, HelpCircle, MessageSquare, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarCheck2, CheckCircle2, ChevronDown, HelpCircle, MessageSquare, Sparkles } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
+const verticalPageLinksByInsightSlug: Record<
+  string,
+  { href: string; title: string; description: string; label: string }
+> = {
+  'automate-whatsapp-for-gyms-and-fitness': {
+    href: '/whatsapp-automation/gyms',
+    title: 'See the gym booking page',
+    description:
+      'Map trial bookings, membership inquiries, class schedule requests, and sales-team handoff into one WhatsApp flow.',
+    label: 'Gym booking automation',
+  },
+  'automate-whatsapp-for-dental-and-healthcare': {
+    href: '/whatsapp-automation/dental-clinics',
+    title: 'See the dental clinic booking page',
+    description:
+      'Map appointment requests, service interest, reminders, and reception handoff into one WhatsApp flow.',
+    label: 'Dental appointment automation',
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Static Params — Pre-render all insight pages at build time
@@ -87,6 +107,7 @@ export default async function InsightPage({ params }: PageProps) {
   const relatedPages = page.relatedSlugs
     .map((s) => getInsightBySlug(s))
     .filter(Boolean) as InsightPage[];
+  const verticalPageLink = verticalPageLinksByInsightSlug[page.slug];
 
   const jsonLd = buildJsonLd(page);
 
@@ -235,6 +256,40 @@ export default async function InsightPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {/* ── Vertical Booking Page Link ───────────────────────────── */}
+        {verticalPageLink && (
+          <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
+            <div className="mx-auto max-w-5xl px-5 md:px-8">
+              <div className="glass-panel rounded-3xl border border-blue-500/20 bg-blue-950/10 p-6 sm:p-8 md:p-10">
+                <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-5">
+                      <CalendarCheck2 className="h-3.5 w-3.5" />
+                      {verticalPageLink.label}
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+                      {verticalPageLink.title}
+                    </h2>
+                    <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-400">
+                      {verticalPageLink.description}
+                    </p>
+                  </div>
+                  <Link
+                    href={verticalPageLink.href}
+                    data-analytics-event="insight_cta_clicked"
+                    data-analytics-label={`insight_vertical_page:${page.slug}`}
+                    data-analytics-location="insight_vertical_page"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                  >
+                    Open booking page
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── FAQ Section ─────────────────────────────────────────── */}
         <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
