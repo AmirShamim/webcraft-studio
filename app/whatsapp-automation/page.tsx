@@ -93,7 +93,7 @@ const answerSnippets = [
     icon: Settings2,
     question: 'Who owns the automation stack and customer data?',
     answer:
-      'Your business keeps the automation flow, integration logic, and customer records. Al Astoora builds the setup around your operation instead of locking conversations inside a generic shared inbox.',
+      'Your business keeps the automation flow, integration logic, and customer records. Al Astoora builds the setup around your operation instead of forcing every conversation into a generic shared inbox workflow.',
   },
   {
     icon: Building2,

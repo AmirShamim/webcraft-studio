@@ -585,34 +585,34 @@ export const insightPages: InsightPage[] = [
     slug: 'zero-platform-fees-whatsapp-automation-setup',
     title: 'WhatsApp Automation with Zero Monthly Platform Fees: How Al Astoora Works',
     metaDescription:
-      'Unlike SaaS platforms like Respond.io or Trengo, Al Astoora charges zero monthly fees. Own your WhatsApp automation infrastructure outright.',
+      'Al Astoora builds WhatsApp automation without adding a monthly platform fee. See how a custom booking stack compares with broad subscription inbox tools.',
     heroSubtitle:
-      'Stop paying monthly rent on SaaS platforms. Own your automation stack forever.',
+      'Build a custom WhatsApp booking stack without an added Al Astoora platform fee.',
     problemStatement: [
-      'SaaS WhatsApp automation platforms like Respond.io, Trengo, and WATI charge between $99 and $399 per month. Over a year, that is $1,200 to $4,800 — and you do not own any of the infrastructure. Your data, workflows, and customer database are locked inside their proprietary systems.',
-      'If the platform raises prices, changes terms, or shuts down, your entire operation is disrupted. You are renting your business-critical communication infrastructure from a third party.',
-      'Al Astoora takes a fundamentally different approach. We charge a one-time engineering fee to build your custom automation directly on the official Meta Cloud API. You own the code, the database, and the API keys. Your only recurring cost is Meta direct wholesale message rates — approximately $0.01 per conversation.',
+      'Broad WhatsApp inbox platforms such as Respond.io, Trengo, and WATI are subscription products with plan limits, included users or conversations, and add-ons that vary by provider. That can be a good fit for a team that wants a hosted shared inbox, but it is different from commissioning a custom booking stack for one local-service business.',
+      'When your business relies on WhatsApp for inquiries and bookings, the wrong setup can add recurring software overhead or make every workflow change depend on a generic hosted product roadmap.',
+      'Al Astoora takes a different approach. We charge a one-time engineering fee to build your custom automation directly on the official Meta Cloud API. You receive the code, connected database, and API setup. Al Astoora does not add a monthly platform fee, while Meta WhatsApp message costs can still apply.',
     ],
     solutionBlocks: [
       {
         title: 'One-Time Setup Fee',
         description:
-          'Pay once for the complete engineering build. No monthly subscriptions, no per-seat charges, no message markup fees.',
+          'Pay once for the complete engineering build. No Al Astoora monthly platform fee after setup; Meta message costs can still apply.',
       },
       {
         title: 'Full Infrastructure Ownership',
         description:
-          'You own the code, webhook endpoints, database schemas, and API credentials. Nothing is locked inside a proprietary platform.',
+          'You receive the code, webhook endpoints, database structure, and API setup for the custom build.',
       },
       {
         title: 'Direct Meta Pricing',
         description:
-          'Pay Meta directly at wholesale rates (~$0.01/conversation). No middleman markup. First 1,000 user-initiated conversations per month are free.',
+          'Meta WhatsApp message costs can apply through the official setup. Al Astoora does not add a monthly shared-inbox platform fee.',
       },
       {
         title: 'Unlimited Contacts and Agents',
         description:
-          'No contact list caps, no user seat limits, no artificial restrictions on message flows or automation complexity.',
+          'The custom stack can be designed around your team and contact flow instead of a fixed shared-inbox plan.',
       },
     ],
     roiPreset: { marketKey: 'US', dailyMissedInquiries: 12, averageCustomerValue: 250 },
@@ -631,7 +631,7 @@ export const insightPages: InsightPage[] = [
       {
         question: 'How does this compare to Respond.io or WATI pricing?',
         answer:
-          'Respond.io charges $99-$399/month ($1,200-$4,800/year). WATI charges $49-$99/month. Al Astoora charges a one-time fee and $0/month platform fees forever. The break-even point is typically within 2-3 months.',
+          'Respond.io, Trengo, and WATI publish subscription plans with different seats, conversations, and add-ons. Al Astoora uses a one-time engineering setup and no monthly Al Astoora platform fee; Meta WhatsApp message costs can still apply. The right fit depends on whether you need a hosted inbox or a custom WhatsApp booking stack.',
       },
     ],
     relatedSlugs: [

@@ -111,7 +111,7 @@ const jsonLd = {
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'Standard SaaS tools lock your operations into a proprietary platform, charging expensive monthly markups per user seat, and capping your contact lists. Al Astoora builds a custom cloud infrastructure directly on your Meta developer accounts. You own 100% of the code, integration layers, and database, with $0 SaaS licensing fees forever. You only pay Meta\'s wholesale per-message rates directly.',
+              'Broad subscription inbox platforms are built for teams that want hosted shared-inbox software with plans, seats, conversation allowances, and add-ons. Al Astoora builds a custom WhatsApp booking stack on the official Meta Cloud API for your business, with the code, integrations, and connected database handed over to you. Al Astoora does not add a monthly platform fee; Meta WhatsApp message costs can still apply.',
           },
         },
         {
@@ -120,7 +120,7 @@ const jsonLd = {
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'We charge a one-time flat engineering setup fee to design, build, and deploy your custom system. After setup, you pay zero monthly platform fees. Your only recurring cost is Meta\'s wholesale conversation rate (~$0.01 per conversation), paid directly to Meta via your Developer Console. There are no middlemen or hidden markups.',
+              'We charge a one-time flat engineering setup fee to design, build, and deploy your custom system. After setup, you pay no Al Astoora monthly platform fee. Meta WhatsApp message costs can still apply through the official setup.',
           },
         },
         {
