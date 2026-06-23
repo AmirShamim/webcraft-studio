@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, MessageSquare, Zap, Shield, Sparkles } from 'lucide-react';
 
+import type { FunnelEventName } from '@/lib/analytics';
 import { verticalAutomationPages } from '@/lib/vertical-automation-pages';
 
 const services = [
@@ -32,6 +33,11 @@ const services = [
       'Automatically follow up with cold leads or send personalized appointment notifications, birthday offers, and customer retention campaigns.',
   },
 ];
+
+const verticalPageAnalyticsEvents: Partial<Record<string, FunnelEventName>> = {
+  gyms: 'homepage_gym_vertical_clicked',
+  'dental-clinics': 'homepage_dental_vertical_clicked',
+} as const;
 
 export default function Services() {
   return (
@@ -86,7 +92,7 @@ export default function Services() {
             <Link
               key={page.slug}
               href={`/whatsapp-automation/${page.slug}`}
-              data-analytics-event="primary_cta_clicked"
+              data-analytics-event={verticalPageAnalyticsEvents[page.slug] ?? 'primary_cta_clicked'}
               data-analytics-label={`services_${page.slug}_vertical_page`}
               data-analytics-location="homepage_services"
               className="group flex items-center justify-between gap-5 rounded-2xl border border-slate-800 bg-slate-900/40 px-5 py-4 transition-all hover:border-emerald-500/40 hover:bg-slate-900/70"

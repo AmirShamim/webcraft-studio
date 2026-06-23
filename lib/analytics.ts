@@ -14,7 +14,9 @@ export type FunnelEventName =
   | 'whatsapp_clicked'
   | 'contact_form_handoff_submitted'
   | 'insight_cta_clicked'
-  | 'roi_calculator_engaged';
+  | 'roi_calculator_engaged'
+  | 'homepage_gym_vertical_clicked'
+  | 'homepage_dental_vertical_clicked';
 
 type EventProperties = Record<string, string | number | boolean | null | undefined>;
 
