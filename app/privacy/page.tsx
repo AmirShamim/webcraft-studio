@@ -56,7 +56,15 @@ export default function PrivacyPage() {
 
             <h2 className="text-lg font-bold text-white pt-4">4. Your Rights & Contacts</h2>
             <p>
-              You have the right to request deletion of any inquiry records we hold. For requests or questions, please contact our support team at <span className="text-emerald-400 font-medium">privacy@alastoora.tech</span>.
+              You have the right to request deletion of any inquiry records we hold. For privacy requests, contact{' '}
+              <a href="mailto:privacy@alastoora.tech" className="font-medium text-emerald-400 transition-colors hover:text-emerald-300">
+                privacy@alastoora.tech
+              </a>
+              . For general support questions, email{' '}
+              <a href="mailto:alastoora@support.tin.computer" className="font-medium text-emerald-400 transition-colors hover:text-emerald-300">
+                alastoora@support.tin.computer
+              </a>
+              .
             </p>
           </div>
         </div>

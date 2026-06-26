@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MessageSquare, Phone, ArrowLeft, Shield } from 'lucide-react';
+import { MessageSquare, Phone, ArrowLeft, Shield, Mail } from 'lucide-react';
 import ContactForm from './ContactForm';
 import Footer from '@/components/Footer';
 
@@ -60,6 +60,21 @@ export default function ContactPage() {
                   <div>
                     <p className="text-xs text-slate-500">Fast Callback Channel</p>
                     <p className="text-sm font-semibold text-slate-200">+91 70111 90158</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-emerald-400">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-slate-500">Support Email</p>
+                    <a
+                      href="mailto:alastoora@support.tin.computer"
+                      className="text-sm font-semibold text-slate-200 transition-colors hover:text-emerald-400"
+                    >
+                      alastoora@support.tin.computer
+                    </a>
                   </div>
                 </div>
 
