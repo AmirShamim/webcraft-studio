@@ -95,6 +95,17 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+            <div className="mt-5 border-t border-slate-900 pt-5 text-sm">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+                Support
+              </p>
+              <a
+                href="mailto:alastoora@support.tin.computer"
+                className="mt-2 block break-all text-slate-400 transition-colors hover:text-emerald-400"
+              >
+                alastoora@support.tin.computer
+              </a>
+            </div>
           </div>
         </div>
 
