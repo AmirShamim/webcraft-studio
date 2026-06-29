@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, MessageSquare } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://alastoora.tech/terms',
+  },
+};
 
 export default function TermsPage() {
   return (

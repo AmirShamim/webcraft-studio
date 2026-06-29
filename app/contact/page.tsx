@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MessageSquare, Phone, ArrowLeft, Shield, Mail } from 'lucide-react';
 import ContactForm from './ContactForm';
 import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://alastoora.tech/contact',
+  },
+};
 
 export default function ContactPage() {
   return (
