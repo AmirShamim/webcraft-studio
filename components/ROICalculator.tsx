@@ -404,7 +404,11 @@ export default function ROICalculator() {
                 </span>
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <p className="mt-5 text-xs leading-relaxed text-slate-400">
+                Your estimate can be included in the demo chat, so we can start with your numbers.
+              </p>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <Link
                   href="/contact"
                   onClick={() => handleEstimateHandoff('demo_handoff_clicked')}
