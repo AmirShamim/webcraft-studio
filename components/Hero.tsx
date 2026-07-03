@@ -153,8 +153,8 @@ export default function Hero() {
               <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Avg. Response</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">100%</p>
-              <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Lead Capture</p>
+              <p className="text-2xl font-bold text-white">24/7</p>
+              <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Lead Capture Flow</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-white">0$</p>
