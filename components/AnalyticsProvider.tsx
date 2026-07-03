@@ -26,6 +26,45 @@ function whatsappDebugProperties(target: HTMLElement) {
   };
 }
 
+function isDemoPathInitiation(target: HTMLElement) {
+  const href = target instanceof HTMLAnchorElement ? target.href : target.getAttribute('href');
+  if (!href) {
+    return false;
+  }
+
+  const path = new URL(href, window.location.href).pathname;
+  if (path !== '/contact') {
+    return false;
+  }
+
+  const label = target.dataset.analyticsLabel?.toLowerCase() || '';
+  const text = cleanText(target.textContent)?.toLowerCase() || '';
+  return label.includes('demo') || text.includes('demo');
+}
+
+function trackDemoPathInitiation(target: HTMLElement) {
+  if (!isDemoPathInitiation(target)) {
+    return;
+  }
+
+  const href = target instanceof HTMLAnchorElement ? target.href : target.getAttribute('href');
+
+  trackEvent('demo_path_initiated', {
+    qualification_status: 'unqualified',
+    contact_detail_present: false,
+    business_type_named: false,
+    automation_need_stated: false,
+    trigger_surface: 'demo_path_initiation',
+    source_page: target.dataset.analyticsLocation,
+    source_path: window.location.pathname,
+    handoff_destination: 'demo',
+    carried_roi_estimate_present: target.dataset.analyticsLocation === 'roi_calculator',
+    cta_label: target.dataset.analyticsLabel,
+    href,
+    text: cleanText(target.textContent),
+  });
+}
+
 export default function AnalyticsProvider() {
   const pathname = usePathname();
 
@@ -65,6 +104,7 @@ export default function AnalyticsProvider() {
         text: cleanText(target.textContent),
         ...whatsappDebugProperties(target),
       });
+      trackDemoPathInitiation(target);
     };
 
     document.addEventListener('click', handleClick, true);
