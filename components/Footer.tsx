@@ -110,7 +110,12 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
+          <p>
+            © {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.{' '}
+            <a href="https://tin.computer" className="transition-colors hover:text-emerald-400">
+              Growth by Tin
+            </a>
+          </p>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-slate-300 font-medium">Meta Verified Partner API Ready</span>
