@@ -90,6 +90,12 @@ const answerSnippets = [
       'Al Astoora configures the approved Meta Cloud API, webhook routing, message templates, business profile flow, and handoff logic so your WhatsApp number runs on a server-side setup rather than a QR-code browser session.',
   },
   {
+    icon: CheckCircle2,
+    question: 'What counts as a qualified lead?',
+    answer:
+      'A qualified lead gives your team enough context to follow up: a usable contact detail, the business type, and the stated automation need, such as bookings, FAQs, PDFs, reminders, or CRM sync.',
+  },
+  {
     icon: Settings2,
     question: 'Who owns the automation stack and customer data?',
     answer:
