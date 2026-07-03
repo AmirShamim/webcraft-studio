@@ -15,10 +15,10 @@ export default function PlatformComparison() {
             Ownership vs SaaS
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Zero platform fees. Absolute stack ownership.
+            Zero platform fees. Custom stack ownership.
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Stop paying monthly rent on subscription software. We build your automation on Meta&apos;s official API so you own the code and customer database completely.
+            Skip a broad subscription inbox when you need a WhatsApp booking system built around your business. We build on Meta&apos;s official API so the code, integrations, and connected customer database are part of your stack.
           </p>
         </div>
 
@@ -30,39 +30,39 @@ export default function PlatformComparison() {
             <div>
               <div className="flex items-center justify-between mb-6">
                 <span className="text-sm font-semibold uppercase tracking-wider text-slate-500">
-                  Standard SaaS (Respond, Trengo, etc.)
+                  Subscription inbox platforms
                 </span>
                 <span className="text-rose-500 bg-rose-500/10 text-xs font-bold px-3 py-1 rounded-full border border-rose-500/20">
-                  High Markup
+                  Monthly Plan
                 </span>
               </div>
               <p className="text-2xl font-bold text-slate-300 tracking-tight">
-                Up to $3,600+ <span className="text-sm font-normal text-slate-500">/ year</span>
+                Published monthly plans
               </p>
               
               <ul className="mt-8 space-y-4 text-sm text-slate-400">
                 <li className="flex items-start gap-3">
                   <X className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
-                  <span>Expensive markup per monthly user seat.</span>
+                  <span>Monthly software subscription with plan limits and add-ons.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <X className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
-                  <span>Your database is locked into their proprietary portal.</span>
+                  <span>Hosted shared inbox, not a custom booking stack built around your exact workflow.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <X className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
-                  <span>Limits on number of contacts and message flows.</span>
+                  <span>Included seats or conversation allowances can vary by plan.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <X className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
-                  <span>Risk of service interruption if SaaS company raises prices.</span>
+                  <span>Pricing and package rules can change over time.</span>
                 </li>
               </ul>
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-900/60 flex items-center gap-2 text-xs text-slate-600">
               <ShieldAlert className="h-4 w-4" />
-              <span>SaaS lock-in traps your operations data.</span>
+              <span>Broad inbox software is built as a hosted subscription service.</span>
             </div>
           </div>
 
@@ -79,32 +79,32 @@ export default function PlatformComparison() {
                 </span>
               </div>
               <p className="text-2xl font-bold text-white tracking-tight">
-                $0 Platform Fees <span className="text-sm font-normal text-slate-500">/ forever</span>
+                $0 Al Astoora Platform Fee <span className="text-sm font-normal text-slate-500">/ after setup</span>
               </p>
 
               <ul className="mt-8 space-y-4 text-sm text-slate-300">
                 <li className="flex items-start gap-3">
                   <Check className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
-                  <span>Only pay Meta direct wholesale per-message costs (~$0.01).</span>
+                  <span>Meta WhatsApp message costs can still apply through the official setup.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
-                  <span>You own the infrastructure, code, and direct API key.</span>
+                  <span>Your business receives the code, integrations, database structure, and direct API setup.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
-                  <span>Unlimited monthly active contacts and custom agents.</span>
+                  <span>No Al Astoora per-seat platform fee for local staff using the custom stack.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
-                  <span>Seamless connection to other platforms (CRM, Sheets).</span>
+                  <span>Connects to your current tools, including CRM or Google Sheets.</span>
                 </li>
               </ul>
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-900 flex items-center gap-2 text-xs text-emerald-400">
               <Sparkles className="h-4 w-4" />
-              <span>Full ownership remains with your business.</span>
+              <span>Custom stack ownership stays with your business.</span>
             </div>
           </div>
 

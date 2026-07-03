@@ -247,6 +247,9 @@ export default function PortfolioShowcase() {
               <div className="pt-4">
                 <a
                   href="/contact"
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label={`portfolio_${selectedSite.id}_framework_request`}
+                  data-analytics-location="portfolio_showcase"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group"
                 >
                   Request this framework for your business

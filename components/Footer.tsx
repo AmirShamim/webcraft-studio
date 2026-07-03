@@ -57,11 +57,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-emerald-400 transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
                 <Link href="/faq" className="hover:text-emerald-400 transition-colors">
                   FAQ
                 </Link>
@@ -95,17 +90,22 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+            <div className="mt-5 border-t border-slate-900 pt-5 text-sm">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+                Support
+              </p>
+              <a
+                href="mailto:alastoora@support.tin.computer"
+                className="mt-2 block break-all text-slate-400 transition-colors hover:text-emerald-400"
+              >
+                alastoora@support.tin.computer
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div className="space-y-1.5 text-center sm:text-left">
-            <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
-            <p className="text-slate-500">
-              Al Astoora | Founded by Amir Shamim<br className="sm:hidden" />
-              <span className="hidden sm:inline"> | </span>MSME/Udyam Registered | GST Registered
-            </p>
-          </div>
+          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-slate-300 font-medium">Official Meta Developer Integration</span>

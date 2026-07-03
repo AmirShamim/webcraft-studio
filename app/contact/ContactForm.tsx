@@ -1,0 +1,291 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+import { MessageSquare, Send } from 'lucide-react';
+import { trackEvent, trackQualifiedHandoff } from '@/lib/analytics';
+import {
+  ROI_ESTIMATE_STORAGE_KEY,
+  formatRoiCurrency,
+  formatRoiEstimateForMessage,
+  parseStoredRoiEstimate,
+  type RoiEstimate,
+} from '@/lib/roi-handoff';
+
+const whatsappNumber = '917011190158';
+
+type FormState = {
+  name: string;
+  email: string;
+  business: string;
+  message: string;
+};
+
+const initialFormState: FormState = {
+  name: '',
+  email: '',
+  business: 'Clinic / Healthcare',
+  message: '',
+};
+
+const qualifiedHandoffCopy =
+  'A useful demo request includes your contact detail, business type, and automation need. WhatsApp opens with those details prefilled.';
+
+function buildWhatsAppUrl(form: FormState, roiEstimate: RoiEstimate | null = null) {
+  const roiLines = roiEstimate
+    ? [
+        '',
+        'ROI calculator estimate:',
+        ...formatRoiEstimateForMessage(roiEstimate),
+      ]
+    : [];
+
+  const text = [
+    'Hi Al Astoora, I want to discuss WhatsApp automation for my business.',
+    '',
+    `Name: ${form.name || '[your name]'}`,
+    `Email: ${form.email || '[your email]'}`,
+    `Business type: ${form.business}`,
+    `Project goals: ${form.message || '[what you want to automate]'}`,
+    ...roiLines,
+  ].join('\n');
+
+  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+
+function getQualifiedHandoffProperties(
+  form: FormState,
+  roiEstimate: RoiEstimate | null,
+  ctaLabel: string,
+) {
+  const contactDetailPresent = form.email.trim().length > 0;
+  const businessTypeNamed = form.business.trim().length > 0;
+  const automationNeedStated = form.message.trim().length > 0;
+
+  return {
+    contact_detail_present: contactDetailPresent,
+    business_type_named: businessTypeNamed,
+    automation_need_stated: automationNeedStated,
+    trigger_surface: 'whatsapp_handoff_click' as const,
+    source_page: 'contact_form',
+    source_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    handoff_destination: 'whatsapp' as const,
+    carried_roi_estimate_present: Boolean(roiEstimate),
+    business_type: businessTypeNamed ? form.business.trim() : undefined,
+    automation_need: automationNeedStated ? form.message.trim().slice(0, 240) : undefined,
+    cta_label: ctaLabel,
+    roi_estimate_aed:
+      roiEstimate?.currency === 'AED'
+        ? Math.round(roiEstimate.lostMonthlyRevenue)
+        : undefined,
+    roi_estimate_currency: roiEstimate?.currency,
+  };
+}
+
+function trackWhatsAppHandoff(
+  form: FormState,
+  roiEstimate: RoiEstimate | null,
+  ctaLabel: string,
+) {
+  return trackQualifiedHandoff(getQualifiedHandoffProperties(form, roiEstimate, ctaLabel));
+}
+
+export default function ContactForm() {
+  const [form, setForm] = useState<FormState>(initialFormState);
+  const [status, setStatus] = useState('');
+  const [roiEstimate, setRoiEstimate] = useState<RoiEstimate | null>(null);
+  const whatsappUrl = useMemo(() => buildWhatsAppUrl(form, roiEstimate), [form, roiEstimate]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      try {
+        const storedEstimate = parseStoredRoiEstimate(
+          window.localStorage.getItem(ROI_ESTIMATE_STORAGE_KEY),
+        );
+
+        setRoiEstimate(storedEstimate);
+      } catch {
+        setRoiEstimate(null);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  function updateField(field: keyof FormState, value: string) {
+    setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const submittedForm: FormState = {
+      name: String(formData.get('name') || ''),
+      email: String(formData.get('email') || ''),
+      business: String(formData.get('business') || initialFormState.business),
+      message: String(formData.get('message') || ''),
+    };
+    const submittedUrl = buildWhatsAppUrl(submittedForm, roiEstimate);
+
+    const handoffProperties = getQualifiedHandoffProperties(
+      submittedForm,
+      roiEstimate,
+      'contact_form_submit',
+    );
+
+    trackEvent('contact_form_handoff_submitted', {
+      has_name: submittedForm.name.trim().length > 0,
+      has_email: submittedForm.email.trim().length > 0,
+      project_goals_length: submittedForm.message.trim().length,
+      has_roi_estimate: Boolean(roiEstimate),
+      roi_market: roiEstimate?.market,
+      roi_lost_monthly_revenue: roiEstimate ? Math.round(roiEstimate.lostMonthlyRevenue) : undefined,
+      roi_recoverable_monthly_revenue: roiEstimate ? Math.round(roiEstimate.recoverableMonthlyRevenue) : undefined,
+      ...handoffProperties,
+    });
+    trackQualifiedHandoff(handoffProperties);
+
+    setStatus('Opening WhatsApp with your project details filled in.');
+
+    const opened = window.open(submittedUrl, '_blank');
+    if (opened) {
+      opened.opener = null;
+      return;
+    }
+
+    window.location.href = submittedUrl;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Full Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          value={form.name}
+          onChange={(event) => updateField('name', event.target.value)}
+          placeholder="Alex Carter"
+          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Business Email Address
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          value={form.email}
+          onChange={(event) => updateField('email', event.target.value)}
+          placeholder="alex@company.com"
+          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="business" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Business Sector / Type
+        </label>
+        <select
+          id="business"
+          name="business"
+          value={form.business}
+          onChange={(event) => updateField('business', event.target.value)}
+          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
+        >
+          <option>Clinic / Healthcare</option>
+          <option>Beauty / Hair Salon</option>
+          <option>Restaurant / Café</option>
+          <option>Gym / Fitness Studio</option>
+          <option>Real Estate Agency</option>
+          <option>Training Academy / Course Creator</option>
+          <option>Other Service Business</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          Project Details & Goals
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows={4}
+          required
+          value={form.message}
+          onChange={(event) => updateField('message', event.target.value)}
+          placeholder="Describe your current lead booking flow and where you lose the most inquiries..."
+          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+        />
+      </div>
+
+      {roiEstimate && (
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            Calculator estimate included
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-300">
+            Your WhatsApp message will include{' '}
+            <span className="font-semibold text-white">
+              {formatRoiCurrency(
+                roiEstimate.lostMonthlyRevenue,
+                roiEstimate.locale,
+                roiEstimate.currency,
+              )}
+            </span>{' '}
+            in estimated lost monthly revenue and{' '}
+            <span className="font-semibold text-white">
+              {formatRoiCurrency(
+                roiEstimate.recoverableMonthlyRevenue,
+                roiEstimate.locale,
+                roiEstimate.currency,
+              )}
+            </span>{' '}
+            in estimated recoverable revenue.
+          </p>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98] shadow-md shadow-emerald-500/10 cursor-pointer"
+      >
+        <Send className="h-4 w-4" />
+        Send Details on WhatsApp
+      </button>
+
+      <p className="text-center text-xs leading-relaxed text-slate-500" aria-live="polite">
+        {status || (roiEstimate
+          ? `${qualifiedHandoffCopy} Your calculator estimate is included too.`
+          : qualifiedHandoffCopy)}
+      </p>
+
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-analytics-event="whatsapp_clicked"
+        data-analytics-label="contact_form_fallback"
+        data-analytics-location="contact_form"
+        onClick={() => trackWhatsAppHandoff(form, roiEstimate, 'contact_form_fallback')}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
+      >
+        <MessageSquare className="h-4 w-4 text-emerald-400" />
+        Open WhatsApp instead
+      </a>
+
+      <noscript>
+        <p className="mt-3 text-center text-xs leading-relaxed text-slate-500">
+          JavaScript is off. Use the WhatsApp link above to send your project details.
+        </p>
+      </noscript>
+    </form>
+  );
+}

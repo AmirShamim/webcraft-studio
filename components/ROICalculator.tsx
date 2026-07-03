@@ -1,8 +1,16 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, Calculator, ChevronRight, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Calculator, MessageSquare, Send } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
+import {
+  ROI_ESTIMATE_STORAGE_KEY,
+  formatRoiEstimateForMessage,
+  serializeRoiEstimate,
+  type RoiEstimate,
+} from '@/lib/roi-handoff';
 
 type ConversionScenario = {
   id: string;
@@ -46,6 +54,18 @@ const marketConfigs: Record<string, MarketConfig> = {
   IN: { code: 'INR', symbol: '₹', locale: 'en-IN', label: 'India (INR)', defaultCustomerValue: 8000 },
   US: { code: 'USD', symbol: '$', locale: 'en-US', label: 'United States / Global (USD)', defaultCustomerValue: 250 },
 };
+
+function saveRoiEstimate(estimate: RoiEstimate) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(ROI_ESTIMATE_STORAGE_KEY, serializeRoiEstimate(estimate));
+  } catch {
+    // Ignore storage failures so the direct WhatsApp handoff still works.
+  }
+}
 
 // Custom Hook or Component to animate numbers smoothly
 function AnimatedNumber({ value, locale, currency }: { value: number; locale: string; currency: string }) {
@@ -97,6 +117,7 @@ export default function ROICalculator() {
   const [dailyMissedInquiries, setDailyMissedInquiries] = useState(12);
   const [activeScenarioId, setActiveScenarioId] = useState('growth');
   const [averageCustomerValue, setAverageCustomerValue] = useState<number | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const effectiveAverageCustomerValue = averageCustomerValue ?? activeMarket.defaultCustomerValue;
 
@@ -133,6 +154,80 @@ export default function ROICalculator() {
       recoverableRevenue,
     };
   }, [conversionRate, dailyMissedInquiries, effectiveAverageCustomerValue]);
+
+  const roiEstimate = useMemo<RoiEstimate>(() => ({
+    market: marketKey,
+    marketLabel: activeMarket.label,
+    locale: activeMarket.locale,
+    currency: activeMarket.code,
+    dailyMissedInquiries,
+    averageCustomerValue: effectiveAverageCustomerValue,
+    scenarioTitle: activeScenario.title,
+    conversionRate,
+    lostMonthlyRevenue: revenueModel.lostRevenue,
+    recoverableMonthlyRevenue: revenueModel.recoverableRevenue,
+    recoveredClientsPerMonth: Math.round(
+      revenueModel.monthlyConvertedCustomers * revenueModel.automationRecoveryRate,
+    ),
+    updatedAt: new Date().toISOString(),
+  }), [
+    activeMarket.code,
+    activeMarket.label,
+    activeMarket.locale,
+    activeScenario.title,
+    conversionRate,
+    dailyMissedInquiries,
+    effectiveAverageCustomerValue,
+    marketKey,
+    revenueModel.automationRecoveryRate,
+    revenueModel.lostRevenue,
+    revenueModel.monthlyConvertedCustomers,
+    revenueModel.recoverableRevenue,
+  ]);
+
+  const roiEstimateLines = useMemo(
+    () => formatRoiEstimateForMessage(roiEstimate),
+    [roiEstimate],
+  );
+
+  const roiWhatsAppUrl = useMemo(() => {
+    const text = [
+      'Hi Al Astoora, I calculated my WhatsApp lead loss and want to discuss automation.',
+      '',
+      ...roiEstimateLines,
+    ].join('\n');
+
+    return `https://wa.me/917011190158?text=${encodeURIComponent(text)}`;
+  }, [roiEstimateLines]);
+
+  function trackRoiEngagement(action: string, properties: Record<string, string | number> = {}) {
+    setHasInteracted(true);
+    trackEvent('roi_calculator_engaged', {
+      action,
+      market: marketKey,
+      daily_missed_inquiries: dailyMissedInquiries,
+      average_customer_value: effectiveAverageCustomerValue,
+      scenario: activeScenarioId,
+      ...properties,
+    });
+  }
+
+  function handleEstimateHandoff(action: string) {
+    saveRoiEstimate(roiEstimate);
+    trackRoiEngagement(action, {
+      lost_monthly_revenue: Math.round(roiEstimate.lostMonthlyRevenue),
+      recoverable_monthly_revenue: Math.round(roiEstimate.recoverableMonthlyRevenue),
+      recovered_clients_per_month: roiEstimate.recoveredClientsPerMonth,
+    });
+  }
+
+  useEffect(() => {
+    if (!hasInteracted) {
+      return;
+    }
+
+    saveRoiEstimate(roiEstimate);
+  }, [hasInteracted, roiEstimate]);
 
   // Autocycle scenarios
   useEffect(() => {
@@ -183,8 +278,10 @@ export default function ROICalculator() {
                 id="market-select"
                 value={marketKey}
                 onChange={(e) => {
-                  setMarketKey(e.target.value);
+                  const nextMarket = e.target.value;
+                  setMarketKey(nextMarket);
                   setAverageCustomerValue(null);
+                  trackRoiEngagement('market_changed', { market: nextMarket });
                 }}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
               >
@@ -212,7 +309,13 @@ export default function ROICalculator() {
                 min={1}
                 max={50}
                 value={dailyMissedInquiries}
-                onChange={(e) => setDailyMissedInquiries(Number(e.target.value))}
+                onChange={(e) => {
+                  const nextValue = Number(e.target.value);
+                  setDailyMissedInquiries(nextValue);
+                  trackRoiEngagement('daily_missed_inquiries_changed', {
+                    daily_missed_inquiries: nextValue,
+                  });
+                }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
               <div className="flex justify-between text-[10px] text-slate-600 mt-2">
@@ -236,7 +339,11 @@ export default function ROICalculator() {
                   value={effectiveAverageCustomerValue}
                   onChange={(e) => {
                     const nextVal = Number(e.target.value);
-                    setAverageCustomerValue(Number.isFinite(nextVal) ? Math.max(0, nextVal) : 0);
+                    const safeValue = Number.isFinite(nextVal) ? Math.max(0, nextVal) : 0;
+                    setAverageCustomerValue(safeValue);
+                    trackRoiEngagement('average_customer_value_changed', {
+                      average_customer_value: safeValue,
+                    });
                   }}
                   className="w-full bg-transparent text-base font-bold text-slate-100 outline-none"
                 />
@@ -296,6 +403,37 @@ export default function ROICalculator() {
                   ~{Math.round(revenueModel.monthlyConvertedCustomers * revenueModel.automationRecoveryRate)}
                 </span>
               </div>
+
+              <p className="mt-5 text-xs leading-relaxed text-slate-400">
+                Your estimate can be included in the demo chat, so we can start with your numbers.
+              </p>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <Link
+                  href="/contact"
+                  onClick={() => handleEstimateHandoff('demo_handoff_clicked')}
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label="roi_demo_handoff"
+                  data-analytics-location="roi_calculator"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
+                >
+                  <Send className="h-4 w-4" />
+                  Request demo with estimate
+                </Link>
+                <a
+                  href={roiWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleEstimateHandoff('whatsapp_handoff_clicked')}
+                  data-analytics-event="whatsapp_clicked"
+                  data-analytics-label="roi_estimate_whatsapp"
+                  data-analytics-location="roi_calculator"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-emerald-500/40 hover:bg-slate-900 hover:text-white"
+                >
+                  <MessageSquare className="h-4 w-4 text-emerald-400" />
+                  Send on WhatsApp
+                </a>
+              </div>
             </div>
 
             {/* Scenario Buttons Column */}
@@ -308,7 +446,13 @@ export default function ROICalculator() {
                 return (
                   <button
                     key={scenario.id}
-                    onClick={() => setActiveScenarioId(scenario.id)}
+                    onClick={() => {
+                      setActiveScenarioId(scenario.id);
+                      trackRoiEngagement('conversion_scenario_selected', {
+                        scenario: scenario.id,
+                        conversion_rate: scenario.rate,
+                      });
+                    }}
                     className={`w-full relative overflow-hidden text-left p-4.5 rounded-2xl border transition-all duration-300 ${
                       isActive
                         ? 'border-emerald-500/40 bg-slate-900/60 shadow-lg shadow-emerald-500/[0.02]'

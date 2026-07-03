@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Phone, Send, ArrowLeft, Shield } from 'lucide-react';
+import { MessageSquare, Phone, Send, ArrowLeft, Shield } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://alastoora.tech/contact',
+  },
+};
 
 export default function ContactPage() {
   return (
@@ -65,6 +72,21 @@ export default function ContactPage() {
 
                 <div className="flex items-center gap-3">
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-emerald-400">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-slate-500">Support Email</p>
+                    <a
+                      href="mailto:alastoora@support.tin.computer"
+                      className="text-sm font-semibold text-slate-200 transition-colors hover:text-emerald-400"
+                    >
+                      alastoora@support.tin.computer
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-emerald-400">
                     <Shield className="h-4 w-4" />
                   </span>
                   <div>
@@ -78,76 +100,7 @@ export default function ContactPage() {
             {/* Form Column */}
             <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 bg-slate-900/40">
               <h2 className="text-xl font-bold text-white tracking-tight mb-6">Project Request Form</h2>
-              <form action="https://formspree.io/f/placeholder" method="POST" className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    placeholder="Alex Carter"
-                    className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Business Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    placeholder="alex@company.com"
-                    className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="business" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Business Sector / Type
-                  </label>
-                  <select
-                    id="business"
-                    name="business"
-                    className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
-                  >
-                    <option>Clinic / Healthcare</option>
-                    <option>Beauty / Hair Salon</option>
-                    <option>Restaurant / Café</option>
-                    <option>Gym / Fitness Studio</option>
-                    <option>Real Estate Agency</option>
-                    <option>Training Academy / Course Creator</option>
-                    <option>Other Service Business</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Project Details & Goals
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    required
-                    placeholder="Describe your current lead booking flow and where you lose the most inquiries..."
-                    className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98] shadow-md shadow-emerald-500/10 cursor-pointer"
-                >
-                  <Send className="h-4 w-4" />
-                  Submit Project Details
-                </button>
-              </form>
+              <ContactForm />
             </div>
 
           </div>

@@ -19,7 +19,6 @@ export default function Header() {
 
   const isInsightsActive = pathname?.startsWith('/insights');
   const isFaqActive = pathname === '/faq';
-  const isAboutActive = pathname === '/about';
   const isLogoActive = pathname === '/' && isAtTop;
   const showActiveSection = pathname === '/' && !isAtTop ? activeSection : '';
   // Track scroll position for header styling
@@ -160,16 +159,6 @@ export default function Header() {
             {/* Separate routes / page links */}
             <div className="flex items-center gap-1 bg-slate-900/35 px-1.5 py-1 rounded-full border border-slate-900">
               <Link
-                href="/about"
-                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                  isAboutActive
-                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
-                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                }`}
-              >
-                About Us
-              </Link>
-              <Link
                 href="/faq"
                 className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
                   isFaqActive
@@ -196,6 +185,9 @@ export default function Header() {
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <Link
               href="/contact"
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label="header_contact_desktop"
+              data-analytics-location="site_header"
               className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-slate-800 bg-slate-900/50 px-3.5 py-2 text-xs font-medium text-slate-300 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900 min-[520px]:inline-flex sm:px-4 sm:text-sm"
             >
               <Phone className="h-3.5 w-3.5" />
@@ -204,12 +196,18 @@ export default function Header() {
             <Link
               href="/contact"
               aria-label="Call Al Astoora"
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label="header_contact_mobile_icon"
+              data-analytics-location="site_header"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-800 bg-slate-900/50 text-slate-300 transition-all hover:border-slate-700 hover:text-white min-[520px]:hidden"
             >
               <Phone className="h-4 w-4" />
             </Link>
             <Link
               href="/contact"
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label="header_book_demo"
+              data-analytics-location="site_header"
               className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-md shadow-emerald-500/15 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/25 active:scale-95 sm:px-5 sm:text-sm"
             >
               Book Demo
@@ -285,18 +283,7 @@ export default function Header() {
               <div className="border-t border-slate-900/80" />
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              <Link
-                href="/about"
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
-                  isAboutActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
-                }`}
-              >
-                About Us
-              </Link>
+            <div className="grid grid-cols-2 gap-2">
               <Link
                 href="/faq"
                 onClick={() => setMobileOpen(false)}
@@ -325,6 +312,9 @@ export default function Header() {
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
+                data-analytics-event="primary_cta_clicked"
+                data-analytics-label="mobile_menu_book_demo"
+                data-analytics-location="mobile_menu"
                 className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
               >
                 Book Demo
@@ -332,6 +322,9 @@ export default function Header() {
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
+                data-analytics-event="primary_cta_clicked"
+                data-analytics-label="mobile_menu_contact"
+                data-analytics-location="mobile_menu"
                 className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-sm font-medium text-slate-300 transition-all hover:border-slate-700 hover:text-white"
               >
                 <Phone className="h-3.5 w-3.5" />

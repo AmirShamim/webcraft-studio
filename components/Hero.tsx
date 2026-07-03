@@ -127,6 +127,9 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/contact"
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label="hero_see_live_demo"
+              data-analytics-location="homepage_hero"
               className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-7 py-4 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
             >
               See Live Demo
@@ -134,6 +137,9 @@ export default function Hero() {
             </Link>
             <a
               href="#roi"
+              data-analytics-event="primary_cta_clicked"
+              data-analytics-label="hero_calculate_roi"
+              data-analytics-location="homepage_hero"
               className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/40 backdrop-blur-sm px-7 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900"
             >
               Calculate ROI
@@ -147,8 +153,8 @@ export default function Hero() {
               <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Avg. Response</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">100%</p>
-              <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Lead Capture</p>
+              <p className="text-2xl font-bold text-white">24/7</p>
+              <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">Lead Capture Flow</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-white">0$</p>
