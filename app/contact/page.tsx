@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MessageSquare, Phone, Send, ArrowLeft, Shield } from 'lucide-react';
+import { MessageSquare, Phone, Send, ArrowLeft, Shield, Mail } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ContactForm from './ContactForm';
 
 export const metadata: Metadata = {
   alternates: {
