@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { MessageSquare } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,7 +10,8 @@ export default function Footer() {
             <div className="mt-7 grid gap-4 text-sm md:grid-cols-4 mb-8">
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Legal Business Name</p>
-                <p className="mt-2 font-medium text-slate-100">Al Astoora</p>
+                <p className="mt-2 font-medium text-slate-100">Amir Shamim</p>
+                <p className="text-xs text-slate-400 mt-1">(Trade Name: Al Astoora)</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
@@ -34,8 +34,8 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="md:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2.5 group w-fit">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
-                <MessageSquare className="h-4 w-4" />
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 overflow-hidden">
+                <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
               </span>
               <span className="text-base font-semibold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
                 Al Astoora
@@ -54,6 +54,11 @@ export default function Footer() {
               <li>
                 <Link href="/" className="hover:text-emerald-400 transition-colors">
                   Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-emerald-400 transition-colors">
+                  About Us
                 </Link>
               </li>
               <li>
@@ -94,10 +99,16 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
+          <div className="space-y-1.5 text-center sm:text-left">
+            <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
+            <p className="text-slate-500">
+              Al Astoora | Founded by Amir Shamim<br className="sm:hidden" />
+              <span className="hidden sm:inline"> | </span>MSME/Udyam Registered | GST Registered
+            </p>
+          </div>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-slate-300 font-medium">Meta Verified Partner API Ready</span>
+            <span className="text-slate-300 font-medium">Official Meta Developer Integration</span>
           </div>
         </div>
       </div>

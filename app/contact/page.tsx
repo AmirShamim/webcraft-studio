@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MessageSquare, Phone, Send, ArrowLeft, Shield } from 'lucide-react';
+import { Phone, Send, ArrowLeft, Shield } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -9,8 +9,8 @@ export default function ContactPage() {
       <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4 md:px-8">
           <Link href="/" className="flex min-w-0 items-center gap-2.5 group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 text-emerald-400 sm:h-9 sm:w-9 transition-colors group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20">
-              <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 overflow-hidden sm:h-9 sm:w-9 transition-colors group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20">
+              <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
             </span>
             <p className="whitespace-nowrap text-[15px] font-semibold tracking-tight text-slate-100 sm:text-base group-hover:text-emerald-400 transition-colors">
               Al Astoora

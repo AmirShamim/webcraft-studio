@@ -17,13 +17,13 @@ export default function About() {
               Meta Developer Registered Stack
             </span>
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Engineered by founders who value speed.
+              Founded by Amir Shamim.
             </h2>
             <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-              Al Astoora was founded to solve a critical issue: local businesses spend massive budgets on Instagram, Facebook, and Google ads, only to lose high-intent leads because of delayed response times. 
+              Al Astoora is the registered trade name of founder and sole proprietor Amir Shamim, specializing in custom WhatsApp and conversational automation infrastructure.
             </p>
             <p className="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
-              We eliminate the delay by integrating direct, enterprise-grade automated front desks using Meta&apos;s Official APIs. Your leads are greeted, cataloged, and booked in less than 2 seconds, 24/7/365.
+              We design and construct direct, enterprise-grade automated front desks using Meta&apos;s Official Developer Portal to capture leads, answer questions, and schedule customers in under 2 seconds.
             </p>
           </div>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, Phone, X, Menu } from 'lucide-react';
+import { Phone, X, Menu } from 'lucide-react';
 const navSections = [
   { id: 'roi', label: 'ROI Calculator' },
   { id: 'portfolio', label: 'Case Studies' },
@@ -19,6 +19,7 @@ export default function Header() {
 
   const isInsightsActive = pathname?.startsWith('/insights');
   const isFaqActive = pathname === '/faq';
+  const isAboutActive = pathname === '/about';
   const isLogoActive = pathname === '/' && isAtTop;
   const showActiveSection = pathname === '/' && !isAtTop ? activeSection : '';
   // Track scroll position for header styling
@@ -106,15 +107,15 @@ export default function Header() {
             }}
           >
             <span
-              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 sm:h-9 sm:w-9 ${
+              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 sm:h-9 sm:w-9 overflow-hidden ${
                 isLogoActive
-                  ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400'
+                  ? 'border-emerald-500 bg-emerald-500/20'
                   : scrolled
-                  ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-400'
-                  : 'border-emerald-500/25 bg-emerald-500/10 text-emerald-400 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20'
+                  ? 'border-emerald-500/40 bg-emerald-500/15'
+                  : 'border-emerald-500/25 bg-emerald-500/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20'
               }`}
             >
-              <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
             </span>
             <p
               className={`whitespace-nowrap text-[15px] font-semibold tracking-tight sm:text-base transition-colors ${
@@ -158,6 +159,16 @@ export default function Header() {
 
             {/* Separate routes / page links */}
             <div className="flex items-center gap-1 bg-slate-900/35 px-1.5 py-1 rounded-full border border-slate-900">
+              <Link
+                href="/about"
+                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
+                  isAboutActive
+                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
+                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                }`}
+              >
+                About Us
+              </Link>
               <Link
                 href="/faq"
                 className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
@@ -274,11 +285,22 @@ export default function Header() {
               <div className="border-t border-slate-900/80" />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
+              <Link
+                href="/about"
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
+                  isAboutActive
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
+                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
+                }`}
+              >
+                About Us
+              </Link>
               <Link
                 href="/faq"
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
+                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
                   isFaqActive
                     ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
                     : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
@@ -289,7 +311,7 @@ export default function Header() {
               <Link
                 href="/insights"
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
+                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
                   isInsightsActive
                     ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
                     : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
