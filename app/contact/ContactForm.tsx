@@ -27,6 +27,9 @@ const initialFormState: FormState = {
   message: '',
 };
 
+const qualifiedHandoffCopy =
+  'A useful demo request includes your contact detail, business type, and automation need. WhatsApp opens with those details prefilled.';
+
 function buildWhatsAppUrl(form: FormState, roiEstimate: RoiEstimate | null = null) {
   const roiLines = roiEstimate
     ? [
@@ -216,8 +219,8 @@ export default function ContactForm() {
 
       <p className="text-center text-xs leading-relaxed text-slate-500" aria-live="polite">
         {status || (roiEstimate
-          ? 'This opens WhatsApp with your project details and calculator estimate prefilled.'
-          : 'This opens WhatsApp with your project details prefilled. No new account is needed.')}
+          ? `${qualifiedHandoffCopy} Your calculator estimate is included too.`
+          : qualifiedHandoffCopy)}
       </p>
 
       <a
