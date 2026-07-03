@@ -12,6 +12,7 @@ export type FunnelEventName =
   | '$pageview'
   | 'primary_cta_clicked'
   | 'whatsapp_clicked'
+  | 'demo_path_initiated'
   | 'qualified_handoff_submitted'
   | 'contact_form_handoff_submitted'
   | 'insight_cta_clicked'
@@ -42,6 +43,7 @@ export function initAnalytics() {
     capture_pageview: false,
     capture_pageleave: true,
     autocapture: false,
+    disable_compression: process.env.NODE_ENV === 'development',
     person_profiles: 'identified_only',
   });
 
