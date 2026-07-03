@@ -12,6 +12,7 @@ export type FunnelEventName =
   | '$pageview'
   | 'primary_cta_clicked'
   | 'whatsapp_clicked'
+  | 'qualified_handoff_submitted'
   | 'contact_form_handoff_submitted'
   | 'insight_cta_clicked'
   | 'roi_calculator_engaged'
@@ -19,6 +20,14 @@ export type FunnelEventName =
   | 'homepage_dental_vertical_clicked';
 
 type EventProperties = Record<string, string | number | boolean | null | undefined>;
+
+type QualifiedHandoffProperties = EventProperties & {
+  contact_detail_present: boolean;
+  business_type_named: boolean;
+  automation_need_stated: boolean;
+  trigger_surface: 'whatsapp_handoff_click' | 'demo_path_initiation';
+  handoff_destination: 'whatsapp' | 'demo';
+};
 
 let analyticsReady = false;
 
@@ -51,4 +60,23 @@ export function trackEvent(eventName: FunnelEventName, properties: EventProperti
     page_url: typeof window !== 'undefined' ? window.location.href : undefined,
     ...properties,
   });
+}
+
+export function trackQualifiedHandoff(properties: QualifiedHandoffProperties) {
+  const isQualified =
+    properties.contact_detail_present &&
+    properties.business_type_named &&
+    properties.automation_need_stated;
+
+  if (!isQualified) {
+    return false;
+  }
+
+  trackEvent('qualified_handoff_submitted', {
+    qualification_status: 'qualified',
+    source_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    ...properties,
+  });
+
+  return true;
 }

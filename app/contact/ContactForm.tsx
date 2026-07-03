@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
-import { trackEvent } from '@/lib/analytics';
+import { trackEvent, trackQualifiedHandoff } from '@/lib/analytics';
 import {
   ROI_ESTIMATE_STORAGE_KEY,
   formatRoiCurrency,
@@ -52,6 +52,43 @@ function buildWhatsAppUrl(form: FormState, roiEstimate: RoiEstimate | null = nul
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 
+function getQualifiedHandoffProperties(
+  form: FormState,
+  roiEstimate: RoiEstimate | null,
+  ctaLabel: string,
+) {
+  const contactDetailPresent = form.email.trim().length > 0;
+  const businessTypeNamed = form.business.trim().length > 0;
+  const automationNeedStated = form.message.trim().length > 0;
+
+  return {
+    contact_detail_present: contactDetailPresent,
+    business_type_named: businessTypeNamed,
+    automation_need_stated: automationNeedStated,
+    trigger_surface: 'whatsapp_handoff_click' as const,
+    source_page: 'contact_form',
+    source_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    handoff_destination: 'whatsapp' as const,
+    carried_roi_estimate_present: Boolean(roiEstimate),
+    business_type: businessTypeNamed ? form.business.trim() : undefined,
+    automation_need: automationNeedStated ? form.message.trim().slice(0, 240) : undefined,
+    cta_label: ctaLabel,
+    roi_estimate_aed:
+      roiEstimate?.currency === 'AED'
+        ? Math.round(roiEstimate.lostMonthlyRevenue)
+        : undefined,
+    roi_estimate_currency: roiEstimate?.currency,
+  };
+}
+
+function trackWhatsAppHandoff(
+  form: FormState,
+  roiEstimate: RoiEstimate | null,
+  ctaLabel: string,
+) {
+  return trackQualifiedHandoff(getQualifiedHandoffProperties(form, roiEstimate, ctaLabel));
+}
+
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [status, setStatus] = useState('');
@@ -89,8 +126,13 @@ export default function ContactForm() {
     };
     const submittedUrl = buildWhatsAppUrl(submittedForm, roiEstimate);
 
+    const handoffProperties = getQualifiedHandoffProperties(
+      submittedForm,
+      roiEstimate,
+      'contact_form_submit',
+    );
+
     trackEvent('contact_form_handoff_submitted', {
-      business_type: submittedForm.business,
       has_name: submittedForm.name.trim().length > 0,
       has_email: submittedForm.email.trim().length > 0,
       project_goals_length: submittedForm.message.trim().length,
@@ -98,7 +140,9 @@ export default function ContactForm() {
       roi_market: roiEstimate?.market,
       roi_lost_monthly_revenue: roiEstimate ? Math.round(roiEstimate.lostMonthlyRevenue) : undefined,
       roi_recoverable_monthly_revenue: roiEstimate ? Math.round(roiEstimate.recoverableMonthlyRevenue) : undefined,
+      ...handoffProperties,
     });
+    trackQualifiedHandoff(handoffProperties);
 
     setStatus('Opening WhatsApp with your project details filled in.');
 
@@ -230,6 +274,7 @@ export default function ContactForm() {
         data-analytics-event="whatsapp_clicked"
         data-analytics-label="contact_form_fallback"
         data-analytics-location="contact_form"
+        onClick={() => trackWhatsAppHandoff(form, roiEstimate, 'contact_form_fallback')}
         className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
       >
         <MessageSquare className="h-4 w-4 text-emerald-400" />
