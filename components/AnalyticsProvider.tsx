@@ -8,6 +8,24 @@ function cleanText(value: string | null) {
   return value?.replace(/\s+/g, ' ').trim().slice(0, 120);
 }
 
+function whatsappDebugProperties(target: HTMLElement) {
+  if (target.dataset.analyticsEvent !== 'whatsapp_clicked') {
+    return {};
+  }
+
+  return {
+    qualification_status: 'unqualified',
+    contact_detail_present: false,
+    business_type_named: false,
+    automation_need_stated: false,
+    trigger_surface: 'whatsapp_handoff_click',
+    source_page: target.dataset.analyticsLocation,
+    source_path: window.location.pathname,
+    handoff_destination: 'whatsapp',
+    carried_roi_estimate_present: target.dataset.analyticsLocation === 'roi_calculator',
+  };
+}
+
 export default function AnalyticsProvider() {
   const pathname = usePathname();
 
@@ -45,6 +63,7 @@ export default function AnalyticsProvider() {
         location: target.dataset.analyticsLocation,
         href: target instanceof HTMLAnchorElement ? target.href : target.getAttribute('href'),
         text: cleanText(target.textContent),
+        ...whatsappDebugProperties(target),
       });
     };
 
