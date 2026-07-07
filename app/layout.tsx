@@ -62,7 +62,7 @@ const jsonLd = {
       'name': 'Al Astoora',
       'url': 'https://alastoora.tech',
       'logo': 'https://alastoora.tech/logo.png',
-      'telephone': '+91-7011190158',
+      'telephone': '+91 92895 81053',
       'address': {
         '@type': 'PostalAddress',
         'streetAddress': '4th, 52/C, MN Block Lane, New Steel Work, Jamia Nagar',
@@ -77,7 +77,7 @@ const jsonLd = {
       '@id': 'https://alastoora.tech/#service',
       'name': 'Al Astoora | WhatsApp Automation & Web Development Agency',
       'url': 'https://alastoora.tech',
-      'telephone': '+91-7011190158',
+      'telephone': '+91 92895 81053',
       'priceRange': '$$',
       'image': 'https://alastoora.tech/logo.png',
       'description':

@@ -65,7 +65,7 @@ function buildJsonLd(page: VerticalAutomationPage) {
           '@type': 'Organization',
           name: 'Al Astoora',
           url: 'https://alastoora.tech',
-          telephone: '+91-7011190158',
+          telephone: '+91 92895 81053',
         },
       },
       {
@@ -113,7 +113,7 @@ export default async function VerticalWhatsAppAutomationPage({ params }: PagePro
   if (!page) notFound();
 
   const jsonLd = buildJsonLd(page);
-  const whatsappHref = `https://wa.me/917011190158?text=${encodeURIComponent(page.whatsappMessage)}`;
+  const whatsappHref = `https://wa.me/919289581053?text=${encodeURIComponent(page.whatsappMessage)}`;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased">

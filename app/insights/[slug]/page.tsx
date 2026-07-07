@@ -375,7 +375,7 @@ export default async function InsightPage({ params }: PageProps) {
                 Book Demo
               </Link>
               <a
-                href="https://wa.me/917011190158?text=Hi%20I%20want%20to%20learn%20more%20about%20Al%20Astoora"
+                href="https://wa.me/919289581053?text=Hi%20I%20want%20to%20learn%20more%20about%20Al%20Astoora"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-analytics-event="whatsapp_clicked"

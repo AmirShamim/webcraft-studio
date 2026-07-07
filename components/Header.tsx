@@ -197,29 +197,9 @@ export default function Header() {
             <Link
               href="/contact"
               data-analytics-event="primary_cta_clicked"
-              data-analytics-label="header_contact_desktop"
-              data-analytics-location="site_header"
-              className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-slate-800 bg-slate-900/50 px-3.5 py-2 text-xs font-medium text-slate-300 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900 min-[520px]:inline-flex sm:px-4 sm:text-sm"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              Contact Us
-            </Link>
-            <Link
-              href="/contact"
-              aria-label="Call Al Astoora"
-              data-analytics-event="primary_cta_clicked"
-              data-analytics-label="header_contact_mobile_icon"
-              data-analytics-location="site_header"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-800 bg-slate-900/50 text-slate-300 transition-all hover:border-slate-700 hover:text-white min-[520px]:hidden"
-            >
-              <Phone className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/contact"
-              data-analytics-event="primary_cta_clicked"
               data-analytics-label="header_book_demo"
               data-analytics-location="site_header"
-              className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-md shadow-emerald-500/15 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/25 active:scale-95 sm:px-5 sm:text-sm"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-emerald-500 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-emerald-500/15 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/25 active:scale-95 sm:px-5 sm:py-2 sm:text-sm"
             >
               Book Demo
             </Link>
@@ -340,17 +320,6 @@ export default function Header() {
                 className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
               >
                 Book Demo
-              </Link>
-              <Link
-                href="/contact"
-                onClick={() => setMobileOpen(false)}
-                data-analytics-event="primary_cta_clicked"
-                data-analytics-label="mobile_menu_contact"
-                data-analytics-location="mobile_menu"
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-sm font-medium text-slate-300 transition-all hover:border-slate-700 hover:text-white"
-              >
-                <Phone className="h-3.5 w-3.5" />
-                Contact Us
               </Link>
             </div>
           </nav>

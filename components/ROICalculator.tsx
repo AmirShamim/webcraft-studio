@@ -197,7 +197,7 @@ export default function ROICalculator() {
       ...roiEstimateLines,
     ].join('\n');
 
-    return `https://wa.me/917011190158?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/919289581053?text=${encodeURIComponent(text)}`;
   }, [roiEstimateLines]);
 
   function trackRoiEngagement(action: string, properties: Record<string, string | number> = {}) {

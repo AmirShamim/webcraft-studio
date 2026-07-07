@@ -67,7 +67,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-xs text-slate-500">Fast Callback Channel</p>
-                    <p className="text-sm font-semibold text-slate-200">+91 70111 90158</p>
+                    <p className="text-sm font-semibold text-slate-200">+91 92895 81053</p>
                   </div>
                 </div>
 

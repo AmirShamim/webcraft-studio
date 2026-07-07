@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
         Try Live Demo
       </div>
       <motion.a
-        href="https://wa.me/917011190158?text=Hi%20I%20want%20to%20see%20a%20demo"
+        href="https://wa.me/919289581053?text=Hi%20I%20want%20to%20see%20a%20demo"
         target="_blank"
         rel="noopener noreferrer"
         data-analytics-event="whatsapp_clicked"

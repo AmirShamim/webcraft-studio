@@ -170,7 +170,7 @@ function buildJsonLd() {
           '@type': 'Organization',
           name: 'Al Astoora',
           url: 'https://alastoora.tech',
-          telephone: '+91-7011190158',
+          telephone: '+91 92895 81053',
         },
         areaServed: ['IN', 'AE', 'SG', 'US'],
         serviceType: 'WhatsApp Cloud API automation',
@@ -525,7 +525,7 @@ export default function WhatsAppAutomationPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="https://wa.me/917011190158?text=Hi%20I%20want%20to%20automate%20WhatsApp%20for%20my%20business"
+                href="https://wa.me/919289581053?text=Hi%20I%20want%20to%20automate%20WhatsApp%20for%20my%20business"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-analytics-event="whatsapp_clicked"

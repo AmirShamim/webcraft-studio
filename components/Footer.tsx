@@ -23,7 +23,7 @@ export default function Footer() {
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">+91-7011190158</p>
+                <p className="mt-2 font-medium text-slate-100">+91 92895 81053</p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
