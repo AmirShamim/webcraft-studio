@@ -7,27 +7,7 @@ export default function Footer() {
     <footer className="border-t border-slate-900 bg-slate-950 text-slate-400 py-12 md:py-16">
       <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
 
-            <div className="mt-7 grid gap-4 text-sm md:grid-cols-4 mb-8">
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Legal Business Name</p>
-                <p className="mt-2 font-medium text-slate-100">Amir Shamim</p>
-                <p className="text-xs text-slate-400 mt-1">(Trade Name: Al Astoora)</p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-100">
-                  New Delhi, India
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">+91 92895 81053</p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax Registration</p>
-                <h2 className="mt-2 font-medium text-slate-100">GSTIN: 07RFVPS6101B1ZZ</h2>
-              </div>
-            </div>
+
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="md:col-span-2 space-y-4">
@@ -98,10 +78,10 @@ export default function Footer() {
                 Support
               </p>
               <a
-                href="mailto:alastoora@support.tin.computer"
+                href="mailto:founder@alastoora.tech"
                 className="mt-2 block break-all text-slate-400 transition-colors hover:text-emerald-400"
               >
-                alastoora@support.tin.computer
+                founder@alastoora.tech
               </a>
             </div>
           </div>
