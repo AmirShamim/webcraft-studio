@@ -16,9 +16,7 @@ export default function Footer() {
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
                 <p className="mt-2 text-sm font-medium leading-relaxed text-slate-100">
-                  4th, 52/C, MN Block Lane, New Steel Work,<br />
-                  Jamia Nagar, New Delhi,<br />
-                  South East Delhi, Delhi - 110025
+                  New Delhi, India
                 </p>
               </div>
               <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
