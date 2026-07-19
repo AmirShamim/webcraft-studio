@@ -65,8 +65,10 @@ const jsonLd = {
       'telephone': '+91 92895 81053',
       'address': {
         '@type': 'PostalAddress',
-        'addressLocality': 'New Delhi',
+        'streetAddress': '4th, 52/C, MN Block Lane, New Steel Work, Jamia Nagar',
+        'addressLocality': 'South East Delhi',
         'addressRegion': 'Delhi',
+        'postalCode': '110025',
         'addressCountry': 'IN',
       },
     },
@@ -82,8 +84,10 @@ const jsonLd = {
         'We design and build custom conversation automation systems and high-converting landing pages utilizing Meta\'s official WhatsApp Cloud API.',
       'address': {
         '@type': 'PostalAddress',
-        'addressLocality': 'New Delhi',
+        'streetAddress': '4th, 52/C, MN Block Lane, New Steel Work, Jamia Nagar',
+        'addressLocality': 'South East Delhi',
         'addressRegion': 'Delhi',
+        'postalCode': '110025',
         'addressCountry': 'IN',
       },
       'areaServed': ['AE', 'SG', 'IN', 'US'],
