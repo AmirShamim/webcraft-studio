@@ -5,15 +5,15 @@ import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 export const metadata: Metadata = {
-  title: 'FAQ | Al Astoora — WhatsApp Automation Questions & Answers',
+  title: 'FAQ | Al Astoora — B2B Document Intake Infrastructure Questions',
   description:
-    'Everything you need to know about official WhatsApp automation, setup costs, integrations, and business software ownership with Al Astoora.',
+    'Frequently Asked Questions about Al Astoora’s enterprise B2B document intake engine, Meta Cloud API security, integrations, and platform licensing.',
   alternates: {
     canonical: 'https://alastoora.tech/faq',
   },
   openGraph: {
-    title: 'FAQ | Al Astoora',
-    description: 'Frequently Asked Questions about our WhatsApp Automation stacks.',
+    title: 'FAQ | Al Astoora Document & Intake Infrastructure',
+    description: 'Everything you need to know about our enterprise B2B document intake engine and platform licensing.',
     url: 'https://alastoora.tech/faq',
     siteName: 'Al Astoora',
     type: 'website',

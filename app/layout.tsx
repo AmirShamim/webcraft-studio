@@ -98,56 +98,56 @@ const jsonLd = {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'What is Al Astoora and how does the automation system work?',
+          'name': 'What is Al Astoora and how does the intake infrastructure platform work?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'Al Astoora is a premium conversational agency that engineers official automated response systems and booking funnels. We use the Meta Cloud API to connect your business WhatsApp directly to custom databases, calendars, and CRMs. When a lead contacts you, our automation greets them, answers FAQs, displays catalogs, and registers appointment requests in under 2 seconds, 24/7.',
+              'Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and automated document intake for professional services (legal, accounting, tax, immigration, corporate secretarial). Built directly on Meta’s Official Cloud API, our platform ingests client PDFs, images, and KYC paperwork via WhatsApp, validates submissions in real time, and routes structured data into your CRM, database, or case management system.',
           },
         },
         {
           '@type': 'Question',
-          'name': 'How is Al Astoora different from SaaS platforms like Respond.io or Trengo?',
+          'name': 'How does Al Astoora streamline document intake for professional service firms?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'Broad subscription inbox platforms are built for teams that want hosted shared-inbox software with plans, seats, conversation allowances, and add-ons. Al Astoora builds a custom WhatsApp booking stack on the official Meta Cloud API for your business, with the code, integrations, and connected database handed over to you. Al Astoora does not add a monthly platform fee; Meta WhatsApp message costs can still apply.',
+              'Our proprietary intake engine automates multi-step onboarding workflows. Instead of billable partners and associates manually chasing clients over fragmented email threads, Al Astoora triggers automated document collection checklists, verifies files, and pushes organized records into your backend database in under 2 seconds.',
           },
         },
         {
           '@type': 'Question',
-          'name': 'What are the costs involved in setting up WhatsApp Cloud API?',
+          'name': 'How does Al Astoora integrate with our existing CRMs, ERPs, and cloud storage?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'We charge a one-time flat engineering setup fee to design, build, and deploy your custom system. After setup, you pay no Al Astoora monthly platform fee. Meta WhatsApp message costs can still apply through the official setup.',
+              'We provide enterprise webhooks and REST API endpoints that push collected documents and client data directly into your firm’s CRM, document management system, cloud storage (Google Drive, OneDrive, AWS S3), or ERP (Salesforce, HubSpot, Xero, Quickbooks, custom SQL).',
           },
         },
         {
           '@type': 'Question',
-          'name': 'Is my WhatsApp business number safe from phone number bans?',
+          'name': 'Is client data and document transfer secure and compliant?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'Yes, 100% safe. Unlike unofficial automation tools that scan QR codes and trigger automated client emulator blocks (web automation scrapers), Al Astoora integrates directly through the official Meta Cloud API ecosystem. Because your business profile is verified and approved by Meta, there is zero risk of phone number suspensions or spam blocks.',
+              'Yes. All document transmissions through Meta’s Official Cloud API ecosystem use 256-bit SSL encryption. Unlike unofficial QR-code scrapers that carry security and account ban risks, Al Astoora operates strictly within Meta’s official developer framework for maximum data stability, enterprise compliance, and zero downtime.',
           },
         },
         {
           '@type': 'Question',
-          'name': 'What CRMs and calendars can be connected to the automation?',
+          'name': 'What professional service verticals are supported by Al Astoora?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'We build custom webhook routing to link your system with almost any modern CRM, calendar, or tool, including Google Sheets, Notion, HubSpot, Salesforce, Calendly, and custom SQL databases. Leads and scheduling details are synced instantly in real time without requiring extra paid connector tools.',
+              'Al Astoora is engineered for document-heavy professional industries including Corporate Secretarial (incorporation & signature routing), Immigration & Visa Advisory (KYC & passport verification), Accounting & Tax (quarterly financial form ingestion), and Employment Agencies (candidate resume screening & interview scheduling).',
           },
         },
         {
           '@type': 'Question',
-          'name': 'How long does it take to deploy a custom automation stack?',
+          'name': 'How is Al Astoora licensed and deployed for enterprise firms?',
           'acceptedAnswer': {
             '@type': 'Answer',
             'text':
-              'A standard deployment takes between 7 to 14 business days. This includes Meta business verification, developer console setup, webhook deployment, database integrations, conversation flow testing, and training on how to use the backend sheets or CRM.',
+              'Al Astoora provides flexible infrastructure licensing tailored to your firm’s case volume and active team size. Deployment is fast and turnkey—our team configures Meta business verification, API webhooks, document routing rules, and database connectors so your firm can reclaim unbillable administrative hours immediately.',
           },
         },
       ],
