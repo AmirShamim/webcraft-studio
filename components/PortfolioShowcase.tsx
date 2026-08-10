@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, MessageSquare, Phone, Send, FileText, CalendarCheck2, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 
 type PortfolioSite = {
   id: string;
@@ -15,94 +15,55 @@ type PortfolioSite = {
 
 const portfolioSites: PortfolioSite[] = [
   {
-    id: 'gyms',
-    tabLabel: 'Gyms',
-    websiteName: 'Gym & Fitness Growth Site',
-    category: 'Gyms and Fitness Studios',
+    id: 'corp-sec',
+    tabLabel: 'Corporate Secretarial',
+    websiteName: 'Incorporation & Signature Routing Engine',
+    category: 'Corporate Secretarial & Legal Services',
     summary:
-      'Conversion-focused website for membership signups with WhatsApp inquiry routing and trial booking.',
+      'Automate company incorporation document intake and signature routing.',
     highlights: [
-      'Mobile-first membership landing and plan comparison modules',
-      'Instant WhatsApp CTA with lead source tracking',
-      'Class schedule and trainer trust section built for fast decisions',
+      'Automated shareholder passport & proof of address request triggers',
+      'Instant validation of Memorandum of Association (MoA) signature fields',
+      'Direct webhook routing into corporate secretarial registers',
     ],
   },
   {
-    id: 'restaurants',
-    tabLabel: 'Restaurants',
-    websiteName: 'Restaurant Booking Site',
-    category: 'Restaurants and Cafes',
+    id: 'immigration',
+    tabLabel: 'Immigration & Visa',
+    websiteName: 'Immigration Document Intake Pipeline',
+    category: 'Immigration & Visa Advisory',
     summary:
-      'Menu-first website template designed for fast table booking and high-intent WhatsApp ordering.',
+      'Seamlessly collect, categorize, and verify client passports, IDs, and financial records.',
     highlights: [
-      'PDF and interactive menu access in one tap',
-      'Reservation CTA and map integration above the fold',
-      'Festival offer banners optimized for repeat traffic',
+      'Multi-document intake checklists for visa and residency applicants',
+      'Automated OCR document status checks and verification receipts',
+      'Secure encrypted routing directly into firm case files',
     ],
   },
   {
-    id: 'jewelers',
-    tabLabel: 'Jewelers',
-    websiteName: 'Jewelry Showroom Site',
-    category: 'Jewelers and Luxury Retail',
+    id: 'accounting',
+    tabLabel: 'Accounting & Tax',
+    websiteName: 'Quarterly Tax Ingestion Infrastructure',
+    category: 'Accounting & Tax Advisory Firms',
     summary:
-      'Premium catalog experience built for trust, appointment requests, and high-value lead capture.',
+      'Securely request and ingest quarterly tax forms directly into your firm’s database.',
     highlights: [
-      'Category-wise collections with inquiry buttons per product block',
-      'Gold rate and hallmark trust messaging modules',
-      'Wedding and custom-order consultation lead funnel',
+      'Automated deadline reminders sent directly via official WhatsApp API',
+      'Direct ingestion of P&L spreadsheets, balance sheets, and VAT receipts',
+      'Real-time API sync with Xero, Quickbooks, or proprietary ERPs',
     ],
   },
   {
-    id: 'dental',
-    tabLabel: 'Dental',
-    websiteName: 'Dental Clinic Appointment Site',
-    category: 'Dental and Healthcare Clinics',
+    id: 'employment',
+    tabLabel: 'Employment Agencies',
+    websiteName: 'Candidate Screening & Resume Intake',
+    category: 'Executive Search & Staffing Agencies',
     summary:
-      'Clinic website focused on treatment discovery, social proof, and low-friction appointment booking.',
+      'Automate candidate screening, resume collection, and initial interview scheduling.',
     highlights: [
-      'Procedure pages optimized for local SEO intent',
-      'Doctor profile and before-after trust builders',
-      'Single-tap consultation booking via WhatsApp and call',
-    ],
-  },
-  {
-    id: 'beauty',
-    tabLabel: 'Beauty',
-    websiteName: 'Beauty Salon Booking Site',
-    category: 'Beauty and Wellness',
-    summary:
-      'Service showcase website to drive package bookings, repeat visits, and campaign-based offers.',
-    highlights: [
-      'Service cards with starting price and quick booking actions',
-      'Offer section for seasonal campaigns and bundles',
-      'Instagram and testimonial embeds for social credibility',
-    ],
-  },
-  {
-    id: 'home-services',
-    tabLabel: 'Home Services',
-    websiteName: 'Home Services Lead Site',
-    category: 'Cleaning, Repair, and Field Services',
-    summary:
-      'High-intent lead website designed for urgent service requests with area-wise targeting.',
-    highlights: [
-      'Service area coverage and response-time promises',
-      'Quote request workflow with job-type qualifiers',
-      'Trust markers including ratings, guarantees, and certifications',
-    ],
-  },
-  {
-    id: 'training',
-    tabLabel: 'Training',
-    websiteName: 'Training Academy Enrollment Site',
-    category: 'Training Academies and Institutes',
-    summary:
-      'Program enrollment website for lead qualification, counseling calls, and batch seat conversion.',
-    highlights: [
-      'Course pages with outcomes, fees, and placement proof',
-      'Counseling call and brochure request paths',
-      'Batch countdown blocks to increase urgency and enrollments',
+      'WhatsApp-native qualification survey for fast candidate filtering',
+      'Resume PDF ingestion and instant candidate profile compilation',
+      'Automated interview slot selection synced with recruiter calendars',
     ],
   },
 ];
@@ -114,51 +75,37 @@ type SimulationChat = {
 };
 
 const chatSimulations: Record<string, SimulationChat[]> = {
-  gyms: [
-    { sender: 'user', text: 'Hey, I want to book a free trial session for tomorrow!' },
-    { sender: 'bot', text: 'Awesome! 🏋️ What is your preferred slot?\n1. 8:00 AM (Morning Flow)\n2. 6:30 PM (Evening Burn)' },
-    { sender: 'user', text: 'Let’s do 6:30 PM.' },
-    { sender: 'bot', text: 'Locked in! 🎟️ You are booked for 6:30 PM tomorrow at Al Astoora Fitness. I have sent your entry pass. See you there!', actions: ['Get Entry Pass PDF', 'Change Time'] }
+  'corp-sec': [
+    { sender: 'user', text: 'We need to initiate company incorporation for ACME Holdings.' },
+    { sender: 'bot', text: 'Welcome! Please upload the Passport copies and Address proofs for all directors below.' },
+    { sender: 'user', text: 'Uploaded 2 Passport PDFs and utility bill proof.' },
+    { sender: 'bot', text: 'Documents verified! Draft MoA generated and sent for digital signature.', actions: ['View Draft MoA PDF', 'Confirm Board Signers'] },
   ],
-  restaurants: [
-    { sender: 'user', text: 'Do you have a table for 4 tonight around 8 PM?' },
-    { sender: 'bot', text: 'Hi! Yes, we have standard tables and outdoor tables open. Would you like to reserve one? 🍕' },
-    { sender: 'user', text: 'Outdoor table please.' },
-    { sender: 'bot', text: 'Table reserved for 4 at 8:00 PM under name Alex. Tap below to see our live menu.', actions: ['View PDF Menu', 'Cancel Booking'] }
+  immigration: [
+    { sender: 'user', text: 'Submitting Golden Visa documents for family application.' },
+    { sender: 'bot', text: 'Please upload bank statements for the last 6 months and main applicant passport bio-page.' },
+    { sender: 'user', text: 'Bank_Statement_6Mo.pdf uploaded.' },
+    { sender: 'bot', text: 'Passports and bank records verified! Application package routed to your case officer.', actions: ['Track Case Status', 'Download Receipt'] },
   ],
-  jewelers: [
-    { sender: 'user', text: 'Hello, I want to see your wedding collections catalogue.' },
-    { sender: 'bot', text: 'Welcome to Al Astoora Fine Jewelry! 💍 Let me share our Wedding Collection Catalogue and schedule a consultation slot with our designers.', actions: ['Wedding Catalog PDF', 'Book Designer Call'] }
+  accounting: [
+    { sender: 'user', text: 'Here are our Q3 financial statements for corporate tax filing.' },
+    { sender: 'bot', text: 'Received Q3 Financials PDF. Please upload your VAT return summary file to complete intake.' },
+    { sender: 'user', text: 'VAT_Q3_Summary.pdf attached.' },
+    { sender: 'bot', text: 'Tax intake complete! Files securely ingested into firm database.', actions: ['View Ingested Files', 'Schedule Advisor Call'] },
   ],
-  dental: [
-    { sender: 'user', text: 'Can I book a consultation with Dr. Sarah this week?' },
-    { sender: 'bot', text: 'Hi! Dr. Sarah has free slots tomorrow at 11:30 AM and Friday at 4:00 PM. Which works best? 🩺' },
-    { sender: 'user', text: 'Friday at 4:00 PM works.' },
-    { sender: 'bot', text: 'Perfect! Scheduled for Friday at 4:00 PM. Please fill out our pre-checkup card below.', actions: ['Pre-Checkup Form', 'Clinic Directions'] }
-  ],
-  beauty: [
-    { sender: 'user', text: 'I want to schedule a hair spa and pedicure today.' },
-    { sender: 'bot', text: 'Excellent choice! 💅 Our available slots for today:\n1. 2:30 PM\n2. 5:30 PM\nSelect one to book.' },
-    { sender: 'user', text: '2:30 PM works.' },
-    { sender: 'bot', text: 'Confirmed under Alex for 2:30 PM today at Main Salon. Tap below to add a reminder.', actions: ['Add to Calendar', 'View Pricing Card'] }
-  ],
-  'home-services': [
-    { sender: 'user', text: 'My kitchen sink is leaking, can you send a plumber today?' },
-    { sender: 'bot', text: 'Urgent plumbing request registered! 🚨 A certified technician can arrive at your address in 45 mins. Please confirm your location.', actions: ['Send Location'] },
-    { sender: 'user', text: 'Shared location.' },
-    { sender: 'bot', text: 'Plumber on his way! Dispatcher Mike ETA: 35 minutes. Tracking details sent.' }
-  ],
-  training: [
-    { sender: 'user', text: 'When does the next full-stack coding batch start?' },
-    { sender: 'bot', text: 'Our next cohort starts on June 15th. 🚀 Only 3 seats left! Tap below to request the brochure or book a counseling call.', actions: ['Download Brochure PDF', 'Book Counseling Call'] }
+  employment: [
+    { sender: 'user', text: 'Applying for the Senior Tax Consultant position.' },
+    { sender: 'bot', text: 'Great! Please upload your updated Resume/CV PDF to initiate qualification screening.' },
+    { sender: 'user', text: 'Resume_2026.pdf uploaded.' },
+    { sender: 'bot', text: 'Resume parsed! You qualify for Stage 1 interview. Pick a time below.', actions: ['Select Interview Slot', 'View Job Description'] },
   ],
 };
 
 export default function PortfolioShowcase() {
-  const [activeTab, setActiveTab] = useState<string>('gyms');
+  const [activeTab, setActiveTab] = useState<string>('corp-sec');
 
   const selectedSite = portfolioSites.find((site) => site.id === activeTab) ?? portfolioSites[0];
-  const activeChat = chatSimulations[activeTab] ?? chatSimulations.gyms;
+  const activeChat = chatSimulations[activeTab] ?? chatSimulations['corp-sec'];
 
   return (
     <section id="portfolio" className="bg-slate-950 py-20 md:py-28 relative overflow-hidden border-t border-slate-900">
@@ -172,18 +119,18 @@ export default function PortfolioShowcase() {
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400">
-            Case Studies
+            Industry Solutions
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Bespoke automation for every local industry
+            Scalable Infrastructure for Document-Heavy Workflows
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            See how different industry verticals use our high-converting landing pages integrated with Meta Cloud API to capture customers instantly.
+            Discover how high-value professional service industries leverage Al Astoora&apos;s Meta Cloud API intake engine to automate complex client document collection.
           </p>
         </div>
 
         {/* Tab controls - Horizontal list scrollable on mobile */}
-        <div className="flex overflow-x-auto pb-4 gap-2 border-b border-slate-900 scrollbar-none snap-x snap-mandatory">
+        <div className="flex overflow-x-auto pb-4 gap-2 border-b border-slate-900 scrollbar-none snap-x snap-mandatory justify-start sm:justify-center">
           {portfolioSites.map((site) => {
             const isActive = site.id === activeTab;
             return (
@@ -230,7 +177,7 @@ export default function PortfolioShowcase() {
 
               <div className="space-y-3.5 border-t border-slate-900 pt-6">
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Key Conversion Highlights
+                  Infrastructure Highlights
                 </p>
                 <ul className="space-y-3">
                   {selectedSite.highlights.map((highlight, index) => (
@@ -252,7 +199,7 @@ export default function PortfolioShowcase() {
                   data-analytics-location="portfolio_showcase"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group"
                 >
-                  Request this framework for your business
+                  Deploy this infrastructure for your firm
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
@@ -276,10 +223,10 @@ export default function PortfolioShowcase() {
                     AA
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold text-white">Al Astoora Simulation</p>
+                    <p className="text-[11px] font-semibold text-white">Al Astoora Intake Engine</p>
                     <p className="text-[9px] text-emerald-400 flex items-center gap-1">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Auto-flow active
+                      Auto-intake active
                     </p>
                   </div>
                 </div>
@@ -323,7 +270,7 @@ export default function PortfolioShowcase() {
                 {/* Phone Bottom Input */}
                 <div className="p-3 bg-slate-900 border-t border-slate-800/80 flex items-center gap-2 shrink-0">
                   <div className="flex-1 bg-slate-950 border border-slate-800/50 rounded-full py-1 px-4.5 text-[9px] text-slate-600">
-                    Simulation reading mode...
+                    Document intake mode...
                   </div>
                 </div>
               </motion.div>
@@ -336,3 +283,4 @@ export default function PortfolioShowcase() {
     </section>
   );
 }
+

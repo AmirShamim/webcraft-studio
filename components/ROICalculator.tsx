@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Calculator, MessageSquare, Send } from 'lucide-react';
+import { Calculator, MessageSquare, Send, Clock, Users, DollarSign } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 import {
   ROI_ESTIMATE_STORAGE_KEY,
@@ -12,47 +11,19 @@ import {
   type RoiEstimate,
 } from '@/lib/roi-handoff';
 
-type ConversionScenario = {
-  id: string;
-  title: string;
-  rate: number;
-  description: string;
-};
-
-const conversionScenarios: ConversionScenario[] = [
-  {
-    id: 'foundational',
-    title: 'Foundational',
-    rate: 15,
-    description: 'Best for early-stage teams building consistent lead follow-ups.',
-  },
-  {
-    id: 'growth',
-    title: 'Growth',
-    rate: 28,
-    description: 'Balanced benchmark for local businesses with active demand.',
-  },
-  {
-    id: 'scale-ready',
-    title: 'Scale-ready',
-    rate: 40,
-    description: 'For strong offers, faster response workflows, and higher intent leads.',
-  },
-];
-
 type MarketConfig = {
   code: string;
   symbol: string;
   locale: string;
   label: string;
-  defaultCustomerValue: number;
+  defaultBillableRate: number;
 };
 
 const marketConfigs: Record<string, MarketConfig> = {
-  UAE: { code: 'AED', symbol: 'AED', locale: 'en-AE', label: 'United Arab Emirates (AED)', defaultCustomerValue: 900 },
-  SEA: { code: 'SGD', symbol: 'S$', locale: 'en-SG', label: 'Singapore / SEA (SGD)', defaultCustomerValue: 350 },
-  IN: { code: 'INR', symbol: '₹', locale: 'en-IN', label: 'India (INR)', defaultCustomerValue: 8000 },
-  US: { code: 'USD', symbol: '$', locale: 'en-US', label: 'United States / Global (USD)', defaultCustomerValue: 250 },
+  US: { code: 'USD', symbol: '$', locale: 'en-US', label: 'United States / Global (USD)', defaultBillableRate: 250 },
+  UAE: { code: 'AED', symbol: 'AED', locale: 'en-AE', label: 'United Arab Emirates (AED)', defaultBillableRate: 900 },
+  SEA: { code: 'SGD', symbol: 'S$', locale: 'en-SG', label: 'Singapore / SEA (SGD)', defaultBillableRate: 350 },
+  IN: { code: 'INR', symbol: '₹', locale: 'en-IN', label: 'India (INR)', defaultBillableRate: 8000 },
 };
 
 function saveRoiEstimate(estimate: RoiEstimate) {
@@ -63,11 +34,10 @@ function saveRoiEstimate(estimate: RoiEstimate) {
   try {
     window.localStorage.setItem(ROI_ESTIMATE_STORAGE_KEY, serializeRoiEstimate(estimate));
   } catch {
-    // Ignore storage failures so the direct WhatsApp handoff still works.
+    // Ignore storage failures so direct WhatsApp handoff works.
   }
 }
 
-// Custom Hook or Component to animate numbers smoothly
 function AnimatedNumber({ value, locale, currency }: { value: number; locale: string; currency: string }) {
   const [displayValue, setDisplayValue] = useState(value);
 
@@ -76,16 +46,13 @@ function AnimatedNumber({ value, locale, currency }: { value: number; locale: st
     const end = value;
     if (start === end) return;
 
-    const duration = 600; // ms
+    const duration = 600;
     const startTime = performance.now();
-
     let animationFrameId: number;
 
     const updateNumber = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
-      // Ease out quad formula
       const easeProgress = progress * (2 - progress);
       const current = Math.round(start + (end - start) * easeProgress);
 
@@ -111,78 +78,62 @@ function AnimatedNumber({ value, locale, currency }: { value: number; locale: st
 }
 
 export default function ROICalculator() {
-  const [marketKey, setMarketKey] = useState<string>('UAE');
+  const [marketKey, setMarketKey] = useState<string>('US');
   const activeMarket = marketConfigs[marketKey];
 
-  const [dailyMissedInquiries, setDailyMissedInquiries] = useState(12);
-  const [activeScenarioId, setActiveScenarioId] = useState('growth');
-  const [averageCustomerValue, setAverageCustomerValue] = useState<number | null>(null);
+  const [hourlyBillableRate, setHourlyBillableRate] = useState<number | null>(null);
+  const [weeklyDocumentHours, setWeeklyDocumentHours] = useState(10);
+  const [activeStaffCount, setActiveStaffCount] = useState(4);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const effectiveAverageCustomerValue = averageCustomerValue ?? activeMarket.defaultCustomerValue;
+  const effectiveHourlyRate = hourlyBillableRate ?? activeMarket.defaultBillableRate;
 
+  const calculation = useMemo(() => {
+    const safeRate = Math.max(50, effectiveHourlyRate);
+    const safeHours = Math.max(1, weeklyDocumentHours);
+    const safeStaff = Math.max(1, activeStaffCount);
 
-  const activeScenario = useMemo(
-    () =>
-      conversionScenarios.find((scenario) => scenario.id === activeScenarioId) ??
-      conversionScenarios[1],
-    [activeScenarioId],
-  );
-  const conversionRate = activeScenario.rate;
+    const weeklyLostHours = safeHours * safeStaff;
+    const monthlyLostHours = weeklyLostHours * 4.33;
+    const lostMonthlyRevenue = monthlyLostHours * safeRate;
 
-  const revenueModel = useMemo(() => {
-    const safeDailyInquiries = Number.isFinite(dailyMissedInquiries)
-      ? Math.max(1, dailyMissedInquiries)
-      : 1;
-    const safeAverageValue = Number.isFinite(effectiveAverageCustomerValue)
-      ? Math.max(0, effectiveAverageCustomerValue)
-      : 0;
-    const safeConversionRate = Number.isFinite(conversionRate)
-      ? Math.min(100, Math.max(1, conversionRate))
-      : 1;
-
-    const monthlyMissedInquiries = safeDailyInquiries * 30;
-    const monthlyConvertedCustomers = monthlyMissedInquiries * (safeConversionRate / 100);
-    const lostRevenue = monthlyConvertedCustomers * safeAverageValue;
-    const automationRecoveryRate = 0.65;
-    const recoverableRevenue = lostRevenue * automationRecoveryRate;
+    const recoveryEfficiency = 0.85; // 85% intake time saved with automated routing
+    const recoverableBillableHours = monthlyLostHours * recoveryEfficiency;
+    const recoverableMonthlyRevenue = lostMonthlyRevenue * recoveryEfficiency;
 
     return {
-      monthlyConvertedCustomers,
-      lostRevenue,
-      automationRecoveryRate,
-      recoverableRevenue,
+      monthlyLostHours,
+      lostMonthlyRevenue,
+      recoverableBillableHours,
+      recoverableMonthlyRevenue,
     };
-  }, [conversionRate, dailyMissedInquiries, effectiveAverageCustomerValue]);
+  }, [effectiveHourlyRate, weeklyDocumentHours, activeStaffCount]);
 
   const roiEstimate = useMemo<RoiEstimate>(() => ({
     market: marketKey,
     marketLabel: activeMarket.label,
     locale: activeMarket.locale,
     currency: activeMarket.code,
-    dailyMissedInquiries,
-    averageCustomerValue: effectiveAverageCustomerValue,
-    scenarioTitle: activeScenario.title,
-    conversionRate,
-    lostMonthlyRevenue: revenueModel.lostRevenue,
-    recoverableMonthlyRevenue: revenueModel.recoverableRevenue,
-    recoveredClientsPerMonth: Math.round(
-      revenueModel.monthlyConvertedCustomers * revenueModel.automationRecoveryRate,
-    ),
+    hourlyBillableRate: effectiveHourlyRate,
+    weeklyDocumentHours,
+    activeStaffCount,
+    monthlyLostHours: calculation.monthlyLostHours,
+    lostMonthlyRevenue: calculation.lostMonthlyRevenue,
+    recoverableMonthlyRevenue: calculation.recoverableMonthlyRevenue,
+    recoverableBillableHours: calculation.recoverableBillableHours,
     updatedAt: new Date().toISOString(),
   }), [
     activeMarket.code,
     activeMarket.label,
     activeMarket.locale,
-    activeScenario.title,
-    conversionRate,
-    dailyMissedInquiries,
-    effectiveAverageCustomerValue,
+    activeStaffCount,
+    calculation.lostMonthlyRevenue,
+    calculation.monthlyLostHours,
+    calculation.recoverableBillableHours,
+    calculation.recoverableMonthlyRevenue,
+    effectiveHourlyRate,
     marketKey,
-    revenueModel.automationRecoveryRate,
-    revenueModel.lostRevenue,
-    revenueModel.monthlyConvertedCustomers,
-    revenueModel.recoverableRevenue,
+    weeklyDocumentHours,
   ]);
 
   const roiEstimateLines = useMemo(
@@ -192,7 +143,7 @@ export default function ROICalculator() {
 
   const roiWhatsAppUrl = useMemo(() => {
     const text = [
-      'Hi Al Astoora, I calculated my WhatsApp lead loss and want to discuss automation.',
+      'Hi Al Astoora, I calculated our firm billable hour loss and want to deploy intake infrastructure.',
       '',
       ...roiEstimateLines,
     ].join('\n');
@@ -205,9 +156,9 @@ export default function ROICalculator() {
     trackEvent('roi_calculator_engaged', {
       action,
       market: marketKey,
-      daily_missed_inquiries: dailyMissedInquiries,
-      average_customer_value: effectiveAverageCustomerValue,
-      scenario: activeScenarioId,
+      hourly_rate: effectiveHourlyRate,
+      weekly_hours: weeklyDocumentHours,
+      staff_count: activeStaffCount,
       ...properties,
     });
   }
@@ -217,7 +168,7 @@ export default function ROICalculator() {
     trackRoiEngagement(action, {
       lost_monthly_revenue: Math.round(roiEstimate.lostMonthlyRevenue),
       recoverable_monthly_revenue: Math.round(roiEstimate.recoverableMonthlyRevenue),
-      recovered_clients_per_month: roiEstimate.recoveredClientsPerMonth,
+      recoverable_hours: Math.round(roiEstimate.recoverableBillableHours),
     });
   }
 
@@ -225,21 +176,8 @@ export default function ROICalculator() {
     if (!hasInteracted) {
       return;
     }
-
     saveRoiEstimate(roiEstimate);
   }, [hasInteracted, roiEstimate]);
-
-  // Autocycle scenarios
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setActiveScenarioId((prevId) => {
-        const currentIndex = conversionScenarios.findIndex((s) => s.id === prevId);
-        const nextIndex = (currentIndex + 1) % conversionScenarios.length;
-        return conversionScenarios[nextIndex].id;
-      });
-    }, 6000);
-    return () => clearTimeout(timer);
-  }, [activeScenarioId]);
 
   return (
     <section id="roi" className="relative bg-slate-950 py-20 md:py-28 overflow-hidden border-t border-slate-900">
@@ -253,13 +191,13 @@ export default function ROICalculator() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
             <Calculator className="h-3.5 w-3.5" />
-            ROI Calculator
+            Billable Labor Loss Calculator
           </div>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            How much revenue are you losing to missed WhatsApp inquiries?
+            How much billable revenue are you losing to manual document collection?
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Local service businesses lose up to 60% of incoming leads because of delayed responses. Adjust the sliders below to calculate your market potential.
+            Stop paying high-skilled lawyers, accountants, and consultants to manual-chase client paperwork. Adjust the sliders below to calculate your firm&apos;s recoverable capacity.
           </p>
         </div>
 
@@ -272,7 +210,7 @@ export default function ROICalculator() {
             {/* Market / Currency Picker */}
             <div>
               <label htmlFor="market-select" className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-                Select Your Market & Currency
+                Select Market & Currency
               </label>
               <select
                 id="market-select"
@@ -280,7 +218,7 @@ export default function ROICalculator() {
                 onChange={(e) => {
                   const nextMarket = e.target.value;
                   setMarketKey(nextMarket);
-                  setAverageCustomerValue(null);
+                  setHourlyBillableRate(null);
                   trackRoiEngagement('market_changed', { market: nextMarket });
                 }}
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
@@ -293,86 +231,122 @@ export default function ROICalculator() {
               </select>
             </div>
 
-            {/* Range Slider 1: Missed Inquiries */}
+            {/* Input 1: Average Hourly Billable Rate */}
             <div>
               <div className="mb-3 flex items-center justify-between gap-2">
-                <label htmlFor="missed-inquiries" className="text-sm font-semibold text-slate-300">
-                  Daily Missed Inquiries
+                <label htmlFor="hourly-rate-input" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-emerald-400" />
+                  Average Hourly Billable Rate ($150 - $500/hr)
                 </label>
                 <span className="text-lg font-bold text-emerald-400">
-                  {dailyMissedInquiries} <span className="text-xs text-slate-500 font-normal">/ day</span>
+                  {activeMarket.symbol}{effectiveHourlyRate} <span className="text-xs text-slate-500 font-normal">/ hr</span>
                 </span>
               </div>
               <input
-                id="missed-inquiries"
+                id="hourly-rate-slider"
                 type="range"
-                min={1}
-                max={50}
-                value={dailyMissedInquiries}
+                min={150}
+                max={500}
+                step={25}
+                value={effectiveHourlyRate}
                 onChange={(e) => {
-                  const nextValue = Number(e.target.value);
-                  setDailyMissedInquiries(nextValue);
-                  trackRoiEngagement('daily_missed_inquiries_changed', {
-                    daily_missed_inquiries: nextValue,
-                  });
+                  const val = Number(e.target.value);
+                  setHourlyBillableRate(val);
+                  trackRoiEngagement('hourly_rate_changed', { hourly_rate: val });
                 }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
               <div className="flex justify-between text-[10px] text-slate-600 mt-2">
-                <span>1 inquiry</span>
-                <span>25 inquiries</span>
-                <span>50 inquiries</span>
+                <span>{activeMarket.symbol}150/hr</span>
+                <span>{activeMarket.symbol}325/hr</span>
+                <span>{activeMarket.symbol}500/hr</span>
               </div>
             </div>
 
-            {/* Input 2: Average Customer Value */}
+            {/* Slider 2: Hours Spent Chasing Documents Weekly */}
             <div>
-              <label htmlFor="customer-value" className="block text-sm font-semibold text-slate-300 mb-3">
-                Average Customer Value (LTV)
-              </label>
-              <div className="relative flex items-center rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 focus-within:border-emerald-500 transition-colors">
-                <span className="mr-2 text-sm font-bold text-slate-500">{activeMarket.symbol}</span>
-                <input
-                  id="customer-value"
-                  type="number"
-                  min={0}
-                  value={effectiveAverageCustomerValue}
-                  onChange={(e) => {
-                    const nextVal = Number(e.target.value);
-                    const safeValue = Number.isFinite(nextVal) ? Math.max(0, nextVal) : 0;
-                    setAverageCustomerValue(safeValue);
-                    trackRoiEngagement('average_customer_value_changed', {
-                      average_customer_value: safeValue,
-                    });
-                  }}
-                  className="w-full bg-transparent text-base font-bold text-slate-100 outline-none"
-                />
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <label htmlFor="weekly-hours-slider" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-emerald-400" />
+                  Hours Spent Chasing Documents Weekly (5 to 20 hrs)
+                </label>
+                <span className="text-lg font-bold text-emerald-400">
+                  {weeklyDocumentHours} <span className="text-xs text-slate-500 font-normal">hrs / staff</span>
+                </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-2">
-                The average initial booking fee + repeat visit revenue for a typical client in your vertical.
-              </p>
+              <input
+                id="weekly-hours-slider"
+                type="range"
+                min={5}
+                max={20}
+                step={1}
+                value={weeklyDocumentHours}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setWeeklyDocumentHours(val);
+                  trackRoiEngagement('weekly_hours_changed', { weekly_hours: val });
+                }}
+                className="w-full cursor-pointer accent-emerald-500"
+              />
+              <div className="flex justify-between text-[10px] text-slate-600 mt-2">
+                <span>5 hours</span>
+                <span>12 hours</span>
+                <span>20 hours</span>
+              </div>
             </div>
 
-            {/* Outputs display inside Controls Panel (Lost Revenue Block) */}
+            {/* Slider 3: Number of Active Staff/Partners */}
+            <div>
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <label htmlFor="staff-count-slider" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-emerald-400" />
+                  Number of Active Staff / Partners (2 to 10)
+                </label>
+                <span className="text-lg font-bold text-emerald-400">
+                  {activeStaffCount} <span className="text-xs text-slate-500 font-normal">professionals</span>
+                </span>
+              </div>
+              <input
+                id="staff-count-slider"
+                type="range"
+                min={2}
+                max={10}
+                step={1}
+                value={activeStaffCount}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setActiveStaffCount(val);
+                  trackRoiEngagement('staff_count_changed', { staff_count: val });
+                }}
+                className="w-full cursor-pointer accent-emerald-500"
+              />
+              <div className="flex justify-between text-[10px] text-slate-600 mt-2">
+                <span>2 partners</span>
+                <span>6 partners</span>
+                <span>10 partners</span>
+              </div>
+            </div>
+
+            {/* Unbillable Hours Display inside Controls Panel */}
             <div className="rounded-2xl bg-rose-500/5 border border-rose-500/10 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">Lost Monthly Revenue Opportunity</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">Unbillable Revenue Loss / Month</p>
                 <p className="text-3xl font-extrabold text-rose-500 tracking-tight mt-1.5">
                   <AnimatedNumber
-                    value={revenueModel.lostRevenue}
+                    value={calculation.lostMonthlyRevenue}
                     locale={activeMarket.locale}
                     currency={activeMarket.code}
                   />
                 </p>
               </div>
               <div className="text-xs text-slate-500 max-w-xs leading-normal">
-                This is revenue completely lost to competitors due to slow response times or unanswered WhatsApp chats.
+                Estimated billable value wasted every month across {activeStaffCount} staff members chasing emails and missing files.
               </div>
             </div>
 
           </div>
 
-          {/* Results & Conversion Benchmark Scenarios Panel */}
+          {/* Results Panel */}
           <div className="space-y-6">
             
             {/* Main Recoverable Panel */}
@@ -381,34 +355,30 @@ export default function ROICalculator() {
               
               <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                Recoverable with Al Astoora
+                Recoverable Billable Value
               </span>
               
-              <h3 className="text-slate-300 text-sm mt-3 font-medium">Estimated Recoverable Revenue / Month</h3>
+              <h3 className="text-slate-300 text-sm mt-3 font-medium">Recoverable Billable Revenue / Month</h3>
               <p className="text-4xl sm:text-5xl font-extrabold text-emerald-400 tracking-tight mt-2">
                 <AnimatedNumber
-                  value={revenueModel.recoverableRevenue}
+                  value={calculation.recoverableMonthlyRevenue}
                   locale={activeMarket.locale}
                   currency={activeMarket.code}
                 />
               </p>
               
-              <p className="text-xs text-slate-400 mt-4 leading-relaxed">
-                By setting up official automated response frameworks, we recover approximately <span className="text-emerald-400 font-bold">65%</span> of lost client inquiries. Our system pays for itself within the first few client bookings.
+              <p className="text-xs text-slate-300 mt-5 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-emerald-500/20">
+                By deploying Al Astoora&apos;s automated intake infrastructure, your firm reclaims unbillable administrative time. Our system securely collects, verifies, and routes client documents, allowing your highly skilled professionals to focus strictly on billable case work.
               </p>
 
               <div className="mt-6 pt-5 border-t border-emerald-500/10 flex items-center justify-between text-xs text-slate-400">
-                <span>Estimated recovered clients/mo:</span>
-                <span className="font-bold text-white text-sm">
-                  ~{Math.round(revenueModel.monthlyConvertedCustomers * revenueModel.automationRecoveryRate)}
+                <span>Reclaimed Billable Hours / Month:</span>
+                <span className="font-bold text-white text-sm font-mono">
+                  ~{Math.round(calculation.recoverableBillableHours)} hours / mo
                 </span>
               </div>
 
-              <p className="mt-5 text-xs leading-relaxed text-slate-400">
-                Your estimate can be included in the demo chat, so we can start with your numbers.
-              </p>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <Link
                   href="/contact"
                   onClick={() => handleEstimateHandoff('demo_handoff_clicked')}
@@ -418,7 +388,7 @@ export default function ROICalculator() {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
                 >
                   <Send className="h-4 w-4" />
-                  Request demo with estimate
+                  Deploy Intake System
                 </Link>
                 <a
                   href={roiWhatsAppUrl}
@@ -431,60 +401,15 @@ export default function ROICalculator() {
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-emerald-500/40 hover:bg-slate-900 hover:text-white"
                 >
                   <MessageSquare className="h-4 w-4 text-emerald-400" />
-                  Send on WhatsApp
+                  Send Calculation on WhatsApp
                 </a>
               </div>
             </div>
 
-            {/* Scenario Buttons Column */}
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 px-1">
-                Conversion Benchmarks
-              </p>
-              {conversionScenarios.map((scenario) => {
-                const isActive = scenario.id === activeScenario.id;
-                return (
-                  <button
-                    key={scenario.id}
-                    onClick={() => {
-                      setActiveScenarioId(scenario.id);
-                      trackRoiEngagement('conversion_scenario_selected', {
-                        scenario: scenario.id,
-                        conversion_rate: scenario.rate,
-                      });
-                    }}
-                    className={`w-full relative overflow-hidden text-left p-4.5 rounded-2xl border transition-all duration-300 ${
-                      isActive
-                        ? 'border-emerald-500/40 bg-slate-900/60 shadow-lg shadow-emerald-500/[0.02]'
-                        : 'border-slate-900 bg-slate-950 hover:border-slate-800 hover:bg-slate-900/40'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeIndicator"
-                        className="absolute bottom-0 left-0 h-[2px] bg-emerald-500"
-                        style={{ width: '100%' }}
-                        transition={{ duration: 6, ease: 'linear' }}
-                      />
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className={`text-sm font-semibold ${isActive ? 'text-emerald-400' : 'text-slate-300'}`}>
-                        {scenario.title}
-                      </span>
-                      <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${isActive ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-900 text-slate-500'}`}>
-                        {scenario.rate}% conversion
-                      </span>
-                    </div>
-                    {isActive && (
-                      <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                        {scenario.description}
-                      </p>
-                    )}
-                  </button>
-                );
-              })}
-              <p className="text-[10px] text-slate-600 text-center mt-2">
-                Click any scenario to lock it. Automatically transitions every 6 seconds.
+            <div className="glass-panel rounded-2xl p-5 border border-slate-800 bg-slate-900/30 text-xs text-slate-400 leading-relaxed space-y-2">
+              <p className="font-semibold text-slate-200 uppercase tracking-wider text-[10px]">Why Automation Wins</p>
+              <p>
+                Professional service firms using Al Astoora replace up to 90% of manual follow-up touchpoints with automated WhatsApp document ingestion and automated webhook routing directly into internal case management tools.
               </p>
             </div>
 
@@ -496,3 +421,4 @@ export default function ROICalculator() {
     </section>
   );
 }
+

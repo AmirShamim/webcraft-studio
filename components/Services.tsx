@@ -2,35 +2,35 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, MessageSquare, Zap, Shield, Sparkles } from 'lucide-react';
+import { ArrowRight, FileCheck, Cpu, Database, Server } from 'lucide-react';
 
 import type { FunnelEventName } from '@/lib/analytics';
 import { verticalAutomationPages } from '@/lib/vertical-automation-pages';
 
 const services = [
   {
-    icon: MessageSquare,
-    title: 'WhatsApp & IG Automation',
+    icon: FileCheck,
+    title: 'Automated Document Ingestion',
     description:
-      'Instant replies, PDF catalogs, lead captures, and customized table or class appointment bookings. All running inside one reliable, high-converting customer flow.',
+      'Securely request, collect, and validate client PDFs and images directly via WhatsApp, eliminating messy email threads.',
   },
   {
-    icon: Zap,
-    title: 'Custom CRM Integrations',
+    icon: Cpu,
+    title: 'Proprietary Conversational Architecture',
     description:
-      'Connect leads directly to Google Sheets, Notion, or your existing booking tool. Auto-record customer contacts without paying seat fees on expensive platforms.',
+      'Powered by our core routing engine to handle complex, multi-step professional onboarding without human intervention.',
   },
   {
-    icon: Shield,
-    title: 'Official Cloud API Setup',
+    icon: Database,
+    title: 'Seamless Database Integration',
     description:
-      'Engineered directly on Meta’s developer framework. Get stable, verified business profiles, fast bulk broadcast throughput, and robust server reliability.',
+      'Webhooks and API endpoints push collected documents and client data directly into your firm’s secure CRM or cloud storage.',
   },
   {
-    icon: Sparkles,
-    title: 'Smart Re-engagement Funnels',
+    icon: Server,
+    title: 'Enterprise-Grade Meta Infrastructure',
     description:
-      'Automatically follow up with cold leads or send personalized appointment notifications, birthday offers, and customer retention campaigns.',
+      'Built directly on Meta’s Cloud API for maximum throughput, data stability, and zero downtime.',
   },
 ];
 
@@ -54,10 +54,10 @@ export default function Services() {
             Features
           </span>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Conversational architecture built for customer generation.
+            Proprietary Intake Engine Engineered for Compliance and Scale.
           </h2>
           <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            We don&apos;t build generic chatbots. We design custom automated systems engineered to increase conversions, lower human error, and save hundreds of hours weekly.
+            We provide a unified infrastructure layer. Our platform handles the complex conversational routing, leaving your firm with perfectly organized client data.
           </p>
         </div>
 
@@ -114,3 +114,4 @@ export default function Services() {
     </section>
   );
 }
+

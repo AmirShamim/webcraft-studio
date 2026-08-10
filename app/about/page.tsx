@@ -51,7 +51,7 @@ export default function AboutPage() {
             {/* Main Required Sentence */}
             <div className="p-6 rounded-2xl border border-emerald-500/10 bg-emerald-950/10 text-emerald-200">
               <p className="font-medium text-base sm:text-lg">
-                &ldquo;Al Astoora is the registered trade name of Amir Shamim, specializing in WhatsApp automation solutions for businesses.&rdquo;
+                &ldquo;Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and document intake platforms for professional services. We engineer secure, high-throughput systems on Meta&apos;s Official Developer Ecosystem.&rdquo;
               </p>
             </div>
 

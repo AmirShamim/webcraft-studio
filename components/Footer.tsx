@@ -43,7 +43,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">
-              We design and engineer bespoke WhatsApp & Instagram automation infrastructure using Meta&apos;s official Cloud API. Stop losing revenue to delayed responses.
+              Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and document intake platforms for professional services. We engineer secure, high-throughput systems on Meta&apos;s Official Developer Ecosystem.
             </p>
           </div>
 

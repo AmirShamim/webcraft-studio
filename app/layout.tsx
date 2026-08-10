@@ -9,28 +9,28 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Al Astoora | High-Conversion Websites & WhatsApp Automation',
+  title: 'Al Astoora | Intelligent Document & Intake Infrastructure for Professional Services',
   description:
-    'Scale your local business with Al Astoora. We build high-converting websites and custom AI WhatsApp automations to capture leads, handle FAQs, and book customers 24/7.',
+    'Stop paying high-skilled professionals to chase down client paperwork. Al Astoora is a scalable, API-first WhatsApp backend that automates complex client onboarding, secure document collection, and case scheduling. Built for legal, accounting, and immigration firms.',
   metadataBase: new URL('https://alastoora.tech'),
   alternates: {
     canonical: 'https://alastoora.tech',
   },
   keywords: [
-    'WhatsApp Automation',
-    'Meta Cloud API',
-    'WhatsApp Chatbot',
-    'Lead Capture Automation',
+    'Document Intake Infrastructure',
+    'Professional Services Automation',
+    'Legal Tech WhatsApp API',
+    'Accounting Intake Automation',
+    'Immigration Document Verification',
+    'Meta Cloud API Backend',
     'Al Astoora',
-    'High-Conversion Website',
-    'Official WhatsApp API Integration',
-    'No-code CRM sync',
-    'WhatsApp booking bot',
+    'B2B SaaS Infrastructure',
+    'WhatsApp Client Onboarding',
   ],
-  authors: [{ name: 'Al Astoora Team', url: 'https://alastoora.tech' }],
+  authors: [{ name: 'Al Astoora Platform Team', url: 'https://alastoora.tech' }],
   openGraph: {
-    title: 'Al Astoora | Automation & Web Development Agency',
-    description: 'Stop losing revenue. Automate your operations and scale your business today.',
+    title: 'Al Astoora | Document & Intake Infrastructure for Professional Services',
+    description: 'Automate complex client onboarding, secure document collection, and case scheduling.',
     url: 'https://alastoora.tech',
     siteName: 'Al Astoora',
     locale: 'en_US',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: 'Al Astoora | Premium Automation Agency',
+    title: 'Al Astoora | B2B Document & Intake Infrastructure',
     card: 'summary_large_image',
   }
 };

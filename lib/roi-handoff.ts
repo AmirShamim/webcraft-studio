@@ -1,17 +1,17 @@
-export const ROI_ESTIMATE_STORAGE_KEY = 'alastoora_roi_estimate_v1';
+export const ROI_ESTIMATE_STORAGE_KEY = 'alastoora_roi_estimate_v2';
 
 export type RoiEstimate = {
   market: string;
   marketLabel: string;
   locale: string;
   currency: string;
-  dailyMissedInquiries: number;
-  averageCustomerValue: number;
-  scenarioTitle: string;
-  conversionRate: number;
+  hourlyBillableRate: number;
+  weeklyDocumentHours: number;
+  activeStaffCount: number;
+  monthlyLostHours: number;
   lostMonthlyRevenue: number;
   recoverableMonthlyRevenue: number;
-  recoveredClientsPerMonth: number;
+  recoverableBillableHours: number;
   updatedAt: string;
 };
 
@@ -34,19 +34,18 @@ export function formatRoiEstimateForMessage(estimate: RoiEstimate) {
     estimate.locale,
     estimate.currency,
   );
-  const averageCustomerValue = formatRoiCurrency(
-    estimate.averageCustomerValue,
+  const hourlyRate = formatRoiCurrency(
+    estimate.hourlyBillableRate,
     estimate.locale,
     estimate.currency,
   );
 
   return [
-    `Estimated lost monthly revenue: ${lostRevenue}`,
-    `Estimated recoverable revenue: ${recoverableRevenue}/month`,
-    `Daily missed inquiries: ${estimate.dailyMissedInquiries}`,
-    `Average customer value: ${averageCustomerValue}`,
-    `Conversion benchmark: ${estimate.scenarioTitle} (${estimate.conversionRate}%)`,
-    `Estimated recovered clients: ${estimate.recoveredClientsPerMonth}/month`,
+    `Average Hourly Billable Rate: ${hourlyRate}/hr`,
+    `Hours Spent Chasing Documents Weekly: ${estimate.weeklyDocumentHours} hrs/week`,
+    `Number of Active Staff/Partners: ${estimate.activeStaffCount}`,
+    `Estimated unbillable revenue lost: ${lostRevenue}/month`,
+    `Recoverable Billable Revenue: ${recoverableRevenue}/month (${Math.round(estimate.recoverableBillableHours)} hrs reclaimed)`,
   ];
 }
 
@@ -62,12 +61,13 @@ export function parseStoredRoiEstimate(value: string | null): RoiEstimate | null
   try {
     const parsed = JSON.parse(value) as Partial<RoiEstimate>;
     const requiredNumbers = [
-      parsed.dailyMissedInquiries,
-      parsed.averageCustomerValue,
-      parsed.conversionRate,
+      parsed.hourlyBillableRate,
+      parsed.weeklyDocumentHours,
+      parsed.activeStaffCount,
+      parsed.monthlyLostHours,
       parsed.lostMonthlyRevenue,
       parsed.recoverableMonthlyRevenue,
-      parsed.recoveredClientsPerMonth,
+      parsed.recoverableBillableHours,
     ];
 
     if (
@@ -75,7 +75,6 @@ export function parseStoredRoiEstimate(value: string | null): RoiEstimate | null
       typeof parsed.marketLabel !== 'string' ||
       typeof parsed.locale !== 'string' ||
       typeof parsed.currency !== 'string' ||
-      typeof parsed.scenarioTitle !== 'string' ||
       typeof parsed.updatedAt !== 'string' ||
       requiredNumbers.some((number) => !Number.isFinite(number))
     ) {
@@ -87,3 +86,4 @@ export function parseStoredRoiEstimate(value: string | null): RoiEstimate | null
     return null;
   }
 }
+
