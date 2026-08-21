@@ -19,7 +19,12 @@ const faqs = [
   {
     question: 'Is client data and document transfer secure and compliant?',
     answer:
-      'Yes. All document transmissions through Meta’s Official Cloud API ecosystem use 256-bit SSL encryption. Unlike unofficial QR-code scrapers that carry security and account ban risks, Al Astoora operates strictly within Meta’s official developer framework for maximum data stability, enterprise compliance, and zero downtime.',
+      'Yes. All document transmissions through Meta’s Official Cloud API ecosystem use 256-bit SSL encryption. We enforce a strict Zero-Data Training Policy: client paperwork, passports, and financial records are never used to train public AI models. Data is processed through enterprise Google Cloud Platform (GCP) and Firestore with complete data isolation.',
+  },
+  {
+    question: 'What is the pricing model and how does ownership work?',
+    answer:
+      'We believe in transparent, predictable pricing without predatory vendor lock-in. Our model consists of a one-time onboarding & architecture setup (which covers Meta business verification, display name approval, custom intake pipelines, and webhook setup) plus an ongoing monthly managed retainer for cloud infrastructure hosting on GCP, continuous uptime monitoring, and workflow maintenance.',
   },
   {
     question: 'What professional service verticals are supported by Al Astoora?',
@@ -27,14 +32,9 @@ const faqs = [
       'Al Astoora is engineered for document-heavy professional industries including Corporate Secretarial (incorporation & signature routing), Immigration & Visa Advisory (KYC & passport verification), Accounting & Tax (quarterly financial form ingestion), and Employment Agencies (candidate resume screening & interview scheduling).',
   },
   {
-    question: 'How is Al Astoora licensed and deployed for enterprise firms?',
+    question: 'How does Al Astoora reclaim lost administrative capacity for professional firms?',
     answer:
-      'Al Astoora provides flexible infrastructure licensing tailored to your firm’s case volume and active team size. Deployment is fast and turnkey—our team configures Meta business verification, API webhooks, document routing rules, and database connectors so your firm can reclaim unbillable administrative hours immediately.',
-  },
-  {
-    question: 'How does Al Astoora reclaim lost billable hours for highly skilled professionals?',
-    answer:
-      'Professional firms lose 5 to 20 hours per staff member weekly on manual document follow-ups. By replacing manual email chains with automated WhatsApp intake routing, Al Astoora reclaims up to 90% of unbillable administrative time, allowing senior partners and associates to focus strictly on billable case work.',
+      'Professional firms lose 5 to 20 hours per staff member weekly on manual document follow-ups. By replacing manual email chains with automated WhatsApp intake routing, Al Astoora automates repetitive follow-up cycles, allowing senior partners and associates to focus strictly on client advisory.',
   },
 ];
 

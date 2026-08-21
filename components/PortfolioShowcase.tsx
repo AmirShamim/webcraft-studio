@@ -193,13 +193,15 @@ export default function PortfolioShowcase() {
 
               <div className="pt-4">
                 <a
-                  href="/contact"
-                  data-analytics-event="primary_cta_clicked"
-                  data-analytics-label={`portfolio_${selectedSite.id}_framework_request`}
+                  href={`https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20deploy%20the%20${encodeURIComponent(selectedSite.tabLabel)}%20intake%20infrastructure`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics-event="whatsapp_clicked"
+                  data-analytics-label={`portfolio_${selectedSite.id}_whatsapp_request`}
                   data-analytics-location="portfolio_showcase"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group"
                 >
-                  Deploy this infrastructure for your firm
+                  <span>Deploy this workflow via WhatsApp</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
@@ -218,13 +220,13 @@ export default function PortfolioShowcase() {
                 className="w-full max-w-[310px] h-[500px] rounded-[36px] border-8 border-slate-900 bg-slate-950 shadow-2xl flex flex-col overflow-hidden"
               >
                 {/* Phone Header */}
-                <div className="bg-slate-900 px-4 py-3.5 flex items-center gap-2.5 shrink-0">
-                  <div className="h-8.5 w-8.5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                <div className="bg-slate-900 px-4 py-3 flex items-center gap-2.5 shrink-0">
+                  <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
                     AA
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold text-white">Al Astoora Intake Engine</p>
-                    <p className="text-[9px] text-emerald-400 flex items-center gap-1">
+                    <p className="text-xs font-semibold text-white">Al Astoora Intake Engine</p>
+                    <p className="text-xs text-emerald-400 flex items-center gap-1">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Auto-intake active
                     </p>
@@ -232,7 +234,7 @@ export default function PortfolioShowcase() {
                 </div>
 
                 {/* Simulated Messages Screen */}
-                <div className="flex-1 p-3.5 bg-slate-950 overflow-y-auto space-y-3.5 flex flex-col justify-end">
+                <div className="flex-1 p-3 bg-slate-950 overflow-y-auto space-y-3 flex flex-col justify-end">
                   {activeChat.map((msg, index) => {
                     const isBot = msg.sender === 'bot';
                     return (
@@ -241,7 +243,7 @@ export default function PortfolioShowcase() {
                         className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} w-full`}
                       >
                         <div
-                          className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed ${
+                          className={`max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-relaxed ${
                             isBot
                               ? 'bg-slate-900 border border-slate-800 text-slate-100 rounded-bl-sm'
                               : 'bg-emerald-500 text-slate-950 font-semibold rounded-br-sm'
@@ -250,11 +252,11 @@ export default function PortfolioShowcase() {
                           {msg.text}
 
                           {msg.actions && (
-                            <div className="mt-3.5 space-y-1.5 border-t border-slate-800 pt-2.5">
+                            <div className="mt-2.5 space-y-1.5 border-t border-slate-800 pt-2">
                               {msg.actions.map((act, actIdx) => (
                                 <div
                                   key={actIdx}
-                                  className="flex items-center justify-center gap-1.5 rounded-lg bg-slate-950 border border-slate-800 px-3 py-1.5 text-[10px] font-bold text-emerald-400 cursor-pointer"
+                                  className="flex items-center justify-center gap-1.5 rounded-lg bg-slate-950 border border-slate-800 px-2.5 py-1 text-xs font-medium text-emerald-400 cursor-pointer"
                                 >
                                   {act}
                                 </div>
@@ -268,8 +270,8 @@ export default function PortfolioShowcase() {
                 </div>
 
                 {/* Phone Bottom Input */}
-                <div className="p-3 bg-slate-900 border-t border-slate-800/80 flex items-center gap-2 shrink-0">
-                  <div className="flex-1 bg-slate-950 border border-slate-800/50 rounded-full py-1 px-4.5 text-[9px] text-slate-600">
+                <div className="p-2.5 bg-slate-900 border-t border-slate-800/80 flex items-center gap-2 shrink-0">
+                  <div className="flex-1 bg-slate-950 border border-slate-800/50 rounded-full py-1 px-3 text-xs text-slate-500">
                     Document intake mode...
                   </div>
                 </div>

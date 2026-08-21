@@ -194,15 +194,17 @@ export default function Header() {
 
           {/* Right CTA group */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <Link
-              href="/contact"
-              data-analytics-event="primary_cta_clicked"
-              data-analytics-label="header_book_demo"
+            <a
+              href="https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20test%20the%20intake%20bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-analytics-event="whatsapp_clicked"
+              data-analytics-label="header_whatsapp_demo"
               data-analytics-location="site_header"
               className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-emerald-500 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-emerald-500/15 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/25 active:scale-95 sm:px-5 sm:py-2 sm:text-sm"
             >
-              Book Demo
-            </Link>
+              Chat on WhatsApp
+            </a>
 
             {/* Mobile Hamburger */}
             <button
@@ -311,16 +313,18 @@ export default function Header() {
             </div>
 
             <div className="pt-4 border-t border-slate-900 mt-3 flex flex-col gap-2">
-              <Link
-                href="/contact"
+              <a
+                href="https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20test%20the%20intake%20bot"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                data-analytics-event="primary_cta_clicked"
-                data-analytics-label="mobile_menu_book_demo"
+                data-analytics-event="whatsapp_clicked"
+                data-analytics-label="mobile_menu_whatsapp"
                 data-analytics-location="mobile_menu"
                 className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
               >
-                Book Demo
-              </Link>
+                Chat on WhatsApp
+              </a>
             </div>
           </nav>
         </div>

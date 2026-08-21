@@ -190,14 +190,14 @@ export default function ROICalculator() {
         {/* Title Block */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            <Calculator className="h-3.5 w-3.5" />
-            Billable Labor Loss Calculator
+            <Calculator className="h-3.5 w-3.5 shrink-0" />
+            <span>Staff Capacity & Overhead Calculator</span>
           </div>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            How much billable revenue are you losing to manual document collection?
+          <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            Stop Burning Salaried Team Hours on Routine FAQs & Paperwork
           </h2>
-          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Stop paying high-skilled lawyers, accountants, and consultants to manual-chase client paperwork. Adjust the sliders below to calculate your firm&apos;s recoverable capacity.
+          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            You are already paying for your team&apos;s salary. Our automated WhatsApp infrastructure filters routine inquiries and collects verified client documents 24/7 so your staff focuses 100% on high-value, paying clients.
           </p>
         </div>
 
@@ -205,11 +205,11 @@ export default function ROICalculator() {
         <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] items-start">
           
           {/* Controls Panel */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-8 border border-slate-800 bg-slate-900/40">
+          <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 border border-slate-800 bg-slate-900/40">
             
             {/* Market / Currency Picker */}
             <div>
-              <label htmlFor="market-select" className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+              <label htmlFor="market-select" className="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-2.5">
                 Select Market & Currency
               </label>
               <select
@@ -221,7 +221,7 @@ export default function ROICalculator() {
                   setHourlyBillableRate(null);
                   trackRoiEngagement('market_changed', { market: nextMarket });
                 }}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
               >
                 {Object.entries(marketConfigs).map(([key, config]) => (
                   <option key={key} value={key}>
@@ -233,13 +233,13 @@ export default function ROICalculator() {
 
             {/* Input 1: Average Hourly Billable Rate */}
             <div>
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <label htmlFor="hourly-rate-input" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-emerald-400" />
-                  Average Hourly Billable Rate ($150 - $500/hr)
+              <div className="mb-2.5 flex items-center justify-between gap-2">
+                <label htmlFor="hourly-rate-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>Average Staff Hourly Rate ($150 - $500/hr)</span>
                 </label>
-                <span className="text-lg font-bold text-emerald-400">
-                  {activeMarket.symbol}{effectiveHourlyRate} <span className="text-xs text-slate-500 font-normal">/ hr</span>
+                <span className="text-sm font-bold text-emerald-400 font-mono">
+                  {activeMarket.symbol}{effectiveHourlyRate} <span className="text-xs text-slate-400 font-normal font-sans">/ hr</span>
                 </span>
               </div>
               <input
@@ -256,7 +256,7 @@ export default function ROICalculator() {
                 }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
-              <div className="flex justify-between text-[10px] text-slate-600 mt-2">
+              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
                 <span>{activeMarket.symbol}150/hr</span>
                 <span>{activeMarket.symbol}325/hr</span>
                 <span>{activeMarket.symbol}500/hr</span>
@@ -265,13 +265,13 @@ export default function ROICalculator() {
 
             {/* Slider 2: Hours Spent Chasing Documents Weekly */}
             <div>
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <label htmlFor="weekly-hours-slider" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-emerald-400" />
-                  Hours Spent Chasing Documents Weekly (5 to 20 hrs)
+              <div className="mb-2.5 flex items-center justify-between gap-2">
+                <label htmlFor="weekly-hours-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>Weekly Admin & FAQ Hours per Staff (5 to 20 hrs)</span>
                 </label>
-                <span className="text-lg font-bold text-emerald-400">
-                  {weeklyDocumentHours} <span className="text-xs text-slate-500 font-normal">hrs / staff</span>
+                <span className="text-sm font-bold text-emerald-400 font-mono">
+                  {weeklyDocumentHours} <span className="text-xs text-slate-400 font-normal font-sans">hrs / staff</span>
                 </span>
               </div>
               <input
@@ -288,7 +288,7 @@ export default function ROICalculator() {
                 }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
-              <div className="flex justify-between text-[10px] text-slate-600 mt-2">
+              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
                 <span>5 hours</span>
                 <span>12 hours</span>
                 <span>20 hours</span>
@@ -297,13 +297,13 @@ export default function ROICalculator() {
 
             {/* Slider 3: Number of Active Staff/Partners */}
             <div>
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <label htmlFor="staff-count-slider" className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                  <Users className="h-4 w-4 text-emerald-400" />
-                  Number of Active Staff / Partners (2 to 10)
+              <div className="mb-2.5 flex items-center justify-between gap-2">
+                <label htmlFor="staff-count-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>Number of Fee-Earning Staff / Associates (2 to 10)</span>
                 </label>
-                <span className="text-lg font-bold text-emerald-400">
-                  {activeStaffCount} <span className="text-xs text-slate-500 font-normal">professionals</span>
+                <span className="text-sm font-bold text-emerald-400 font-mono">
+                  {activeStaffCount} <span className="text-xs text-slate-400 font-normal font-sans">professionals</span>
                 </span>
               </div>
               <input
@@ -320,18 +320,18 @@ export default function ROICalculator() {
                 }}
                 className="w-full cursor-pointer accent-emerald-500"
               />
-              <div className="flex justify-between text-[10px] text-slate-600 mt-2">
-                <span>2 partners</span>
-                <span>6 partners</span>
-                <span>10 partners</span>
+              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
+                <span>2 staff</span>
+                <span>6 staff</span>
+                <span>10 staff</span>
               </div>
             </div>
 
             {/* Unbillable Hours Display inside Controls Panel */}
-            <div className="rounded-2xl bg-rose-500/5 border border-rose-500/10 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">Unbillable Revenue Loss / Month</p>
-                <p className="text-3xl font-extrabold text-rose-500 tracking-tight mt-1.5">
+                <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">Monthly Salaried Payroll Tied to Admin Tasks</p>
+                <p className="text-2xl font-bold text-rose-400 tracking-tight mt-1">
                   <AnimatedNumber
                     value={calculation.lostMonthlyRevenue}
                     locale={activeMarket.locale}
@@ -339,8 +339,8 @@ export default function ROICalculator() {
                   />
                 </p>
               </div>
-              <div className="text-xs text-slate-500 max-w-xs leading-normal">
-                Estimated billable value wasted every month across {activeStaffCount} staff members chasing emails and missing files.
+              <div className="text-xs text-slate-400 max-w-xs leading-normal">
+                Payroll expense paid to {activeStaffCount} team members while answering routine repetitive questions and chasing missing PDFs.
               </div>
             </div>
 
@@ -353,43 +353,32 @@ export default function ROICalculator() {
             <div className="rounded-3xl border border-emerald-500/20 bg-emerald-950/20 p-6 sm:p-8 relative overflow-hidden shadow-2xl shadow-emerald-950/20">
               <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-emerald-500/[0.03] blur-3xl" />
               
-              <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-400">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                Recoverable Billable Value
+                <span>Unlocked Staff Capacity</span>
               </span>
               
-              <h3 className="text-slate-300 text-sm mt-3 font-medium">Recoverable Billable Revenue / Month</h3>
-              <p className="text-4xl sm:text-5xl font-extrabold text-emerald-400 tracking-tight mt-2">
-                <AnimatedNumber
-                  value={calculation.recoverableMonthlyRevenue}
-                  locale={activeMarket.locale}
-                  currency={activeMarket.code}
-                />
+              <h3 className="text-slate-300 text-sm mt-3 font-medium">Reclaimed Fee-Earning Time / Month</h3>
+              <p className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight mt-1 font-mono">
+                ~{Math.round(calculation.recoverableBillableHours)} Hours <span className="text-sm font-normal text-slate-400 font-sans">/ month</span>
               </p>
               
-              <p className="text-xs text-slate-300 mt-5 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-emerald-500/20">
-                By deploying Al Astoora&apos;s automated intake infrastructure, your firm reclaims unbillable administrative time. Our system securely collects, verifies, and routes client documents, allowing your highly skilled professionals to focus strictly on billable case work.
-              </p>
-
-              <div className="mt-6 pt-5 border-t border-emerald-500/10 flex items-center justify-between text-xs text-slate-400">
-                <span>Reclaimed Billable Hours / Month:</span>
-                <span className="font-bold text-white text-sm font-mono">
-                  ~{Math.round(calculation.recoverableBillableHours)} hours / mo
+              <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300">
+                <span>Equivalent Payroll Value:</span>
+                <span className="font-bold text-white">
+                  <AnimatedNumber
+                    value={calculation.recoverableMonthlyRevenue}
+                    locale={activeMarket.locale}
+                    currency={activeMarket.code}
+                  /> / mo
                 </span>
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <Link
-                  href="/contact"
-                  onClick={() => handleEstimateHandoff('demo_handoff_clicked')}
-                  data-analytics-event="primary_cta_clicked"
-                  data-analytics-label="roi_demo_handoff"
-                  data-analytics-location="roi_calculator"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
-                >
-                  <Send className="h-4 w-4" />
-                  Deploy Intake System
-                </Link>
+              <p className="text-xs text-slate-300 mt-5 leading-relaxed bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+                Al Astoora answers pricing & FAQ inquiries and collects verified documents on WhatsApp 24/7. Your staff only steps in when a high-intent client is ready for paid advisory.
+              </p>
+
+              <div className="mt-6">
                 <a
                   href={roiWhatsAppUrl}
                   target="_blank"
@@ -398,18 +387,18 @@ export default function ROICalculator() {
                   data-analytics-event="whatsapp_clicked"
                   data-analytics-label="roi_estimate_whatsapp"
                   data-analytics-location="roi_calculator"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-emerald-500/40 hover:bg-slate-900 hover:text-white"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/30 active:scale-[0.98] text-center"
                 >
-                  <MessageSquare className="h-4 w-4 text-emerald-400" />
-                  Send Calculation on WhatsApp
+                  <MessageSquare className="h-4 w-4 shrink-0 fill-current" />
+                  <span>Send Calculation to WhatsApp Bot</span>
                 </a>
               </div>
             </div>
 
-            <div className="glass-panel rounded-2xl p-5 border border-slate-800 bg-slate-900/30 text-xs text-slate-400 leading-relaxed space-y-2">
-              <p className="font-semibold text-slate-200 uppercase tracking-wider text-[10px]">Why Automation Wins</p>
+            <div className="glass-panel rounded-2xl p-4 border border-slate-800 bg-slate-900/30 text-xs text-slate-400 leading-relaxed space-y-1.5">
+              <p className="font-semibold text-slate-200 uppercase tracking-wider text-xs">Why Overhead Automation Wins</p>
               <p>
-                Professional service firms using Al Astoora replace up to 90% of manual follow-up touchpoints with automated WhatsApp document ingestion and automated webhook routing directly into internal case management tools.
+                Eliminates up to 85% of repetitive administrative touchpoints. Your staff stays focused strictly on paying client deliverables instead of manual document chase-ups.
               </p>
             </div>
 
