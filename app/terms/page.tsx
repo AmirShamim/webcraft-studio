@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
@@ -12,65 +12,80 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased">
-      <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4 md:px-8">
-          <Link href="/" className="flex min-w-0 items-center gap-2.5 group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 overflow-hidden sm:h-9 sm:w-9">
-              <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
-            </span>
-            <p className="whitespace-nowrap text-[15px] font-semibold tracking-tight text-slate-100 sm:text-base group-hover:text-emerald-400 transition-colors">
-              Al Astoora
-            </p>
+    <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+      <header className="border-b border-[var(--line)] bg-[var(--paper)]">
+        <div className="site-container flex min-h-[76px] items-center justify-between gap-3 py-4 lg:min-h-[88px]">
+          <Link href="/" aria-label="Al Astoora home" className="flex min-h-11 min-w-0 items-center gap-2.5 group focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
+            <Image src="/logo.jpg" alt="" width={36} height={36} className="shrink-0" />
+            <span className="display-serif text-[23px] leading-none sm:text-[26px]">Al Astoora<span className="text-[var(--accent)]">.</span></span>
           </Link>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-slate-800 bg-slate-900/50 px-4 py-2 text-xs font-semibold text-slate-300 transition-all hover:border-slate-700 hover:text-white sm:text-sm"
+            aria-label="Back to Home"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 text-xs hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] sm:text-sm"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Home
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            <span className="hidden sm:inline">Back to </span>Home
           </Link>
         </div>
       </header>
 
-      <main className="relative py-16 md:py-24 max-w-4xl mx-auto px-5">
-        <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/40 space-y-6">
-          <h1 className="text-3xl font-extrabold text-white tracking-tight border-b border-slate-900 pb-4">
+      <main id="main-content" tabIndex={-1}>
+        <div className="page-intro reveal">
+          <div className="site-container grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+          <div><p className="section-label">Al Astoora / Legal</p>
+          <h1 className="editorial-title mt-5">
             Terms of Service
-          </h1>
-          <p className="text-xs text-slate-500">Last Updated: June 2, 2026</p>
+          </h1></div>
+          <p className="text-sm text-[var(--muted)] md:pb-2">Last Updated: <time dateTime="2026-06-02">June 2, 2026</time></p>
+          </div>
+        </div>
 
-          <div className="space-y-6 text-sm text-slate-300 leading-relaxed font-sans">
-            <p>
+        <div className="site-container grid gap-12 py-14 md:py-20 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+          <aside className="min-w-0">
+            <nav aria-label="Terms of service contents" className="border-t border-[var(--line)] lg:sticky lg:top-10">
+              <p className="section-label py-6">Contents</p>
+              {[
+                ['services', 'Scope of services'],
+                ['responsibilities', 'Client responsibilities'],
+                ['billing', 'Fees & billing'],
+                ['ownership', 'Intellectual property'],
+                ['liability', 'Limitation of liability'],
+              ].map(([id, title], index) => <a key={id} href={`#${id}`} className="flex min-h-12 items-baseline gap-4 border-b border-[var(--line)] py-4 text-sm text-[var(--muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"><span className="text-xs text-[var(--accent)]">0{index + 1}</span>{title}</a>)}
+              <Link href="/privacy" className="mt-7 inline-flex min-h-11 items-center text-sm font-medium underline decoration-[var(--line)] underline-offset-4 hover:text-[var(--accent)]">Privacy Policy</Link>
+            </nav>
+          </aside>
+          <article aria-label="Terms of service" className="min-w-0 max-w-[70ch] space-y-6 text-base text-[var(--muted)] leading-8 [&_h2]:scroll-mt-8 [&_h2]:border-t [&_h2]:border-[var(--line)] [&_h2]:pt-9 [&_h2]:mt-10">
+            <p className="border-l-2 border-[var(--accent)] pl-6 text-lg leading-8 text-[var(--ink)]">
               Welcome to Al Astoora (&quot;Agency&quot;, &quot;we&quot;, &quot;us&quot;, &quot;our&quot;). By accessing our website, purchasing our automation setups, or utilizing our custom API engineering services, you agree to comply with and be bound by the following Terms of Service.
             </p>
 
-            <h2 className="text-lg font-bold text-white pt-4">1. Scope of Services</h2>
+            <h2 id="services" className="display-serif text-2xl sm:text-3xl text-[var(--ink)]">1. Scope of Services</h2>
             <p>
               We design, build, and deploy custom conversation automation stacks utilizing official Meta Developer portals, direct API integrations, database integrations, and custom website/landing page components. We provide these on a flat fee structure or maintenance retainer.
             </p>
 
-            <h2 className="text-lg font-bold text-white pt-4">2. Client Responsibilities</h2>
+            <h2 id="responsibilities" className="display-serif text-2xl sm:text-3xl text-[var(--ink)]">2. Client Responsibilities</h2>
             <p>
               To initiate development, clients must provide necessary permissions (e.g. Meta Developer Portal business verification access) and standard api access where necessary. The client is solely responsible for compliance with local WhatsApp business messaging policies in their target markets (UAE, SEA, US, etc.).
             </p>
 
-            <h2 className="text-lg font-bold text-white pt-4">3. Fees, Meta Charges & Billing</h2>
+            <h2 id="billing" className="display-serif text-2xl sm:text-3xl text-[var(--ink)]">3. Fees, Meta Charges & Billing</h2>
             <p>
               Our fee covers our design, development, and engineering setup. Clients pay Meta (Facebook/WhatsApp Cloud API) directly for message volume costs based on standard official country tariffs. Al Astoora does not markup or charge platform commission on message streams.
             </p>
 
-            <h2 className="text-lg font-bold text-white pt-4">4. Intellectual Property</h2>
+            <h2 id="ownership" className="display-serif text-2xl sm:text-3xl text-[var(--ink)]">4. Intellectual Property</h2>
             <p>
               Upon complete payout of project deliverables, ownership of the custom dashboard connections, spreadsheet templates, and client-side scripts is fully transferred to the client. Core agency framework templates remain the proprietary property of Al Astoora.
             </p>
 
-            <h2 className="text-lg font-bold text-white pt-4">5. Limitation of Liability</h2>
+            <h2 id="liability" className="display-serif text-2xl sm:text-3xl text-[var(--ink)]">5. Limitation of Liability</h2>
             <p>
               In no event shall Al Astoora be liable for any indirect, incidental, or consequential damages resulting from Meta API outages, client business policy violations, or third-party service interruptions.
             </p>
-          </div>
+          </article>
         </div>
       </main>
 

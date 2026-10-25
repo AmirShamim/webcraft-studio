@@ -1,83 +1,100 @@
-import { HelpCircle, ChevronDown } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { ChevronDown, ShieldCheck } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'What is Al Astoora and how does the intake infrastructure platform work?',
-    answer:
-      'Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and automated document intake for professional services (legal, accounting, tax, immigration, corporate secretarial). Built directly on Meta’s Official Cloud API, our platform ingests client PDFs, images, and KYC paperwork via WhatsApp, validates submissions in real time, and routes structured data into your CRM, database, or case management system.',
+    q: 'How does Al Astoora guarantee zero data retention for attorney-client privileged documents?',
+    a: 'All client document intake pipelines execute strictly inside volatile RAM buffers within isolated Nitro Enclaves. Once the OCR classification, schema extraction, or brief synthesis is pushed to your firm’s verified webhook endpoint or private DMS, the memory buffer is cryptographically zeroed. No document files, images, or extracted text are stored on persistent disks or retained on Al Astoora servers.',
   },
   {
-    question: 'How does Al Astoora streamline document intake for professional service firms?',
-    answer:
-      'Our proprietary intake engine automates multi-step onboarding workflows. Instead of billable partners and associates manually chasing clients over fragmented email threads, Al Astoora triggers automated document collection checklists, verifies files, and pushes organized records into your backend database in under 2 seconds.',
+    q: 'How do domain-tuned Legal SLMs eliminate hallucinations in court briefs and evidentiary filings?',
+    a: 'Traditional LLMs hallucinate case citations because they generate tokens statistically. Al Astoora uses Retrieval-Augmented Fine-Tuning (RAFT) paired with Small Language Models (SLMs) trained specifically on legal taxonomies and court record structures. The model is mathematically locked to cite only verified page, line, and docket references within the supplied case file. If a fact cannot be proven from the evidentiary record, the model explicitly flags it as unsupported.',
   },
   {
-    question: 'How does Al Astoora integrate with our existing CRMs, ERPs, and cloud storage?',
-    answer:
-      'We provide enterprise webhooks and REST API endpoints that push collected documents and client data directly into your firm’s CRM, document management system, cloud storage (Google Drive, OneDrive, AWS S3), or ERP (Salesforce, HubSpot, Xero, Quickbooks, custom SQL).',
+    q: 'Can clients submit confidential documents via WhatsApp without breaching ethical confidentiality rules?',
+    a: 'Yes. Al Astoora connects exclusively through Meta’s Official WhatsApp Cloud API—not unauthorized QR-code web scrapers. All transmissions utilize 256-bit SSL transport encryption. For ultra-sensitive matters or clients who prefer browser intake, Al Astoora provides parallel encrypted web client portals with client-side zero-knowledge encryption.',
   },
   {
-    question: 'Is client data and document transfer secure and compliant?',
-    answer:
-      'Yes. All document transmissions through Meta’s Official Cloud API ecosystem use 256-bit SSL encryption. We enforce a strict Zero-Data Training Policy: client paperwork, passports, and financial records are never used to train public AI models. Data is processed through enterprise Google Cloud Platform (GCP) and Firestore with complete data isolation.',
+    q: 'Can we deploy Al Astoora inside our firm’s own dedicated private VPC or single-tenant environment?',
+    a: 'Yes. On our Enterprise plan, we deploy containerized single-tenant infrastructure directly within your firm’s private Virtual Private Cloud (VPC) or provision a dedicated sovereign VPC managed under strict Business Associate Agreements (BAA) and compliance SLAs.',
   },
   {
-    question: 'What is the pricing model and how does ownership work?',
-    answer:
-      'We believe in transparent, predictable pricing without predatory vendor lock-in. Our model consists of a one-time onboarding & architecture setup (which covers Meta business verification, display name approval, custom intake pipelines, and webhook setup) plus an ongoing monthly managed retainer for cloud infrastructure hosting on GCP, continuous uptime monitoring, and workflow maintenance.',
+    q: 'Which practice management systems and legal document management systems (DMS) do you integrate with?',
+    a: 'We provide out-of-the-box webhooks and REST API connectors for Clio, Filevine, NetDocuments, iManage, Salesforce, Google Drive, OneDrive, and custom legal databases. Extracted JSON schemas map directly into your firm’s custom matter fields.',
   },
   {
-    question: 'What professional service verticals are supported by Al Astoora?',
-    answer:
-      'Al Astoora is engineered for document-heavy professional industries including Corporate Secretarial (incorporation & signature routing), Immigration & Visa Advisory (KYC & passport verification), Accounting & Tax (quarterly financial form ingestion), and Employment Agencies (candidate resume screening & interview scheduling).',
-  },
-  {
-    question: 'How does Al Astoora reclaim lost administrative capacity for professional firms?',
-    answer:
-      'Professional firms lose 5 to 20 hours per staff member weekly on manual document follow-ups. By replacing manual email chains with automated WhatsApp intake routing, Al Astoora automates repetitive follow-up cycles, allowing senior partners and associates to focus strictly on client advisory.',
+    q: 'What is included in the 14-Day Free Pilot?',
+    a: 'The pilot provides full access to the Growth workspace tier: up to 500 document processing runs, WhatsApp omnichannel intake pipeline setup, fine-tuned legal SLM queries, and technical onboarding assistance to connect your first practice workflow.',
   },
 ];
 
-export default function FAQ() {
-  return (
-    <section id="faq" className="relative bg-slate-950 py-20 md:py-28 overflow-hidden border-t border-slate-900">
-      {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
+export default function FAQ({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const HeadingTag = headingLevel;
 
-      <div className="relative mx-auto w-full max-w-4xl px-5 md:px-8">
-        {/* Title Block */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            <HelpCircle className="h-3.5 w-3.5" />
-            Infrastructure FAQ
+  return (
+    <section id="faq" className="border-t border-[var(--st)] bg-white py-16 md:py-24">
+      <div className="site-container">
+        {/* Section Header */}
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <div className="flex flex-col items-center gap-1.5">
+            <div
+              className="h-[1px] w-36"
+              style={{
+                background: 'radial-gradient(circle, #6366f1 0%, transparent 100%)',
+              }}
+              aria-hidden="true"
+            />
+            <span className="text-xs font-semibold uppercase tracking-[2px] text-[var(--sr-indigo)]">
+              Legal Practitioner FAQ
+            </span>
+            <div
+              className="h-[1px] w-36"
+              style={{
+                background: 'radial-gradient(circle, #6366f1 0%, transparent 100%)',
+              }}
+              aria-hidden="true"
+            />
           </div>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Everything you need to know about our enterprise B2B document intake engine, Meta Cloud API security, integrations, and platform licensing.
+
+          <HeadingTag className="mt-5 text-3xl font-semibold tracking-tight text-[var(--tx)] sm:text-4xl md:text-5xl">
+            Frequently Asked Questions.
+          </HeadingTag>
+          <p className="mt-4 text-base leading-relaxed text-[var(--tx-secondary)] sm:text-lg">
+            Essential answers on legal privilege, zero data retention, and integration standards for managing partners and legal operations.
           </p>
         </div>
 
-        {/* FAQ Accordion List */}
-        <div className="space-y-4">
-          {faqs.map((faq, idx) => (
-            <details
-              key={idx}
-              className="group border border-slate-900 bg-slate-900/20 rounded-2xl p-5 hover:border-emerald-500/20 transition-all duration-300 [&_summary::-webkit-details-marker]:hidden [&[open]]:bg-slate-900/30 [&[open]]:border-emerald-500/20"
-            >
-              <summary className="flex items-center justify-between font-semibold text-white cursor-pointer select-none list-none gap-4">
-                <span className="text-sm sm:text-base">{faq.question}</span>
-                <ChevronDown className="h-5 w-5 text-slate-400 transition-transform duration-300 group-open:-rotate-180 shrink-0" />
-              </summary>
-              <div className="mt-3 text-xs sm:text-sm text-slate-400 leading-relaxed pt-3 border-t border-slate-900/60">
-                {faq.answer}
+        {/* FAQ Accordion */}
+        <div className="mx-auto mt-12 max-w-3xl divide-y divide-[var(--st)]">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div key={index} className="py-5">
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="flex w-full items-start justify-between gap-4 text-left font-medium text-[var(--tx)] hover:text-[var(--sr-indigo)] focus-visible:outline-2 focus-visible:outline-[var(--sr-indigo)]"
+                >
+                  <span className="text-base font-semibold sm:text-lg">{faq.q}</span>
+                  <ChevronDown
+                    className={`mt-1 h-5 w-5 shrink-0 text-[var(--tx-tertiary)] transition-transform duration-200 ${
+                      isOpen ? 'rotate-180 text-[var(--sr-indigo)]' : ''
+                    }`}
+                  />
+                </button>
+                {isOpen && (
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--tx-secondary)] sm:text-base">
+                    {faq.a}
+                  </p>
+                )}
               </div>
-            </details>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
-

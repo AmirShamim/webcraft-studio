@@ -1,54 +1,39 @@
-import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, MessageCircle } from 'lucide-react';
 
 export default function About() {
   return (
-    <section id="about" className="bg-slate-950 py-16 md:py-24 relative overflow-hidden border-t border-slate-900">
-      
-      {/* Light glow */}
-      <div className="absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-emerald-500/[0.02] blur-[100px] pointer-events-none" />
-
-      <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 items-center">
-          
-          {/* Main Info Box */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 bg-slate-900/40 relative">
-            <span className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 px-3 py-1 text-xs font-semibold text-emerald-400">
-              <CheckCircle2 className="h-3.5 w-3.5" />
-              Official Meta Cloud API Developer
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              Enterprise Front-Office Infrastructure
-            </h2>
-            <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-              Al Astoora provides automated WhatsApp intake & qualification backends for legal, accounting, and advisory firms. We engineer direct, high-throughput systems on Meta&apos;s Official Cloud API backed by Google Cloud Platform (GCP) and Firestore.
+    <section id="about" className="premium-grid border-t border-[var(--line)] bg-[var(--paper)] py-16 text-[var(--ink)] md:py-24">
+      <div className="site-container">
+        <div className="reveal grid gap-7 border-b border-[var(--line)] pb-10 md:grid-cols-[1fr_2fr] md:gap-16 md:pb-14">
+          <span className="section-label self-start md:pt-3">About Al Astoora</span>
+          <h2 className="section-title max-w-4xl">Technology should<br /><span className="italic text-[var(--accent)]">make room for people.</span></h2>
+        </div>
+        <div className="grid items-start gap-10 pt-10 lg:grid-cols-[1fr_2fr] lg:gap-16 lg:pt-14">
+          <div>
+            <p className="display-serif text-[28px] leading-tight">A studio for<br />the work that matters.</p>
+            <p className="mt-5 max-w-md text-sm leading-7 text-[var(--muted)]">
+              We build conversational automation and document intake systems for professional service firms. Our focus is the work between a client&apos;s first message and a complete, usable case file.
             </p>
-            <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-              We handle the entire setup: Meta Business Verification, display name approval, custom intake workflows, and webhook routing directly into your internal case management system.
+            <p className="mt-4 max-w-md text-sm leading-7 text-[var(--muted)]">
+              Clear requests. Organized information. Fewer manual handoffs. Infrastructure that supports the people doing the work.
             </p>
           </div>
-
-          {/* Quick FAQ / Detail Blocks */}
-          <div className="space-y-5">
-            <div className="flex gap-3.5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                <MessageCircle className="h-5 w-5" />
-              </span>
+          <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
+            <div className="border-t border-[var(--ink)] pt-6">
+              <span className="mb-8 flex items-center justify-between text-xs tabular-nums text-[var(--muted)]">01<MessageCircle aria-hidden="true" strokeWidth={1.25} className="h-7 w-7 text-[var(--accent)]" /></span>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-white">Why Official Meta Cloud API?</h3>
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Unlike unofficial scrapers, the official API operates with zero risk of phone number bans, higher message throughput, 256-bit encryption, and direct enterprise webhook triggers.
+                <h3 className="text-base font-semibold">Official foundations.</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                  Meta&apos;s WhatsApp Cloud API connects client conversations to structured workflows. Messaging remains subject to Meta&apos;s policies and account requirements.
                 </p>
               </div>
             </div>
-
-            <div className="flex gap-3.5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <ShieldCheck className="h-5 w-5" />
-              </span>
+            <div className="border-t border-[var(--ink)] pt-6">
+              <span className="mb-8 flex items-center justify-between text-xs tabular-nums text-[var(--muted)]">02<CheckCircle2 aria-hidden="true" strokeWidth={1.25} className="h-7 w-7 text-[var(--accent)]" /></span>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-white">Zero-Data AI Training Guarantee</h3>
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Confidential client paperwork and personal files are processed with strict isolation in Google Cloud. Data is never leaked or used to train public AI models.
+                <h3 className="text-base font-semibold">Your operations, connected.</h3>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                  We handle developer configuration, webhook endpoints, document intake workflows, and CRM integration around the tools your team already uses.
                 </p>
               </div>
             </div>
@@ -59,5 +44,4 @@ export default function About() {
     </section>
   );
 }
-
 

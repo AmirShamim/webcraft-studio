@@ -1,291 +1,247 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { MessageSquare, Send } from 'lucide-react';
-import { trackEvent, trackQualifiedHandoff } from '@/lib/analytics';
-import {
-  ROI_ESTIMATE_STORAGE_KEY,
-  formatRoiCurrency,
-  formatRoiEstimateForMessage,
-  parseStoredRoiEstimate,
-  type RoiEstimate,
-} from '@/lib/roi-handoff';
+import { useState } from 'react';
+import { Send, MessageSquareCode, ShieldCheck, Check } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 const whatsappNumber = '919289581053';
 
-type FormState = {
+type LegalFormState = {
   name: string;
   email: string;
-  business: string;
+  firmName: string;
+  practiceArea: string;
+  documentVolume: string;
   message: string;
+  pilotRequested: boolean;
 };
 
-const initialFormState: FormState = {
+const initialFormState: LegalFormState = {
   name: '',
   email: '',
-  business: 'Clinic / Healthcare',
+  firmName: '',
+  practiceArea: 'Litigation & Dispute Resolution',
+  documentVolume: '500 - 2,500 docs/mo (Growth Practice)',
   message: '',
+  pilotRequested: true,
 };
 
-const qualifiedHandoffCopy =
-  'A useful demo request includes your contact detail, business type, and automation need. WhatsApp opens with those details prefilled.';
-
-function buildWhatsAppUrl(form: FormState, roiEstimate: RoiEstimate | null = null) {
-  const roiLines = roiEstimate
-    ? [
-        '',
-        'ROI calculator estimate:',
-        ...formatRoiEstimateForMessage(roiEstimate),
-      ]
-    : [];
-
+function buildLegalWhatsAppUrl(form: LegalFormState) {
   const text = [
-    'Hi Al Astoora, I want to discuss WhatsApp automation for my business.',
+    'Hello Al Astoora Legal AI, I would like to schedule a walkthrough / request pilot provisioning for our practice.',
     '',
-    `Name: ${form.name || '[your name]'}`,
-    `Email: ${form.email || '[your email]'}`,
-    `Business type: ${form.business}`,
-    `Project goals: ${form.message || '[what you want to automate]'}`,
-    ...roiLines,
+    `Name: ${form.name || '[Attorney / Partner Name]'}`,
+    `Firm / Organization: ${form.firmName || '[Law Firm / Legal Dept]'}`,
+    `Work Email: ${form.email || '[Email]'}`,
+    `Practice Area: ${form.practiceArea}`,
+    `Monthly Document Volume: ${form.documentVolume}`,
+    `14-Day Pilot Requested: ${form.pilotRequested ? 'YES (14-Day Zero-Retention Pilot)' : 'No'}`,
+    `Workflow Context & Goals: ${form.message || '[Automated intake & legal SLM reasoning]'}`,
   ].join('\n');
 
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 
-function getQualifiedHandoffProperties(
-  form: FormState,
-  roiEstimate: RoiEstimate | null,
-  ctaLabel: string,
-) {
-  const contactDetailPresent = form.email.trim().length > 0;
-  const businessTypeNamed = form.business.trim().length > 0;
-  const automationNeedStated = form.message.trim().length > 0;
-
-  return {
-    contact_detail_present: contactDetailPresent,
-    business_type_named: businessTypeNamed,
-    automation_need_stated: automationNeedStated,
-    trigger_surface: 'whatsapp_handoff_click' as const,
-    source_page: 'contact_form',
-    source_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
-    handoff_destination: 'whatsapp' as const,
-    carried_roi_estimate_present: Boolean(roiEstimate),
-    business_type: businessTypeNamed ? form.business.trim() : undefined,
-    automation_need: automationNeedStated ? form.message.trim().slice(0, 240) : undefined,
-    cta_label: ctaLabel,
-    roi_estimate_aed:
-      roiEstimate?.currency === 'AED'
-        ? Math.round(roiEstimate.lostMonthlyRevenue)
-        : undefined,
-    roi_estimate_currency: roiEstimate?.currency,
-  };
-}
-
-function trackWhatsAppHandoff(
-  form: FormState,
-  roiEstimate: RoiEstimate | null,
-  ctaLabel: string,
-) {
-  return trackQualifiedHandoff(getQualifiedHandoffProperties(form, roiEstimate, ctaLabel));
-}
-
 export default function ContactForm() {
-  const [form, setForm] = useState<FormState>(initialFormState);
+  const [form, setForm] = useState<LegalFormState>(initialFormState);
   const [status, setStatus] = useState('');
-  const [roiEstimate, setRoiEstimate] = useState<RoiEstimate | null>(null);
-  const whatsappUrl = useMemo(() => buildWhatsAppUrl(form, roiEstimate), [form, roiEstimate]);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      try {
-        const storedEstimate = parseStoredRoiEstimate(
-          window.localStorage.getItem(ROI_ESTIMATE_STORAGE_KEY),
-        );
-
-        setRoiEstimate(storedEstimate);
-      } catch {
-        setRoiEstimate(null);
-      }
-    }, 0);
-
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  function updateField(field: keyof FormState, value: string) {
+  function updateField<K extends keyof LegalFormState>(field: K, value: LegalFormState[K]) {
     setForm((current) => ({ ...current, [field]: value }));
+    setFieldErrors((current) => ({ ...current, [field]: '' }));
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const submittedForm: FormState = {
-      name: String(formData.get('name') || ''),
-      email: String(formData.get('email') || ''),
-      business: String(formData.get('business') || initialFormState.business),
-      message: String(formData.get('message') || ''),
-    };
-    const submittedUrl = buildWhatsAppUrl(submittedForm, roiEstimate);
-
-    const handoffProperties = getQualifiedHandoffProperties(
-      submittedForm,
-      roiEstimate,
-      'contact_form_submit',
-    );
+    const url = buildLegalWhatsAppUrl(form);
 
     trackEvent('contact_form_handoff_submitted', {
-      has_name: submittedForm.name.trim().length > 0,
-      has_email: submittedForm.email.trim().length > 0,
-      project_goals_length: submittedForm.message.trim().length,
-      has_roi_estimate: Boolean(roiEstimate),
-      roi_market: roiEstimate?.market,
-      roi_lost_monthly_revenue: roiEstimate ? Math.round(roiEstimate.lostMonthlyRevenue) : undefined,
-      roi_recoverable_monthly_revenue: roiEstimate ? Math.round(roiEstimate.recoverableMonthlyRevenue) : undefined,
-      ...handoffProperties,
+      has_name: form.name.trim().length > 0,
+      has_email: form.email.trim().length > 0,
+      has_firm: form.firmName.trim().length > 0,
+      practice_area: form.practiceArea,
+      document_volume: form.documentVolume,
+      pilot_requested: form.pilotRequested,
+      message_length: form.message.trim().length,
     });
-    trackQualifiedHandoff(handoffProperties);
 
-    setStatus('Opening WhatsApp with your project details filled in.');
+    setStatus('Walkthrough request received. Opening secure WhatsApp consultation channel...');
 
-    const opened = window.open(submittedUrl, '_blank');
+    const opened = window.open(url, '_blank');
     if (opened) {
       opened.opener = null;
       return;
     }
 
-    window.location.href = submittedUrl;
+    window.location.href = url;
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      onInvalid={(event) => {
+        const field = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+        setFieldErrors((current) => ({ ...current, [field.name]: field.validationMessage }));
+      }}
+      className="grid gap-5 sm:grid-cols-2"
+    >
+      {/* Full Name */}
       <div>
-        <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Full Name
+        <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Attorney / Contact Name <span className="text-[var(--sr-terracotta)]">*</span>
         </label>
         <input
           type="text"
           id="name"
           name="name"
           required
+          autoComplete="name"
           value={form.name}
-          onChange={(event) => updateField('name', event.target.value)}
-          placeholder="Alex Carter"
-          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+          onChange={(e) => updateField('name', e.target.value)}
+          placeholder="Elena Vance, Esq."
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] placeholder:text-slate-400 focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
+        {fieldErrors.name && <p className="mt-1 text-xs text-rose-600">{fieldErrors.name}</p>}
       </div>
 
+      {/* Business Email */}
       <div>
-        <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Business Email Address
+        <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Firm Work Email <span className="text-[var(--sr-terracotta)]">*</span>
         </label>
         <input
           type="email"
           id="email"
           name="email"
           required
+          autoComplete="email"
           value={form.email}
-          onChange={(event) => updateField('email', event.target.value)}
-          placeholder="alex@company.com"
-          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+          onChange={(e) => updateField('email', e.target.value)}
+          placeholder="elena@vancelegal.com"
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] placeholder:text-slate-400 focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
+        />
+        {fieldErrors.email && <p className="mt-1 text-xs text-rose-600">{fieldErrors.email}</p>}
+      </div>
+
+      {/* Law Firm Name */}
+      <div className="sm:col-span-2">
+        <label htmlFor="firmName" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Law Firm / Corporate Legal Department <span className="text-[var(--sr-terracotta)]">*</span>
+        </label>
+        <input
+          type="text"
+          id="firmName"
+          name="firmName"
+          required
+          value={form.firmName}
+          onChange={(e) => updateField('firmName', e.target.value)}
+          placeholder="Vance, Sterling &amp; Partners LLP"
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] placeholder:text-slate-400 focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
+      {/* Practice Area */}
       <div>
-        <label htmlFor="business" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Business Sector / Type
+        <label htmlFor="practiceArea" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Primary Practice Vertical
         </label>
         <select
-          id="business"
-          name="business"
-          value={form.business}
-          onChange={(event) => updateField('business', event.target.value)}
-          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
+          id="practiceArea"
+          name="practiceArea"
+          value={form.practiceArea}
+          onChange={(e) => updateField('practiceArea', e.target.value)}
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
         >
-          <option>Clinic / Healthcare</option>
-          <option>Beauty / Hair Salon</option>
-          <option>Restaurant / Café</option>
-          <option>Gym / Fitness Studio</option>
-          <option>Real Estate Agency</option>
-          <option>Training Academy / Course Creator</option>
-          <option>Other Service Business</option>
+          <option>Litigation &amp; Dispute Resolution</option>
+          <option>Corporate Secretarial &amp; M&amp;A</option>
+          <option>Immigration &amp; Visa Advisory</option>
+          <option>Tax, Audit &amp; Regulatory Compliance</option>
+          <option>In-House Corporate Counsel</option>
+          <option>Other Specialized Practice</option>
         </select>
       </div>
 
+      {/* Document Volume */}
       <div>
-        <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Project Details & Goals
+        <label htmlFor="documentVolume" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Est. Monthly Document Volume
+        </label>
+        <select
+          id="documentVolume"
+          name="documentVolume"
+          value={form.documentVolume}
+          onChange={(e) => updateField('documentVolume', e.target.value)}
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
+        >
+          <option>&lt; 500 docs/mo (Starter / Solo Practice)</option>
+          <option>500 - 2,500 docs/mo (Growth Practice)</option>
+          <option>2,500 - 10,000 docs/mo (Litigation Team)</option>
+          <option>10,000+ docs/mo (Enterprise Sovereign Cloud)</option>
+        </select>
+      </div>
+
+      {/* Workflow Context */}
+      <div className="sm:col-span-2">
+        <label htmlFor="message" className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+          Workflow Goals &amp; Intake Bottlenecks <span className="text-[var(--sr-terracotta)]">*</span>
         </label>
         <textarea
           id="message"
           name="message"
-          rows={4}
+          rows={3}
           required
           value={form.message}
-          onChange={(event) => updateField('message', event.target.value)}
-          placeholder="Describe your current lead booking flow and where you lose the most inquiries..."
-          className="mt-2 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 focus:border-emerald-500 focus:outline-none transition-colors"
+          onChange={(e) => updateField('message', e.target.value)}
+          placeholder="Tell us about your firm's intake bottlenecks (e.g. chasing client KYC/evidentiary files, manual PDF contract classification, extracting structured schemas into your DMS, or generating citation-locked briefs)..."
+          className="mt-1.5 w-full rounded-lg border border-[var(--st)] bg-slate-50/50 px-3.5 py-2.5 text-sm text-[var(--tx)] placeholder:text-slate-400 focus:border-[var(--sr-indigo)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100"
         />
+        {fieldErrors.message && <p className="mt-1 text-xs text-rose-600">{fieldErrors.message}</p>}
       </div>
 
-      {roiEstimate && (
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            Calculator estimate included
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-slate-300">
-            Your WhatsApp message will include{' '}
-            <span className="font-semibold text-white">
-              {formatRoiCurrency(
-                roiEstimate.lostMonthlyRevenue,
-                roiEstimate.locale,
-                roiEstimate.currency,
-              )}
-            </span>{' '}
-            in estimated lost monthly revenue and{' '}
-            <span className="font-semibold text-white">
-              {formatRoiCurrency(
-                roiEstimate.recoverableMonthlyRevenue,
-                roiEstimate.locale,
-                roiEstimate.currency,
-              )}
-            </span>{' '}
-            in estimated recoverable revenue.
-          </p>
-        </div>
-      )}
+      {/* 14-Day Pilot Checkbox */}
+      <div className="sm:col-span-2 rounded-xl border border-indigo-100 bg-indigo-50/60 p-3.5">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={form.pilotRequested}
+            onChange={(e) => updateField('pilotRequested', e.target.checked)}
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[var(--sr-indigo)] focus:ring-indigo-500"
+          />
+          <div className="text-xs text-indigo-950">
+            <span className="font-semibold">Provision 14-Day Zero-Retention Pilot Workspace</span>
+            <p className="mt-0.5 text-indigo-900/70">
+              Check this box to fast-track single-tenant pilot access with sample litigation and document test suites.
+            </p>
+          </div>
+        </label>
+      </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3.5 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98] shadow-md shadow-emerald-500/10 cursor-pointer"
+        className="btn-sarvam-accent sm:col-span-2 w-full justify-center !min-h-[46px] !text-sm !font-semibold"
       >
         <Send className="h-4 w-4" />
-        Send Details on WhatsApp
+        Request Confidential Walkthrough &amp; Pilot
       </button>
 
-      <p className="text-center text-xs leading-relaxed text-slate-500" aria-live="polite">
-        {status || (roiEstimate
-          ? `${qualifiedHandoffCopy} Your calculator estimate is included too.`
-          : qualifiedHandoffCopy)}
-      </p>
+      {status && (
+        <p className="sm:col-span-2 rounded-lg bg-emerald-50 p-3 text-center text-xs font-semibold text-emerald-800">
+          {status}
+        </p>
+      )}
 
+      {/* Direct WhatsApp link */}
       <a
-        href={whatsappUrl}
+        href={buildLegalWhatsAppUrl(form)}
         target="_blank"
         rel="noopener noreferrer"
-        data-analytics-event="whatsapp_clicked"
-        data-analytics-label="contact_form_fallback"
-        data-analytics-location="contact_form"
-        onClick={() => trackWhatsAppHandoff(form, roiEstimate, 'contact_form_fallback')}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
+        className="sm:col-span-2 inline-flex items-center justify-center gap-2 text-xs font-medium text-[var(--tx-secondary)] hover:text-[var(--sr-indigo)] hover:underline"
       >
-        <MessageSquare className="h-4 w-4 text-emerald-400" />
-        Open WhatsApp instead
+        <MessageSquareCode className="h-4 w-4 text-emerald-600" />
+        Or initiate consultation directly on WhatsApp
       </a>
-
-      <noscript>
-        <p className="mt-3 text-center text-xs leading-relaxed text-slate-500">
-          JavaScript is off. Use the WhatsApp link above to send your project details.
-        </p>
-      </noscript>
     </form>
   );
 }

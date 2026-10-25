@@ -1,126 +1,165 @@
+'use client';
+
 import Link from 'next/link';
+import { ArrowUpRight, ShieldCheck, Lock } from 'lucide-react';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="border-t border-slate-900 bg-slate-950 text-slate-400 py-12 md:py-16">
-      <div className="mx-auto w-full max-w-6xl px-5 md:px-8">
-
-            <div className="mt-7 grid gap-4 text-sm md:grid-cols-4 mb-8">
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Legal Business Name</p>
-                <p className="mt-2 font-medium text-slate-100">Amir Shamim</p>
-                <p className="text-xs text-slate-400 mt-1">(Trade Name: Al Astoora)</p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Address</p>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-100">
-                  4th, 52/C, MN Block Lane, New Steel Work,<br />
-                  Jamia Nagar, New Delhi,<br />
-                  South East Delhi, Delhi - 110025
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Registered Business Phone</p>
-                <p className="mt-2 font-medium text-slate-100">+91 92895 81053</p>
-              </div>
-              <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tax & Business Registration</p>
-                <p className="mt-2 font-medium text-slate-100">GSTIN: 07RFVPS6101B1ZZ</p>
-                <p className="mt-2 font-medium text-slate-100">Udyam: UDYAM-DL-09-0046885</p>
-              </div>
+    <footer className="border-t border-[var(--st)] bg-[#07090e] py-14 text-slate-300 sm:py-20">
+      <div className="site-container">
+        {/* Top Banner CTA */}
+        <div className="grid gap-8 border-b border-white/10 pb-12 md:grid-cols-[1.5fr_auto] md:items-end">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[var(--sr-terracotta)]" />
+              <span className="text-xs font-semibold uppercase tracking-[2px] text-orange-400">
+                Start Your 14-Day Pilot
+              </span>
             </div>
-
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
-          <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2.5 group w-fit">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 overflow-hidden">
-                <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
-              </span>
-              <span className="text-base font-semibold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
-                Al Astoora
-              </span>
+            <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl md:text-4xl">
+              Eliminate unbillable intake hours.<br />
+              <span className="text-slate-400">With guaranteed zero data retention.</span>
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/login"
+              className="btn-sarvam-accent !text-sm !font-semibold"
+            >
+              Start 14-Day Pilot <ArrowUpRight className="h-4 w-4" />
             </Link>
-            <p className="max-w-sm text-sm leading-relaxed text-slate-400">
-              Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and document intake platforms for professional services. We engineer secure, high-throughput systems on Meta&apos;s Official Developer Ecosystem.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-4">
-              Company
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <Link href="/" className="hover:text-emerald-400 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-emerald-400 transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-emerald-400 transition-colors">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/insights" className="hover:text-emerald-400 transition-colors">
-                  Insights
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-emerald-400 transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-4">
-              Legal
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-emerald-400 transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-            <div className="mt-5 border-t border-slate-900 pt-5 text-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-200">
-                Support
-              </p>
-              <a
-                href="mailto:founder@alastoora.tech"
-                className="mt-2 block break-all text-slate-400 transition-colors hover:text-emerald-400"
-              >
-                founder@alastoora.tech
-              </a>
-            </div>
+            <Link
+              href="/login"
+              className="btn-sarvam-secondary !bg-white/10 !border-white/20 !text-white hover:!bg-white/20 !text-sm"
+            >
+              Client Portal
+            </Link>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div className="space-y-1.5 text-center sm:text-left">
-            <p>© {currentYear} Al Astoora. All rights reserved. Built on Meta&apos;s Official Developer Ecosystem.</p>
-            <p className="text-slate-500">
-              Al Astoora | Founded by Amir Shamim<br className="sm:hidden" />
-              <span className="hidden sm:inline"> | </span>MSME/Udyam Registered | GST Registered
+        {/* 4-Column Navigation Grid */}
+        <div className="grid gap-10 py-12 sm:grid-cols-2 md:grid-cols-4">
+          {/* Brand Info */}
+          <div className="sm:col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2 text-white">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-orange-500 font-serif text-sm font-bold italic text-white">
+                A
+              </div>
+              <span className="text-lg font-bold tracking-tight">
+                Al Astoora<span className="text-[var(--sr-terracotta)]">.</span>
+              </span>
+            </Link>
+            <p className="mt-3 text-xs leading-relaxed text-slate-400">
+              Enterprise Legal AI &amp; Document Intelligence SaaS. Ephemeral zero-retention pipelines and fine-tuned legal Small Language Models engineered for law firms.
             </p>
+            <div className="mt-4 flex items-center gap-2 text-xs text-emerald-400">
+              <ShieldCheck className="h-4 w-4 shrink-0" />
+              <span>SOC 2 Type II Aligned &bull; Nitro Enclaves</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-slate-300 font-medium">Official Meta Developer Integration</span>
+
+          {/* Platform */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Platform Architecture
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-xs">
+              <li>
+                <a href="#features" className="hover:text-white transition-colors">
+                  Omnichannel Intake (WhatsApp &amp; Web)
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-white transition-colors">
+                  Vision OCR &amp; Document IDP
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-white transition-colors">
+                  Fine-Tuned Legal SLMs &amp; RAFT
+                </a>
+              </li>
+              <li>
+                <a href="#architecture" className="hover:text-white transition-colors">
+                  Zero Data Retention SLA
+                </a>
+              </li>
+              <li>
+                <Link href="/login" className="hover:text-white transition-colors">
+                  Dedicated Single-Tenant VPC Deployment
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* SaaS & Security */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              SaaS &amp; Compliance
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-xs">
+              <li>
+                <a href="#pricing" className="hover:text-white transition-colors">
+                  Transparent SaaS Pricing
+                </a>
+              </li>
+              <li>
+                <Link href="/login" className="hover:text-white transition-colors">
+                  Workspace Client Portal
+                </Link>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-white transition-colors">
+                  Attorney-Client Privilege FAQ
+                </a>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-white transition-colors">
+                  Privacy Policy &amp; Data Rights
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-white transition-colors">
+                  Terms of Service &amp; BAA
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Direct Contact */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Enterprise Support
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-xs">
+              <li>
+                <a href="mailto:founder@alastoora.tech" className="inline-flex items-center gap-1 hover:text-white transition-colors">
+                  founder@alastoora.tech <ArrowUpRight className="h-3 w-3" />
+                </a>
+              </li>
+              <li>
+                <a href="tel:+919289581053" className="hover:text-white transition-colors">
+                  +91 92895 81053
+                </a>
+              </li>
+              <li className="text-slate-500">
+                256-Bit TLS Transport &bull; SOC 2 Aligned
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Legal Registry & Copyright */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-slate-500">
+          <p>
+            &copy; {new Date().getFullYear()} Al Astoora Legal AI. All rights reserved. Registered under MSME/Udyam: UDYAM-DL-09-0046885.
+          </p>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1">
+              <Lock className="h-3 w-3 text-emerald-400" /> Ephemeral Memory Execution
+            </span>
+            <span>&bull;</span>
+            <span>Zero Persistent Disk Retention</span>
           </div>
         </div>
       </div>

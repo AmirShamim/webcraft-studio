@@ -1,56 +1,54 @@
 import Link from 'next/link';
-import { ArrowLeft, Shield, Award, Users, CheckCircle } from 'lucide-react';
-import Header from '@/components/Header';
+import Image from 'next/image';
+import { ArrowLeft, ArrowUpRight, Shield, Award, Users, CheckCircle, MessageSquare, Database, Workflow } from 'lucide-react';
 import Footer from '@/components/Footer';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased">
-      {/* Custom Header matching privacy page */}
-      <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4 md:px-8">
-          <Link href="/" className="flex min-w-0 items-center gap-2.5 group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10 overflow-hidden sm:h-9 sm:w-9">
-              <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
-            </span>
-            <p className="whitespace-nowrap text-[15px] font-semibold tracking-tight text-slate-100 sm:text-base group-hover:text-emerald-400 transition-colors">
-              Al Astoora
-            </p>
+    <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+      <header className="border-b border-[var(--line)] bg-[var(--paper)]">
+        <div className="site-container flex min-h-[76px] items-center justify-between gap-3 py-4 lg:min-h-[88px]">
+          <Link href="/" aria-label="Al Astoora home" className="flex min-h-11 min-w-0 items-center gap-2.5 group focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
+            <Image src="/logo.jpg" alt="" width={36} height={36} className="shrink-0" />
+            <span className="display-serif text-[23px] leading-none sm:text-[26px]">Al Astoora<span className="text-[var(--accent)]">.</span></span>
           </Link>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-slate-800 bg-slate-900/50 px-4 py-2 text-xs font-semibold text-slate-300 transition-all hover:border-slate-700 hover:text-white sm:text-sm"
+            aria-label="Back to Home"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 text-xs hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] sm:text-sm"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Home
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            <span className="hidden sm:inline">Back to </span>Home
           </Link>
         </div>
       </header>
 
-      <main className="relative py-16 md:py-24 max-w-4xl mx-auto px-5">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-slate-800 bg-slate-900/40 space-y-8 relative z-10">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium">
+      <main id="main-content" tabIndex={-1}>
+        <div className="reveal">
+          <div className="page-intro">
+            <div className="site-container grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+            <div className="space-y-6">
+            <div className="section-label flex items-center gap-2">
               <Shield className="h-3.5 w-3.5" />
               Official Registration & Verification
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight pb-2 bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-              About Us
+            <h1 className="editorial-title max-w-3xl">
+              Al Astoora.<br /><span className="text-[var(--accent)]">Built on ownership.</span>
             </h1>
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+            </div>
+            <p className="max-w-md text-[var(--muted)] text-base sm:text-lg leading-relaxed lg:pb-2">
               Learn more about our mission, founder, and official business credentials.
             </p>
+            </div>
           </div>
 
-          <div className="border-t border-slate-800/80 my-6" />
-
-          <div className="space-y-6 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {/* Main Required Sentence */}
-            <div className="p-6 rounded-2xl border border-emerald-500/10 bg-emerald-950/10 text-emerald-200">
-              <p className="font-medium text-base sm:text-lg">
+          <div className="text-base text-[var(--muted)] leading-relaxed [&_strong]:text-[var(--ink)]">
+            <section className="site-container grid gap-10 py-16 md:py-24 lg:grid-cols-[1fr_2fr] lg:gap-20" aria-labelledby="mission-heading">
+            <div><p className="section-label">01 / The studio</p><h2 id="mission-heading" className="display-serif mt-5 text-3xl text-[var(--ink)]">Infrastructure with<br />a direct connection.</h2></div>
+            <div className="space-y-8">
+            <div className="text-[var(--ink)]">
+              <p className="display-serif text-2xl sm:text-4xl leading-snug">
                 &ldquo;Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and document intake platforms for professional services. We engineer secure, high-throughput systems on Meta&apos;s Official Developer Ecosystem.&rdquo;
               </p>
             </div>
@@ -58,49 +56,71 @@ export default function AboutPage() {
             <p>
               Founded and lead by <strong>Amir Shamim</strong> as the sole proprietor, Al Astoora builds enterprise-grade communication systems and high-converting marketing structures directly integrated with Meta&rsquo;s official Cloud API.
             </p>
+            </div>
+            </section>
 
-            <h2 className="text-lg font-bold text-white pt-4 flex items-center gap-2">
-              <Award className="h-5 w-5 text-emerald-400" />
+            <section className="border-y border-[var(--line)] bg-[var(--surface)]" aria-labelledby="ownership-heading">
+            <div className="site-container grid gap-10 py-16 md:py-20 lg:grid-cols-[1fr_2fr] lg:gap-20">
+            <div><p className="section-label">02 / Credentials</p>
+            <h2 id="ownership-heading" className="display-serif mt-5 text-3xl text-[var(--ink)] flex items-start gap-3">
+              <Award className="h-5 w-5 shrink-0 text-[var(--accent)]" />
               Ownership & Legal Structure
             </h2>
+            </div>
+            <div>
             <p>
               As a legally registered sole proprietorship in India, Al Astoora is committed to complete operational transparency. Under the leadership of its founder, Amir Shamim, the trade name is fully registered and compliant with all relevant local and national tax frameworks:
             </p>
             
-            <ul className="space-y-3.5 pl-2 mt-4 text-sm text-slate-400">
-              <li className="flex items-start gap-2.5">
-                <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+            <ul className="mt-8 grid gap-x-8 text-sm text-[var(--muted)] sm:grid-cols-2 [&>li]:border-t [&>li]:border-[var(--line)] [&>li]:py-6">
+              <li className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-[var(--accent)] shrink-0 mt-0.5" />
                 <span>
                   <strong>Sole Proprietor & Founder:</strong> Amir Shamim (managing all engineering, integration design, and consulting operations).
                 </span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[var(--accent)] shrink-0 mt-0.5" />
                 <span>
                   <strong>Trade Name Registration:</strong> &ldquo;Al Astoora&rdquo; is the officially registered and recognized trade name of Amir Shamim.
                 </span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[var(--accent)] shrink-0 mt-0.5" />
                 <span>
                   <strong>MSME / Udyam Registered:</strong> Compliant with the Ministry of Micro, Small and Medium Enterprises, Government of India.
                 </span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[var(--accent)] shrink-0 mt-0.5" />
                 <span>
                   <strong>GST Registered:</strong> Registered for Goods and Services Tax (GSTIN: 07RFVPS6101B1ZZ) to ensure compliance and support enterprise invoicing.
                 </span>
               </li>
             </ul>
+            </div>
+            </div>
+            </section>
 
-            <h2 className="text-lg font-bold text-white pt-4 flex items-center gap-2">
-              <Users className="h-5 w-5 text-emerald-400" />
+            <section className="site-container grid gap-10 py-16 md:py-24 lg:grid-cols-[1fr_2fr] lg:gap-20" aria-labelledby="specialization-heading">
+            <div><p className="section-label">03 / Our focus</p>
+            <h2 id="specialization-heading" className="display-serif mt-5 text-3xl text-[var(--ink)] flex items-center gap-3">
+              <Users className="h-5 w-5 shrink-0 text-[var(--accent)]" />
               Our Specialization
             </h2>
+            </div>
+            <div className="space-y-10">
             <p>
               We focus on removing friction between businesses and their clients by building custom, high-speed automated WhatsApp systems. We replace generic third-party SaaS middleware with customized cloud integrations hosted directly on Meta Developer infrastructure. This enables our clients to own 100% of their database pipelines, cut recurring licensing costs, and capture leads instantly around the clock.
             </p>
+            <ol aria-label="Our integration approach" className="grid divide-y divide-[var(--line)] border-y border-[var(--line)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+              {[{ icon: MessageSquare, label: 'Client conversations', detail: 'WhatsApp' }, { icon: Workflow, label: 'Direct integration', detail: 'Meta Cloud API' }, { icon: Database, label: 'Your infrastructure', detail: 'Owned data pipelines' }].map(({ icon: Icon, label, detail }) => (
+                <li key={label} className="py-6 sm:px-5 first:pl-0"><Icon aria-hidden="true" className="mb-5 h-5 w-5 text-[var(--accent)]" /><p className="text-sm font-semibold text-[var(--ink)]">{label}</p><p className="mt-1 text-xs">{detail}</p></li>
+              ))}
+            </ol>
+            <Link href="/contact" className="button-primary inline-flex items-center gap-3">Discuss your project <ArrowUpRight aria-hidden="true" className="h-4 w-4" /></Link>
+            </div>
+            </section>
           </div>
         </div>
       </main>

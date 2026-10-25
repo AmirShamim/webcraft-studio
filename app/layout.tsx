@@ -1,40 +1,56 @@
-import type {Metadata} from 'next';
-import { Inter } from 'next/font/google';
+import type { Metadata } from 'next';
+import { Manrope, Newsreader } from 'next/font/google';
 import AnalyticsProvider from '@/components/AnalyticsProvider';
-import './globals.css'; // Global styles
+import './globals.css';
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-manrope',
+  display: 'swap',
+});
+
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-newsreader',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Al Astoora | Intelligent Document & Intake Infrastructure for Professional Services',
+  title: 'Al Astoora | Autonomous Document Intake & Fine-Tuned Legal AI SaaS',
   description:
-    'Stop paying high-skilled professionals to chase down client paperwork. Al Astoora is a scalable, API-first WhatsApp backend that automates complex client onboarding, secure document collection, and case scheduling. Built for legal, accounting, and immigration firms.',
+    'Eliminate manual data entry and LLM hallucinations. Al Astoora combines automated WhatsApp/Web client document capture, high-precision OCR, and domain-specific Small Language Models (SLMs) engineered for law firms and compliance teams. Zero data retention.',
   metadataBase: new URL('https://alastoora.tech'),
   alternates: {
     canonical: 'https://alastoora.tech',
   },
   keywords: [
-    'Document Intake Infrastructure',
-    'Professional Services Automation',
-    'Legal Tech WhatsApp API',
-    'Accounting Intake Automation',
-    'Immigration Document Verification',
-    'Meta Cloud API Backend',
+    'Legal AI SaaS',
+    'Autonomous Document Intake',
+    'Legal Document Intelligence',
+    'Fine-Tuned Legal SLM',
+    'Zero Data Retention',
+    'Legal OCR IDP',
+    'RAFT Legal Reasoning',
+    'Law Firm Intake Automation',
     'Al Astoora',
-    'B2B SaaS Infrastructure',
-    'WhatsApp Client Onboarding',
+    'Dedicated Single-Tenant VPC',
+    'Legal Tech B2B SaaS',
   ],
-  authors: [{ name: 'Al Astoora Platform Team', url: 'https://alastoora.tech' }],
+  authors: [{ name: 'Al Astoora Legal AI Platform Team', url: 'https://alastoora.tech' }],
   openGraph: {
-    title: 'Al Astoora | Document & Intake Infrastructure for Professional Services',
-    description: 'Automate complex client onboarding, secure document collection, and case scheduling.',
+    title: 'Al Astoora | Autonomous Document Intake & Fine-Tuned Legal AI SaaS',
+    description:
+      'Autonomous client document capture, high-precision OCR, and domain-specific Legal SLMs engineered for zero hallucinations and zero data retention.',
     url: 'https://alastoora.tech',
-    siteName: 'Al Astoora',
+    siteName: 'Al Astoora Legal AI',
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    title: 'Al Astoora | Enterprise Legal AI & Document Intelligence SaaS',
+    description:
+      'Autonomous Document Intake & Fine-Tuned Legal AI with Zero Data Retention.',
+    card: 'summary_large_image',
   },
   robots: {
     index: true,
@@ -47,21 +63,30 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  twitter: {
-    title: 'Al Astoora | B2B Document & Intake Infrastructure',
-    card: 'summary_large_image',
-  }
 };
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://alastoora.tech/#software',
+      'name': 'Al Astoora Legal AI',
+      'applicationCategory': 'LegalApplication',
+      'operatingSystem': 'Cloud, Sovereign VPC',
+      'description':
+        'Autonomous Document Intake & Fine-Tuned Legal AI SaaS with zero data retention for law firms and compliance teams.',
+      'offers': {
+        '@type': 'Offer',
+        'price': '99.00',
+        'priceCurrency': 'USD',
+      },
+    },
+    {
       '@type': 'Organization',
       '@id': 'https://alastoora.tech/#organization',
-      'name': 'Al Astoora',
+      'name': 'Al Astoora Legal AI',
       'url': 'https://alastoora.tech',
-      'logo': 'https://alastoora.tech/logo.png',
       'telephone': '+91 92895 81053',
       'address': {
         '@type': 'PostalAddress',
@@ -71,100 +96,26 @@ const jsonLd = {
         'postalCode': '110025',
         'addressCountry': 'IN',
       },
-    },
-    {
-      '@type': 'ProfessionalService',
-      '@id': 'https://alastoora.tech/#service',
-      'name': 'Al Astoora | WhatsApp Automation & Web Development Agency',
-      'url': 'https://alastoora.tech',
-      'telephone': '+91 92895 81053',
-      'priceRange': '$$',
-      'image': 'https://alastoora.tech/logo.png',
-      'description':
-        'We design and build custom conversation automation systems and high-converting landing pages utilizing Meta\'s official WhatsApp Cloud API.',
-      'address': {
-        '@type': 'PostalAddress',
-        'streetAddress': '4th, 52/C, MN Block Lane, New Steel Work, Jamia Nagar',
-        'addressLocality': 'South East Delhi',
-        'addressRegion': 'Delhi',
-        'postalCode': '110025',
-        'addressCountry': 'IN',
-      },
-      'areaServed': ['AE', 'SG', 'IN', 'US'],
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': 'https://alastoora.tech/#faq',
-      'mainEntity': [
-        {
-          '@type': 'Question',
-          'name': 'What is Al Astoora and how does the intake infrastructure platform work?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'Al Astoora is a B2B SaaS infrastructure company providing enterprise-grade conversational AI and automated document intake for professional services (legal, accounting, tax, immigration, corporate secretarial). Built directly on Meta’s Official Cloud API, our platform ingests client PDFs, images, and KYC paperwork via WhatsApp, validates submissions in real time, and routes structured data into your CRM, database, or case management system.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'How does Al Astoora streamline document intake for professional service firms?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'Our proprietary intake engine automates multi-step onboarding workflows. Instead of billable partners and associates manually chasing clients over fragmented email threads, Al Astoora triggers automated document collection checklists, verifies files, and pushes organized records into your backend database in under 2 seconds.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'How does Al Astoora integrate with our existing CRMs, ERPs, and cloud storage?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'We provide enterprise webhooks and REST API endpoints that push collected documents and client data directly into your firm’s CRM, document management system, cloud storage (Google Drive, OneDrive, AWS S3), or ERP (Salesforce, HubSpot, Xero, Quickbooks, custom SQL).',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'Is client data and document transfer secure and compliant?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'Yes. All document transmissions through Meta’s Official Cloud API ecosystem use 256-bit SSL encryption. Unlike unofficial QR-code scrapers that carry security and account ban risks, Al Astoora operates strictly within Meta’s official developer framework for maximum data stability, enterprise compliance, and zero downtime.',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'What professional service verticals are supported by Al Astoora?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'Al Astoora is engineered for document-heavy professional industries including Corporate Secretarial (incorporation & signature routing), Immigration & Visa Advisory (KYC & passport verification), Accounting & Tax (quarterly financial form ingestion), and Employment Agencies (candidate resume screening & interview scheduling).',
-          },
-        },
-        {
-          '@type': 'Question',
-          'name': 'How is Al Astoora licensed and deployed for enterprise firms?',
-          'acceptedAnswer': {
-            '@type': 'Answer',
-            'text':
-              'Al Astoora provides flexible infrastructure licensing tailored to your firm’s case volume and active team size. Deployment is fast and turnkey—our team configures Meta business verification, API webhooks, document routing rules, and database connectors so your firm can reclaim unbillable administrative hours immediately.',
-          },
-        },
-      ],
     },
   ],
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${manrope.variable} ${newsreader.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body suppressHydrationWarning className="font-sans antialiased">
+      <body suppressHydrationWarning className="font-sans antialiased bg-[var(--sf)] text-[var(--tx)]">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-indigo-600 focus:px-4 focus:py-2 focus:text-white"
+        >
+          Skip to content
+        </a>
         <AnalyticsProvider />
         {children}
       </body>

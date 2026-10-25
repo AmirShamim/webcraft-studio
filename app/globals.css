@@ -1,127 +1,209 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-newsreader), Georgia, serif;
+}
+
 :root {
-	--accent: #10b981; /* Premium Emerald for WhatsApp vibe */
-	--accent-glow: rgba(16, 185, 129, 0.15);
-	--accent-strong: #059669;
-	--accent-blue: #3b82f6;
-	--accent-blue-glow: rgba(59, 130, 246, 0.15);
-	--slate-950: #030712;
-	--slate-900: #0f172a;
-	--slate-800: #1e293b;
+  /* Sarvam AI Inspired Palette */
+  --sf: #f8fafc;
+  --sf-secondary: #f1f5f9;
+  --sf-card: #ffffff;
+  --st: #e2e8f0;
+  --st-light: #f1f5f9;
+  
+  --tx: #0a0e1a;
+  --tx-secondary: #475569;
+  --tx-tertiary: #94a3b8;
+  
+  /* Sovereign Tech Indigo & Heritage Terracotta */
+  --sr-indigo: #4f46e5;
+  --sr-indigo-dark: #3730a3;
+  --sr-indigo-light: #eef2ff;
+  --sr-indigo-glow: rgba(99, 102, 241, 0.25);
+  
+  --sr-terracotta: #ea580c;
+  --sr-terracotta-dark: #c2410c;
+  --sr-terracotta-light: #fff7ed;
+  
+  /* Deep Tech Night Mode Surfaces */
+  --night-bg: #07090e;
+  --night-card: #0e121c;
+  --night-card-border: rgba(255, 255, 255, 0.08);
+  --night-tx: #f8fafc;
+  --night-muted: #94a3b8;
 }
 
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
 }
 
 body {
-	background-color: var(--slate-950);
-	color: #f1f5f9;
-	text-rendering: optimizeLegibility;
-	overflow-x: hidden;
+  margin: 0;
+  background-color: var(--sf);
+  color: var(--tx);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism helpers */
-.glass-panel {
-	background: rgba(15, 23, 42, 0.45);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
-	border: 1px solid rgba(255, 255, 255, 0.05);
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.glass-panel-hover {
-	transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.glass-panel-hover:hover {
-	background: rgba(15, 23, 42, 0.6);
-	border-color: rgba(16, 185, 129, 0.25);
-	box-shadow: 0 12px 40px -12px rgba(16, 185, 129, 0.15);
-}
-
-/* Ambient glows */
-.glow-wrapper {
-	position: relative;
-}
-
-.bg-hex-grid {
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0 L56 16.16 L56 48.5 L28 64.66 L0 48.5 L0 16.16 Z M28 97 L56 80.84 L56 48.5 L28 64.66 L0 48.5 L0 80.84 Z' stroke='rgba(255,255,255,0.015)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
-	background-size: 56px 97px;
-}
-
-.glow-element-emerald {
-	position: absolute;
-	filter: blur(100px);
-	background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-	pointer-events: none;
-	opacity: 0.12;
+/* Sarvam AI Signature Pill Buttons */
+.btn-sarvam-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #1e2238 0%, #0d101d 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -2px 0 rgba(0, 0, 0, 0.25), 0 2px 8px rgba(13, 16, 29, 0.15);
+  transition: all 250ms cubic-bezier(0.2, 0, 0, 1);
+  overflow: hidden;
 }
 
-.glow-element-blue {
-	position: absolute;
-	filter: blur(100px);
-	background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
-	pointer-events: none;
-	opacity: 0.12;
+.btn-sarvam-primary:hover {
+  background: linear-gradient(180deg, #2b3152 0%, #151a2e 100%);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 16px rgba(13, 16, 29, 0.25);
 }
 
-::selection {
-	background: rgba(16, 185, 129, 0.3);
-	color: #ffffff;
+.btn-sarvam-secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid var(--st);
+  color: var(--tx);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 250ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* Range input customizing */
-input[type='range'] {
-	-webkit-appearance: none;
-	appearance: none;
-	background: rgba(255, 255, 255, 0.08);
-	border-radius: 9999px;
-	height: 6px;
+.btn-sarvam-secondary:hover {
+  background: var(--sf-secondary);
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
-input[type='range']::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	height: 18px;
-	width: 18px;
-	border-radius: 9999px;
-	background: var(--accent);
-	border: 2px solid var(--slate-950);
-	box-shadow: 0 0 12px var(--accent);
-	cursor: pointer;
-	transition: transform 0.1s ease;
+.btn-sarvam-accent {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 24px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px rgba(234, 88, 12, 0.35);
+  transition: all 250ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-input[type='range']::-webkit-slider-thumb:hover {
-	transform: scale(1.2);
+.btn-sarvam-accent:hover {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 6px 20px rgba(234, 88, 12, 0.45);
 }
 
-input[type='range']::-moz-range-thumb {
-	height: 18px;
-	width: 18px;
-	border-radius: 9999px;
-	background: var(--accent);
-	border: 2px solid var(--slate-950);
-	box-shadow: 0 0 12px var(--accent);
-	cursor: pointer;
-	transition: transform 0.1s ease;
+/* Sarvam AI Signature Divider Lines */
+.sarvam-divider-line {
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(circle, #6366f1 0%, transparent 100%);
 }
 
-input[type='range']::-moz-range-thumb:hover {
-	transform: scale(1.2);
+.sarvam-divider-terracotta {
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(circle, #ea580c 0%, transparent 100%);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-	width: 8px;
-}
-::-webkit-scrollbar-track {
-	background: var(--slate-950);
-}
-::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.1);
-	border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-	background: rgba(16, 185, 129, 0.4);
+/* Architectural Grid & Containers */
+.site-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
 }
 
+@media (min-width: 768px) {
+  .site-container {
+    padding-inline: 40px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-container {
+    padding-inline: 48px;
+  }
+}
+
+/* Subtle Architectural Frame */
+.arch-card {
+  background: #ffffff;
+  border: 1px solid var(--st);
+  border-radius: 16px;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.arch-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);
+}
+
+.dark-arch-card {
+  background: var(--night-card);
+  border: 1px solid var(--night-card-border);
+  border-radius: 16px;
+}
+
+.dark-arch-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Interactive Cursor Blink */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--sr-indigo);
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}

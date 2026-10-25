@@ -6,7 +6,7 @@ import {
   getInsightBySlug,
   type InsightPage,
 } from '@/lib/pseo-data';
-import { ArrowRight, CalendarCheck2, CheckCircle2, ChevronDown, HelpCircle, MessageSquare, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarCheck2, CheckCircle2, ChevronDown, HelpCircle, MessageSquare, BookOpen } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -112,7 +112,7 @@ export default async function InsightPage({ params }: PageProps) {
   const jsonLd = buildJsonLd(page);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased">
+    <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
       <Header />
 
       {/* JSON-LD */}
@@ -121,33 +121,34 @@ export default async function InsightPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {/* ── Hero Section ─────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-slate-950 py-20 md:py-28">
-          <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-[20%] right-[-10%] h-[400px] w-[400px] rounded-full bg-blue-500/10 blur-[120px] pointer-events-none" />
-
-          <div className="relative mx-auto max-w-4xl px-5 md:px-8 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 text-xs font-medium text-emerald-400 mb-6 shadow-lg shadow-emerald-950/20">
-              <Sparkles className="h-3.5 w-3.5" />
+        <section className="page-intro premium-grid">
+          <div className="site-container reveal">
+            <Link href="/insights" className="mb-8 inline-flex min-h-11 items-center gap-3 text-sm text-[var(--muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
+              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              All insights
+            </Link>
+            <div className="section-label flex items-center gap-2 mb-6">
+              <BookOpen className="h-3.5 w-3.5" />
               <span>Al Astoora Insights</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-white leading-[1.15]">
+            <h1 className="editorial-title max-w-5xl">
               {page.title}
             </h1>
 
-            <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-slate-400">
+            <p className="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--muted)]">
               {page.heroSubtitle}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/contact"
                 data-analytics-event="insight_cta_clicked"
                 data-analytics-label={`insight_hero_book_demo:${page.slug}`}
                 data-analytics-location="insight_hero"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-7 py-4 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                className="button-primary inline-flex items-center gap-2 text-sm"
               >
                 Book a Demo
                 <ArrowRight className="h-4 w-4" />
@@ -157,7 +158,7 @@ export default async function InsightPage({ params }: PageProps) {
                 data-analytics-event="insight_cta_clicked"
                 data-analytics-label={`insight_hero_service_hub:${page.slug}`}
                 data-analytics-location="insight_hero"
-                className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/40 backdrop-blur-sm px-7 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900"
+                className="button-secondary inline-flex items-center text-sm"
               >
                 See WhatsApp Automation
               </Link>
@@ -165,15 +166,34 @@ export default async function InsightPage({ params }: PageProps) {
           </div>
         </section>
 
+        <div className="site-container grid gap-8 py-12 lg:grid-cols-[240px_minmax(0,760px)] lg:gap-20 lg:py-20">
+          <aside className="min-w-0">
+            <nav aria-label="On this page" className="border-t border-[var(--line)] pt-5 lg:sticky lg:top-28">
+              <p className="section-label mb-4">In this insight</p>
+              <div className="flex flex-wrap gap-x-6 lg:flex-col lg:gap-0">
+                {[
+                  { href: '#problem', label: '01 / The problem' },
+                  { href: '#solution', label: '02 / The solution' },
+                  { href: '#service', label: '03 / Put it into practice' },
+                  { href: '#questions', label: '04 / Questions & answers' },
+                ].map((item) => (
+                  <a key={item.href} href={item.href} className="inline-flex min-h-11 items-center text-sm text-[var(--muted)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </nav>
+          </aside>
+          <article className="min-w-0" aria-label={page.title}>
         {/* ── Problem Statement ────────────────────────────────────── */}
-        <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-          <div className="mx-auto max-w-4xl px-5 md:px-8">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/25 bg-rose-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-rose-400 mb-6">
+        <section id="problem" className="scroll-mt-28 border-t border-[var(--line)] pt-6 pb-12 md:pb-16">
+          <div>
+            <div className="section-label mb-6">
               The Problem
             </div>
-            <div className="space-y-5">
+            <div className="max-w-3xl space-y-5">
               {page.problemStatement.map((para, idx) => (
-                <p key={idx} className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                <p key={idx} className="text-base leading-8 text-[var(--muted)] first:text-lg first:text-[var(--ink)]">
                   {para}
                 </p>
               ))}
@@ -182,30 +202,28 @@ export default async function InsightPage({ params }: PageProps) {
         </section>
 
         {/* ── Solution Blocks ─────────────────────────────────────── */}
-        <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-          <div className="absolute top-1/2 left-0 h-[400px] w-[400px] rounded-full bg-emerald-500/[0.03] blur-[120px] pointer-events-none" />
-
-          <div className="mx-auto max-w-5xl px-5 md:px-8">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-6">
+        <section id="solution" className="scroll-mt-28 border-t border-[var(--line)] pt-8">
+          <div>
+            <div className="section-label mb-6">
               The Al Astoora Solution
             </div>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-10">
+            <h2 className="display-serif text-3xl sm:text-4xl mb-10">
               How we solve this for your business
             </h2>
 
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="divide-y divide-[var(--line)]">
               {page.solutionBlocks.map((block, idx) => (
                 <div
                   key={idx}
-                  className="glass-panel glass-panel-hover rounded-2xl p-6 sm:p-8 flex flex-col"
+                  className="grid min-w-0 gap-x-5 py-8 sm:grid-cols-[40px_minmax(0,1fr)]"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-5">
-                    <CheckCircle2 className="h-5 w-5" />
+                  <span className="mb-4 inline-flex h-10 w-10 items-center justify-center bg-[var(--highlight)] text-[var(--ink)] sm:row-span-2">
+                    <CheckCircle2 aria-hidden="true" className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-white tracking-tight">
+                  <h3 className="display-serif text-[28px] leading-tight">
                     {block.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-3 text-base leading-8 text-[var(--muted)]">
                     {block.description}
                   </p>
                 </div>
@@ -213,30 +231,32 @@ export default async function InsightPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+          </article>
+        </div>
 
         {/* ── Service Hub Link ─────────────────────────────────────── */}
-        <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-          <div className="mx-auto max-w-5xl px-5 md:px-8">
-            <div className="glass-panel rounded-3xl border border-emerald-500/20 bg-emerald-950/10 p-6 sm:p-8 md:p-10">
-              <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+        <section id="service" className="scroll-mt-28 bg-[var(--blue)] py-12 md:py-16 border-t border-[var(--line)]">
+          <div className="site-container">
+            <div>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-20 lg:items-center">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-5">
+                  <div className="section-label mb-5">
                     WhatsApp Automation Service
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+                  <h2 className="display-serif text-3xl sm:text-4xl">
                     See how this fits into the full WhatsApp front desk.
                   </h2>
-                  <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-400">
+                  <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--muted)]">
                     This guide explains one part of the problem. The service page shows the complete Al Astoora stack: official Cloud API setup, instant replies, booking flows, lead capture, and CRM sync for local service businesses.
                   </p>
                 </div>
-                <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
+                <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
                   <Link
                     href="/whatsapp-automation"
                     data-analytics-event="insight_cta_clicked"
                     data-analytics-label={`insight_service_hub:${page.slug}`}
                     data-analytics-location="insight_service_hub"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                    className="button-primary inline-flex items-center justify-center gap-2 text-sm"
                   >
                     Explore the Service
                     <ArrowRight className="h-4 w-4" />
@@ -246,7 +266,7 @@ export default async function InsightPage({ params }: PageProps) {
                     data-analytics-event="insight_cta_clicked"
                     data-analytics-label={`insight_service_hub_demo:${page.slug}`}
                     data-analytics-location="insight_service_hub"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-800 bg-slate-900/40 px-6 py-3.5 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:bg-slate-900 hover:text-white"
+                    className="button-secondary inline-flex items-center justify-center gap-2 text-sm"
                   >
                     Book a Demo
                     <MessageSquare className="h-4 w-4" />
@@ -259,19 +279,19 @@ export default async function InsightPage({ params }: PageProps) {
 
         {/* ── Vertical Booking Page Link ───────────────────────────── */}
         {verticalPageLink && (
-          <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-            <div className="mx-auto max-w-5xl px-5 md:px-8">
-              <div className="glass-panel rounded-3xl border border-blue-500/20 bg-blue-950/10 p-6 sm:p-8 md:p-10">
+          <section className="py-12 md:py-16 border-t border-[var(--line)]">
+            <div className="site-container">
+              <div>
                 <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-center">
                   <div>
-                    <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-5">
+                    <div className="section-label flex items-center gap-2 mb-5">
                       <CalendarCheck2 className="h-3.5 w-3.5" />
                       {verticalPageLink.label}
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+                    <h2 className="display-serif text-3xl sm:text-4xl">
                       {verticalPageLink.title}
                     </h2>
-                    <p className="mt-4 text-sm sm:text-base leading-relaxed text-slate-400">
+                    <p className="mt-4 text-base leading-relaxed text-[var(--muted)]">
                       {verticalPageLink.description}
                     </p>
                   </div>
@@ -280,7 +300,7 @@ export default async function InsightPage({ params }: PageProps) {
                     data-analytics-event="insight_cta_clicked"
                     data-analytics-label={`insight_vertical_page:${page.slug}`}
                     data-analytics-location="insight_vertical_page"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                    className="button-primary inline-flex items-center justify-center gap-2 text-sm"
                   >
                     Open booking page
                     <ArrowRight className="h-4 w-4" />
@@ -292,27 +312,27 @@ export default async function InsightPage({ params }: PageProps) {
         )}
 
         {/* ── FAQ Section ─────────────────────────────────────────── */}
-        <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-          <div className="mx-auto max-w-4xl px-5 md:px-8">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-6">
+        <section id="questions" className="scroll-mt-28 py-12 md:py-20 border-t border-[var(--line)]">
+          <div className="site-container grid gap-8 lg:grid-cols-[240px_minmax(0,760px)] lg:gap-x-20">
+            <div className="section-label flex items-center gap-2 self-start">
               <HelpCircle className="h-3.5 w-3.5" />
               Questions & Answers
             </div>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-8">
+            <h2 className="display-serif text-3xl sm:text-4xl">
               Frequently Asked Questions
             </h2>
 
-            <div className="space-y-4">
+            <div className="min-w-0 border-t border-[var(--line)] lg:col-start-2">
               {page.faqItems.map((faq, idx) => (
                 <details
                   key={idx}
-                  className="group border border-slate-900 bg-slate-900/20 rounded-2xl p-5 hover:border-emerald-500/20 transition-all duration-300 [&_summary::-webkit-details-marker]:hidden [&[open]]:bg-slate-900/30 [&[open]]:border-emerald-500/20"
+                  className="group border-b border-[var(--line)] [&_summary::-webkit-details-marker]:hidden"
                 >
-                  <summary className="flex items-center justify-between font-semibold text-white cursor-pointer select-none list-none gap-4">
+                  <summary className="flex items-center justify-between py-6 font-medium cursor-pointer list-none gap-5 hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
                     <span className="text-sm sm:text-base">{faq.question}</span>
-                    <ChevronDown className="h-5 w-5 text-slate-400 transition-transform duration-300 group-open:-rotate-180 shrink-0" />
+                    <ChevronDown aria-hidden="true" className="h-5 w-5 text-[var(--accent)] group-open:rotate-180 shrink-0" />
                   </summary>
-                  <div className="mt-3 text-xs sm:text-sm text-slate-400 leading-relaxed pt-3 border-t border-slate-900/60">
+                  <div className="pb-6 pr-8 text-base text-[var(--muted)] leading-relaxed">
                     {faq.answer}
                   </div>
                 </details>
@@ -323,25 +343,25 @@ export default async function InsightPage({ params }: PageProps) {
 
         {/* ── Related Insights ────────────────────────────────────── */}
         {relatedPages.length > 0 && (
-          <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-            <div className="mx-auto max-w-5xl px-5 md:px-8">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-6">
+          <section className="bg-[var(--surface)] py-12 md:py-16 border-t border-[var(--line)]">
+            <div className="site-container">
+              <div className="section-label mb-6">
                 Related Insights
               </div>
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
                 {relatedPages.map((related) => (
                   <Link
                     key={related.slug}
                     href={`/insights/${related.slug}`}
-                    className="glass-panel glass-panel-hover rounded-2xl p-6 flex flex-col gap-3 group"
+                    className="border-t border-[var(--line)] pt-6 flex min-w-0 flex-col gap-4 group focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
                   >
-                    <h3 className="text-base font-semibold text-white tracking-tight group-hover:text-emerald-400 transition-colors">
+                    <h3 className="display-serif text-2xl group-hover:text-[var(--accent)] transition-colors">
                       {related.title}
                     </h3>
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                    <p className="text-sm text-[var(--muted)] leading-relaxed">
                       {related.metaDescription}
                     </p>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 mt-auto">
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] mt-auto">
                       Read more
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </span>
@@ -353,23 +373,21 @@ export default async function InsightPage({ params }: PageProps) {
         )}
 
         {/* ── Bottom CTA ──────────────────────────────────────────── */}
-        <section className="relative bg-slate-950 py-16 md:py-24 border-t border-slate-900">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-emerald-500/[0.04] blur-[120px] pointer-events-none" />
-
-          <div className="relative mx-auto max-w-3xl px-5 md:px-8 text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+        <section className="dark-section py-16 md:py-20 border-t border-[var(--line)] [&_.button-secondary]:border-white/40 [&_.button-secondary]:text-[var(--paper)] [&_.button-secondary:hover]:bg-white/10">
+          <div className="site-container">
+            <h2 className="section-title max-w-3xl">
               Ready to stop losing leads?
             </h2>
-            <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+            <p className="mt-4 max-w-2xl text-[var(--paper)]/75 text-base leading-relaxed">
               Get a free consultation and see exactly how Al Astoora can automate your WhatsApp customer operations.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/contact"
                 data-analytics-event="insight_cta_clicked"
                 data-analytics-label={`insight_bottom_book_demo:${page.slug}`}
                 data-analytics-location="insight_bottom_cta"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-7 py-4 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+                className="button-primary inline-flex items-center gap-2 text-sm"
               >
                 <MessageSquare className="h-4 w-4" />
                 Book Demo
@@ -381,7 +399,7 @@ export default async function InsightPage({ params }: PageProps) {
                 data-analytics-event="whatsapp_clicked"
                 data-analytics-label={`insight_bottom_whatsapp:${page.slug}`}
                 data-analytics-location="insight_bottom_cta"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/40 backdrop-blur-sm px-7 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900"
+                className="button-secondary inline-flex items-center gap-2 text-sm"
               >
                 Chat on WhatsApp
               </a>

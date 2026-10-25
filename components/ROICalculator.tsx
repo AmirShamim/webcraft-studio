@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
-import { Calculator, MessageSquare, Send, Clock, Users, DollarSign } from 'lucide-react';
+import { MessageSquare, ArrowRight, Clock, Users, Banknote } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 import {
   ROI_ESTIMATE_STORAGE_KEY,
@@ -17,13 +17,16 @@ type MarketConfig = {
   locale: string;
   label: string;
   defaultBillableRate: number;
+  minBillableRate: number;
+  maxBillableRate: number;
+  rateStep: number;
 };
 
 const marketConfigs: Record<string, MarketConfig> = {
-  US: { code: 'USD', symbol: '$', locale: 'en-US', label: 'United States / Global (USD)', defaultBillableRate: 250 },
-  UAE: { code: 'AED', symbol: 'AED', locale: 'en-AE', label: 'United Arab Emirates (AED)', defaultBillableRate: 900 },
-  SEA: { code: 'SGD', symbol: 'S$', locale: 'en-SG', label: 'Singapore / SEA (SGD)', defaultBillableRate: 350 },
-  IN: { code: 'INR', symbol: '₹', locale: 'en-IN', label: 'India (INR)', defaultBillableRate: 8000 },
+  US: { code: 'USD', symbol: '$', locale: 'en-US', label: 'United States / Global (USD)', defaultBillableRate: 250, minBillableRate: 150, maxBillableRate: 500, rateStep: 25 },
+  UAE: { code: 'AED', symbol: 'AED', locale: 'en-AE', label: 'United Arab Emirates (AED)', defaultBillableRate: 900, minBillableRate: 500, maxBillableRate: 2000, rateStep: 50 },
+  SEA: { code: 'SGD', symbol: 'S$', locale: 'en-SG', label: 'Singapore / SEA (SGD)', defaultBillableRate: 350, minBillableRate: 200, maxBillableRate: 700, rateStep: 25 },
+  IN: { code: 'INR', symbol: '₹', locale: 'en-IN', label: 'India (INR)', defaultBillableRate: 8000, minBillableRate: 2000, maxBillableRate: 20000, rateStep: 500 },
 };
 
 function saveRoiEstimate(estimate: RoiEstimate) {
@@ -38,43 +41,14 @@ function saveRoiEstimate(estimate: RoiEstimate) {
   }
 }
 
-function AnimatedNumber({ value, locale, currency }: { value: number; locale: string; currency: string }) {
-  const [displayValue, setDisplayValue] = useState(value);
-
-  useEffect(() => {
-    let start = displayValue;
-    const end = value;
-    if (start === end) return;
-
-    const duration = 600;
-    const startTime = performance.now();
-    let animationFrameId: number;
-
-    const updateNumber = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easeProgress = progress * (2 - progress);
-      const current = Math.round(start + (end - start) * easeProgress);
-
-      setDisplayValue(current);
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(updateNumber);
-      }
-    };
-
-    animationFrameId = requestAnimationFrame(updateNumber);
-    return () => cancelAnimationFrame(animationFrameId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
+function CurrencyValue({ value, locale, currency }: { value: number; locale: string; currency: string }) {
   const formatted = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
     maximumFractionDigits: 0,
-  }).format(displayValue);
+  }).format(value);
 
-  return <span className="font-mono">{formatted}</span>;
+  return <span className="tabular-nums">{formatted}</span>;
 }
 
 export default function ROICalculator() {
@@ -180,37 +154,22 @@ export default function ROICalculator() {
   }, [hasInteracted, roiEstimate]);
 
   return (
-    <section id="roi" className="relative bg-slate-950 py-20 md:py-28 overflow-hidden border-t border-slate-900">
-      
-      {/* Light glow effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] rounded-full bg-emerald-500/[0.04] blur-[120px] pointer-events-none" />
-
-      <div className="relative mx-auto w-full max-w-6xl px-5 md:px-8">
-        
-        {/* Title Block */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            <Calculator className="h-3.5 w-3.5 shrink-0" />
-            <span>Staff Capacity & Overhead Calculator</span>
+    <section id="roi" className="border-t border-[var(--line)] bg-[var(--paper)] py-20 text-[var(--ink)] md:py-28">
+      <div className="site-container">
+        <div className="reveal mb-12 grid gap-6 md:grid-cols-2 md:gap-16">
+          <div>
+            <span className="section-label">01 / The business case</span>
+            <h2 className="section-title mt-5">Your time has value.<br /><span className="italic text-[var(--accent)]">See how much.</span></h2>
           </div>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            Stop Burning Salaried Team Hours on Routine FAQs & Paperwork
-          </h2>
-          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-            You are already paying for your team&apos;s salary. Our automated WhatsApp infrastructure filters routine inquiries and collects verified client documents 24/7 so your staff focuses 100% on high-value, paying clients.
+          <p className="max-w-lg self-end text-base leading-relaxed text-[var(--muted)]">
+            Client paperwork takes time. Estimate the billable capacity tied up in document collection, and what a more connected workflow could return to your team.
           </p>
         </div>
-
-        {/* Calculator Main Grid */}
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] items-start">
-          
-          {/* Controls Panel */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 border border-slate-800 bg-slate-900/40">
-            
-            {/* Market / Currency Picker */}
+        <div className="grid overflow-hidden border border-[var(--line)] lg:grid-cols-[1.1fr_1fr]">
+          <div className="min-w-0 space-y-8 bg-white p-5 sm:p-8 lg:p-10">
             <div>
-              <label htmlFor="market-select" className="block text-xs font-medium uppercase tracking-wider text-slate-400 mb-2.5">
-                Select Market & Currency
+              <label htmlFor="market-select" className="mb-3 block text-sm font-semibold">
+                Market & currency
               </label>
               <select
                 id="market-select"
@@ -221,7 +180,7 @@ export default function ROICalculator() {
                   setHourlyBillableRate(null);
                   trackRoiEngagement('market_changed', { market: nextMarket });
                 }}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none transition-colors cursor-pointer"
+                className="field w-full min-w-0 cursor-pointer"
               >
                 {Object.entries(marketConfigs).map(([key, config]) => (
                   <option key={key} value={key}>
@@ -231,48 +190,47 @@ export default function ROICalculator() {
               </select>
             </div>
 
-            {/* Input 1: Average Hourly Billable Rate */}
             <div>
-              <div className="mb-2.5 flex items-center justify-between gap-2">
-                <label htmlFor="hourly-rate-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Average Staff Hourly Rate ($150 - $500/hr)</span>
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <label htmlFor="hourly-rate-slider" className="flex items-center gap-2 text-sm font-semibold">
+                  <Banknote aria-hidden="true" className="h-4 w-4 shrink-0 text-[var(--muted)]" />
+                  Hourly billable rate
                 </label>
-                <span className="text-sm font-bold text-emerald-400 font-mono">
-                  {activeMarket.symbol}{effectiveHourlyRate} <span className="text-xs text-slate-400 font-normal font-sans">/ hr</span>
-                </span>
+                <output htmlFor="hourly-rate-slider" className="text-base font-semibold tabular-nums">
+                  <CurrencyValue value={effectiveHourlyRate} locale={activeMarket.locale} currency={activeMarket.code} />
+                  <span className="ml-1 text-xs font-normal text-[var(--muted)]">/ hr</span>
+                </output>
               </div>
               <input
                 id="hourly-rate-slider"
                 type="range"
-                min={150}
-                max={500}
-                step={25}
+                min={activeMarket.minBillableRate}
+                max={activeMarket.maxBillableRate}
+                step={activeMarket.rateStep}
                 value={effectiveHourlyRate}
+                aria-valuetext={`${effectiveHourlyRate} ${activeMarket.code} per hour`}
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setHourlyBillableRate(val);
                   trackRoiEngagement('hourly_rate_changed', { hourly_rate: val });
                 }}
-                className="w-full cursor-pointer accent-emerald-500"
+                className="h-6 w-full cursor-pointer accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
-                <span>{activeMarket.symbol}150/hr</span>
-                <span>{activeMarket.symbol}325/hr</span>
-                <span>{activeMarket.symbol}500/hr</span>
+              <div className="mt-1 flex justify-between gap-3 text-xs text-[var(--muted)]">
+                <span>{activeMarket.symbol} {activeMarket.minBillableRate.toLocaleString(activeMarket.locale)}</span>
+                <span>{activeMarket.symbol} {activeMarket.maxBillableRate.toLocaleString(activeMarket.locale)}</span>
               </div>
             </div>
 
-            {/* Slider 2: Hours Spent Chasing Documents Weekly */}
             <div>
-              <div className="mb-2.5 flex items-center justify-between gap-2">
-                <label htmlFor="weekly-hours-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Weekly Admin & FAQ Hours per Staff (5 to 20 hrs)</span>
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <label htmlFor="weekly-hours-slider" className="flex items-center gap-2 text-sm font-semibold">
+                  <Clock aria-hidden="true" className="h-4 w-4 shrink-0 text-[var(--muted)]" />
+                  Weekly collection time per person
                 </label>
-                <span className="text-sm font-bold text-emerald-400 font-mono">
-                  {weeklyDocumentHours} <span className="text-xs text-slate-400 font-normal font-sans">hrs / staff</span>
-                </span>
+                <output htmlFor="weekly-hours-slider" className="text-base font-semibold tabular-nums">
+                  {weeklyDocumentHours} <span className="text-xs font-normal text-[var(--muted)]">hours</span>
+                </output>
               </div>
               <input
                 id="weekly-hours-slider"
@@ -281,30 +239,29 @@ export default function ROICalculator() {
                 max={20}
                 step={1}
                 value={weeklyDocumentHours}
+                aria-valuetext={`${weeklyDocumentHours} hours per person per week`}
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setWeeklyDocumentHours(val);
                   trackRoiEngagement('weekly_hours_changed', { weekly_hours: val });
                 }}
-                className="w-full cursor-pointer accent-emerald-500"
+                className="h-6 w-full cursor-pointer accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
+              <div className="mt-1 flex justify-between text-xs text-[var(--muted)]">
                 <span>5 hours</span>
-                <span>12 hours</span>
                 <span>20 hours</span>
               </div>
             </div>
 
-            {/* Slider 3: Number of Active Staff/Partners */}
             <div>
-              <div className="mb-2.5 flex items-center justify-between gap-2">
-                <label htmlFor="staff-count-slider" className="text-sm font-medium text-slate-300 flex items-center gap-2">
-                  <Users className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span>Number of Fee-Earning Staff / Associates (2 to 10)</span>
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <label htmlFor="staff-count-slider" className="flex items-center gap-2 text-sm font-semibold">
+                  <Users aria-hidden="true" className="h-4 w-4 shrink-0 text-[var(--muted)]" />
+                  Staff involved in collection
                 </label>
-                <span className="text-sm font-bold text-emerald-400 font-mono">
-                  {activeStaffCount} <span className="text-xs text-slate-400 font-normal font-sans">professionals</span>
-                </span>
+                <output htmlFor="staff-count-slider" className="text-base font-semibold tabular-nums">
+                  {activeStaffCount} <span className="text-xs font-normal text-[var(--muted)]">people</span>
+                </output>
               </div>
               <input
                 id="staff-count-slider"
@@ -313,72 +270,54 @@ export default function ROICalculator() {
                 max={10}
                 step={1}
                 value={activeStaffCount}
+                aria-valuetext={`${activeStaffCount} people`}
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setActiveStaffCount(val);
                   trackRoiEngagement('staff_count_changed', { staff_count: val });
                 }}
-                className="w-full cursor-pointer accent-emerald-500"
+                className="h-6 w-full cursor-pointer accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1.5">
-                <span>2 staff</span>
-                <span>6 staff</span>
-                <span>10 staff</span>
-              </div>
-            </div>
-
-            {/* Unbillable Hours Display inside Controls Panel */}
-            <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">Monthly Salaried Payroll Tied to Admin Tasks</p>
-                <p className="text-2xl font-bold text-rose-400 tracking-tight mt-1">
-                  <AnimatedNumber
-                    value={calculation.lostMonthlyRevenue}
-                    locale={activeMarket.locale}
-                    currency={activeMarket.code}
-                  />
-                </p>
-              </div>
-              <div className="text-xs text-slate-400 max-w-xs leading-normal">
-                Payroll expense paid to {activeStaffCount} team members while answering routine repetitive questions and chasing missing PDFs.
+              <div className="mt-1 flex justify-between text-xs text-[var(--muted)]">
+                <span>2 people</span>
+                <span>10 people</span>
               </div>
             </div>
 
           </div>
-
-          {/* Results Panel */}
-          <div className="space-y-6">
-            
-            {/* Main Recoverable Panel */}
-            <div className="rounded-3xl border border-emerald-500/20 bg-emerald-950/20 p-6 sm:p-8 relative overflow-hidden shadow-2xl shadow-emerald-950/20">
-              <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-emerald-500/[0.03] blur-3xl" />
-              
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Unlocked Staff Capacity</span>
-              </span>
-              
-              <h3 className="text-slate-300 text-sm mt-3 font-medium">Reclaimed Fee-Earning Time / Month</h3>
-              <p className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight mt-1 font-mono">
-                ~{Math.round(calculation.recoverableBillableHours)} Hours <span className="text-sm font-normal text-slate-400 font-sans">/ month</span>
+          <div className="dark-section min-w-0 border-t border-[var(--line)] p-5 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
+            <div aria-live="polite" aria-atomic="true">
+              <span className="section-label mb-8">Your potential return</span>
+              <h3 className="text-sm font-medium text-[#d4d9cd]">Potential billable value recovered / month</h3>
+              <p className="display-serif mt-4 break-words text-[32px] leading-tight text-[var(--highlight)] sm:text-[40px]">
+                <CurrencyValue value={calculation.recoverableMonthlyRevenue} locale={activeMarket.locale} currency={activeMarket.code} />
               </p>
-              
-              <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300">
-                <span>Equivalent Payroll Value:</span>
-                <span className="font-bold text-white">
-                  <AnimatedNumber
-                    value={calculation.recoverableMonthlyRevenue}
-                    locale={activeMarket.locale}
-                    currency={activeMarket.code}
-                  /> / mo
-                </span>
-              </div>
-
-              <p className="text-xs text-slate-300 mt-5 leading-relaxed bg-slate-950/70 p-4 rounded-xl border border-slate-800">
-                Al Astoora answers pricing & FAQ inquiries and collects verified documents on WhatsApp 24/7. Your staff only steps in when a high-intent client is ready for paid advisory.
-              </p>
-
-              <div className="mt-6">
+              <dl className="mt-8 divide-y divide-white/15 border-y border-white/15 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3 py-4">
+                  <dt className="text-[#c3cbbd]">Potential time recovered</dt>
+                  <dd className="font-semibold tabular-nums">~{Math.round(calculation.recoverableBillableHours)} hrs / month</dd>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3 py-4">
+                  <dt className="text-[#c3cbbd]">Current monthly time value</dt>
+                  <dd className="font-semibold"><CurrencyValue value={calculation.lostMonthlyRevenue} locale={activeMarket.locale} currency={activeMarket.code} /></dd>
+                </div>
+              </dl>
+            </div>
+            <p className="mt-6 text-xs leading-6 text-[#c3cbbd]">
+              An illustrative estimate using 4.33 weeks per month and an assumed 85% reduction in collection time. Recovered capacity is not guaranteed revenue; results depend on your workflow and billable demand. Implementation and platform costs are not included.
+            </p>
+              <div className="mt-8 flex flex-col gap-3">
+                <Link
+                  href="/contact"
+                  onClick={() => handleEstimateHandoff('demo_handoff_clicked')}
+                  data-analytics-event="primary_cta_clicked"
+                  data-analytics-label="roi_demo_handoff"
+                  data-analytics-location="roi_calculator"
+                  className="button-primary w-full gap-2 text-center"
+                >
+                  Discuss your estimate
+                  <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                </Link>
                 <a
                   href={roiWhatsAppUrl}
                   target="_blank"
@@ -387,25 +326,14 @@ export default function ROICalculator() {
                   data-analytics-event="whatsapp_clicked"
                   data-analytics-label="roi_estimate_whatsapp"
                   data-analytics-location="roi_calculator"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/30 active:scale-[0.98] text-center"
+                  className="button-secondary w-full gap-2 text-center"
                 >
-                  <MessageSquare className="h-4 w-4 shrink-0 fill-current" />
-                  <span>Send Calculation to WhatsApp Bot</span>
+                  <MessageSquare aria-hidden="true" className="h-4 w-4 shrink-0" />
+                  Share on WhatsApp
                 </a>
               </div>
-            </div>
-
-            <div className="glass-panel rounded-2xl p-4 border border-slate-800 bg-slate-900/30 text-xs text-slate-400 leading-relaxed space-y-1.5">
-              <p className="font-semibold text-slate-200 uppercase tracking-wider text-xs">Why Overhead Automation Wins</p>
-              <p>
-                Eliminates up to 85% of repetitive administrative touchpoints. Your staff stays focused strictly on paying client deliverables instead of manual document chase-ups.
-              </p>
-            </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

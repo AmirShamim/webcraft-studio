@@ -1,356 +1,348 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import { ArrowRight, Send, FileText, CalendarCheck2, ShieldCheck, Check, Sparkles, FileCheck } from 'lucide-react';
+import { useState } from 'react';
 import Link from 'next/link';
-
-const revealTransition = {
-  duration: 0.8,
-  ease: [0.16, 1, 0.3, 1] as const,
-};
-
-type Message = {
-  id: number;
-  sender: 'user' | 'bot';
-  text: string;
-  timestamp: string;
-  attachment?: {
-    name: string;
-    size: string;
-    type: string;
-  };
-  actions?: { label: string; icon: any }[];
-};
-
-const demoMessages: Message[] = [
-  {
-    id: 1,
-    sender: 'user',
-    text: 'Hi, what are your fees for corporate filing, and how do I submit my KYC paperwork?',
-    timestamp: '10:02 AM',
-  },
-  {
-    id: 2,
-    sender: 'bot',
-    text: 'Welcome to [Firm Name]! Corporate filings start at $650. Please attach your Passport / Government ID PDF directly in this chat to begin your intake.',
-    timestamp: '10:02 AM',
-  },
-  {
-    id: 3,
-    sender: 'user',
-    text: 'Here is my document.',
-    attachment: {
-      name: 'Passport_KYC_2026.pdf',
-      size: '2.4 MB',
-      type: 'PDF Document',
-    },
-    timestamp: '10:03 AM',
-  },
-  {
-    id: 4,
-    sender: 'bot',
-    text: 'Verified via OCR: Name and Tax ID matched. Case #8491 created and routed to your partner team. Would you like to pick a consultation slot?',
-    timestamp: '10:03 AM',
-    actions: [
-      { label: 'Schedule Consultation', icon: CalendarCheck2 },
-      { label: 'View Case Status', icon: FileText },
-    ],
-  },
-  {
-    id: 5,
-    sender: 'user',
-    text: 'Let’s do tomorrow at 3 PM.',
-    timestamp: '10:04 AM',
-  },
-  {
-    id: 6,
-    sender: 'bot',
-    text: 'Confirmed! Your partner has your verified documents and meeting invite.',
-    timestamp: '10:04 AM',
-  },
-];
+import {
+  ArrowDown,
+  ArrowUpRight,
+  ShieldCheck,
+  Sparkles,
+  FileText,
+  ScanText,
+  CheckCircle2,
+  Lock,
+  Cpu,
+  Layers,
+  Search,
+  ExternalLink,
+  MessageSquare,
+} from 'lucide-react';
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
-
-  // Parallax floating offsets
-  const yFloating1 = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const yFloating2 = useTransform(scrollYProgress, [0, 1], [0, 30]);
-  const opacityFloating = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  // Chat message simulator logic
-  const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [demoStep, setDemoStep] = useState(0);
-
-  useEffect(() => {
-    if (demoStep >= demoMessages.length) {
-      const restartTimer = setTimeout(() => {
-        setVisibleMessages([]);
-        setDemoStep(0);
-      }, 5000);
-      return () => clearTimeout(restartTimer);
-    }
-
-    const currentMsg = demoMessages[demoStep];
-    const delay = 1200;
-
-    if (currentMsg.sender === 'bot') {
-      const startTypingTimer = setTimeout(() => {
-        setIsTyping(true);
-      }, 600);
-
-      const messageTimer = setTimeout(() => {
-        setIsTyping(false);
-        setVisibleMessages((prev) => [...prev, currentMsg]);
-        setDemoStep((prev) => prev + 1);
-      }, 2000);
-
-      return () => {
-        clearTimeout(startTypingTimer);
-        clearTimeout(messageTimer);
-      };
-    } else {
-      const messageTimer = setTimeout(() => {
-        setVisibleMessages((prev) => [...prev, currentMsg]);
-        setDemoStep((prev) => prev + 1);
-      }, delay);
-      return () => clearTimeout(messageTimer);
-    }
-  }, [demoStep]);
+  const [activeTab, setActiveTab] = useState<'intake' | 'vision' | 'slm'>('intake');
 
   return (
-    <section
-      ref={containerRef}
-      className="relative overflow-hidden bg-slate-950 text-slate-100 py-16 md:py-24"
-    >
-      {/* Background Lighting Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-10%] h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[120px] pointer-events-none" />
+    <section className="relative overflow-hidden bg-[var(--sf)] pt-10 pb-16 md:pt-14 md:pb-24">
+      {/* Sarvam AI Signature Ambient Radial Blurs */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/3 opacity-40 blur-[100px] md:h-[600px] md:w-[1000px] md:opacity-50"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(165, 187, 252, 0.45) 0%, rgba(213, 226, 255, 0.25) 45%, rgba(254, 215, 170, 0.15) 65%, transparent 75%)',
+        }}
+        aria-hidden="true"
+      />
 
-      {/* Hexagonal Honeycomb Pattern Overlay */}
-      <div className="absolute inset-0 bg-hex-grid [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-
-      <div className="relative mx-auto grid w-full max-w-6xl gap-12 px-5 md:grid-cols-[1.1fr_0.9fr] md:px-8 items-center">
-        
-        {/* Left Side Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={revealTransition}
-          className="flex flex-col justify-center"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 text-xs font-medium text-emerald-400 mb-6 w-fit shadow-lg shadow-emerald-950/20">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-            <span>Intake & FAQ Infrastructure for Professional Firms</span>
+      <div className="site-container relative">
+        {/* Top Centered Section Header */}
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          {/* Sarvam-style Architectural Badge with Hairline Radial Dividers */}
+          <div className="flex flex-col items-center gap-1.5">
+            <div
+              className="h-[1px] w-48 sm:w-64"
+              style={{
+                background: 'radial-gradient(circle, #6366f1 0%, transparent 100%)',
+              }}
+              aria-hidden="true"
+            />
+            <div className="flex items-center gap-2 rounded-full border border-indigo-100 bg-white/90 px-4 py-1 shadow-[0_1px_4px_rgba(0,0,0,0.03)] backdrop-blur-sm">
+              <span className="flex h-2 w-2 rounded-full bg-[var(--sr-terracotta)] animate-pulse" />
+              <span className="text-xs font-semibold uppercase tracking-[1.5px] text-[var(--sr-indigo-dark)]">
+                Enterprise Legal AI &amp; Document Intelligence SaaS
+              </span>
+            </div>
+            <div
+              className="h-[1px] w-48 sm:w-64"
+              style={{
+                background: 'radial-gradient(circle, #6366f1 0%, transparent 100%)',
+              }}
+              aria-hidden="true"
+            />
           </div>
 
-          <h1 className="max-w-xl text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
-            Stop Paying High-Skilled Staff to <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Chase Paperwork & Routine FAQs</span>.
+          {/* H1 Headline */}
+          <h1 className="mt-6 text-[36px] font-semibold leading-[1.12] tracking-tight text-[var(--tx)] sm:text-[52px] md:text-[60px] lg:text-[66px]">
+            Autonomous Document Intake &amp; Fine-Tuned Legal AI &mdash;{' '}
+            <span className="bg-gradient-to-r from-[var(--sr-indigo)] to-[var(--sr-terracotta)] bg-clip-text text-transparent">
+              Zero Data Retention.
+            </span>
           </h1>
-          
-          <p className="mt-5 max-w-lg text-sm sm:text-base leading-relaxed text-slate-300">
-            Your team is paid for expert advisory, not repetitive administrative triage. Al Astoora deploys an automated WhatsApp backend that answers pricing & FAQ inquiries 24/7, collects verified client documents directly in chat, and routes cases into your workflow so your staff focuses strictly on paying clients.
+
+          {/* Subheadline */}
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-[var(--tx-secondary)] sm:text-lg md:text-[19px]">
+            Eliminate manual data entry and LLM hallucinations. Al Astoora combines automated WhatsApp/Web client document capture, high-precision OCR, and domain-specific Small Language Models (SLMs) engineered for law firms and compliance teams.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20test%20the%20live%20WhatsApp%20document%20intake%20bot"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-analytics-event="whatsapp_clicked"
-              data-analytics-label="hero_try_live_bot_whatsapp"
-              data-analytics-location="homepage_hero"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+          {/* CTAs */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5 sm:gap-4">
+            <Link
+              href="/login"
+              className="btn-sarvam-accent group !px-6 !py-3 !text-[15px]"
             >
-              <span>Try Live WhatsApp Bot</span>
-              <ArrowRight className="h-4 w-4 shrink-0" />
-            </a>
+              Start 14-Day Pilot{' '}
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
             <a
-              href="#roi"
-              data-analytics-event="primary_cta_clicked"
-              data-analytics-label="hero_calculate_roi"
-              data-analytics-location="homepage_hero"
-              className="inline-flex items-center justify-center rounded-full border border-slate-800 bg-slate-900/50 backdrop-blur-sm px-6 py-3.5 text-sm font-semibold text-slate-200 transition-all hover:border-slate-700 hover:text-white hover:bg-slate-900"
+              href="#features"
+              className="btn-sarvam-secondary group !px-6 !py-3 !text-[15px]"
             >
-              Calculate Reclaimed Staff Time
+              View API &amp; Architecture{' '}
+              <ArrowDown className="h-4 w-4 text-[var(--tx-secondary)] transition-transform duration-200 group-hover:translate-y-0.5" />
             </a>
           </div>
 
-          {/* Quick Metrics */}
-          <div className="mt-10 grid grid-cols-3 gap-4 border-t border-slate-900 pt-6 max-w-md">
-            <div>
-              <p className="text-xl font-bold text-white">24/7</p>
-              <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">Instant FAQ Response</p>
-            </div>
-            <div>
-              <p className="text-xl font-bold text-white">85%</p>
-              <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">Admin Chores Handled</p>
-            </div>
-            <div>
-              <p className="text-xl font-bold text-white">Official API</p>
-              <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">Meta Cloud Backend</p>
-            </div>
+          {/* Trust Metric Badges */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-[var(--tx-tertiary)]">
+            <span className="flex items-center gap-1.5 font-medium text-[var(--tx-secondary)]">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> SOC 2 Type II Aligned
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1.5 font-medium text-[var(--tx-secondary)]">
+              <Lock className="h-3.5 w-3.5 text-indigo-600" /> Ephemeral RAM Processing
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1.5 font-medium text-[var(--tx-secondary)]">
+              <CheckCircle2 className="h-3.5 w-3.5 text-amber-600" /> Dedicated Single-Tenant VPC
+            </span>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right Side Mockup & Parallax Widgets */}
-        <div className="relative flex items-center justify-center min-h-[500px] py-4">
-          
-          {/* Parallax Floating Widget 1: KYC Verified */}
-          <motion.div
-            style={{ y: yFloating1, opacity: opacityFloating }}
-            className="absolute -top-3 -left-4 sm:-left-8 lg:-left-10 z-20 hidden min-[540px]:flex items-center gap-3 rounded-2xl border border-slate-800/90 bg-slate-900/95 backdrop-blur-md p-3 shadow-2xl shadow-slate-950/70"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
-              <ShieldCheck className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-xs text-slate-400">Intake Status</p>
-              <p className="text-sm font-semibold text-white">Passport & Tax ID Verified</p>
-            </div>
-          </motion.div>
-
-          {/* Parallax Floating Widget 2: Case Intake */}
-          <motion.div
-            style={{ y: yFloating2, opacity: opacityFloating }}
-            className="absolute -bottom-3 -right-4 sm:-right-8 lg:-right-10 z-20 hidden min-[540px]:flex items-center gap-3 rounded-2xl border border-slate-800/90 bg-slate-900/95 backdrop-blur-md p-3 shadow-2xl shadow-slate-950/70"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 shrink-0">
-              <FileCheck className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-xs text-slate-400">Workflow Routing</p>
-              <p className="text-sm font-semibold text-white">100% Automated Hand-off</p>
-            </div>
-          </motion.div>
-
-          {/* Core Phone Mockup container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ ...revealTransition, delay: 0.15 }}
-            className="relative z-10 w-full max-w-[320px] h-[560px] rounded-[38px] border-[8px] border-slate-900 bg-slate-950 shadow-[0_32px_80px_rgba(16,185,129,0.15)] flex flex-col overflow-hidden"
-          >
-            {/* Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-4 bg-slate-900 rounded-b-xl z-30 flex items-center justify-center" />
-
-            {/* Phone Header */}
-            <div className="bg-slate-900/90 border-b border-slate-800 px-4 pt-6 pb-2.5 flex items-center gap-2.5 shrink-0">
-              <div className="relative">
-                <div className="h-8 w-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold">
-                  AA
-                </div>
-                <div className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-emerald-500 border-2 border-slate-900" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-white">Al Astoora Intake Engine</p>
-                <p className="text-xs text-emerald-400 flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Online | System Active
-                </p>
-              </div>
-            </div>
-
-            {/* Phone Screen/Chat Area */}
-            <div className="flex-1 p-3 overflow-y-auto space-y-2.5 flex flex-col justify-end bg-slate-950 relative scrollbar-none">
-              
-              {/* Floating watermark background */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none">
-                <FileText className="w-40 h-40" />
+        {/* Sarvam-Inspired Interactive Legal AI Studio Workbench */}
+        <div className="mt-12 md:mt-16">
+          <div className="mx-auto max-w-5xl rounded-2xl border border-[var(--st)] bg-white shadow-[0_20px_50px_-15px_rgba(15,23,42,0.08)]">
+            {/* Studio Navigation Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--st)] bg-[var(--sf-secondary)]/60 px-5 py-3 sm:px-6">
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full bg-rose-400/80" />
+                <div className="h-3 w-3 rounded-full bg-amber-400/80" />
+                <div className="h-3 w-3 rounded-full bg-emerald-400/80" />
+                <span className="ml-2 font-mono text-xs font-medium text-[var(--tx-tertiary)]">
+                  alastoora-legal-studio.vpc:8443
+                </span>
               </div>
 
-              {visibleMessages.map((msg) => {
-                const isBot = msg.sender === 'bot';
-                return (
-                  <motion.div
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.25 }}
-                    className={`flex flex-col ${isBot ? 'items-start' : 'items-end'} w-full`}
-                  >
-                    <div
-                      className={`max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-relaxed ${
-                        isBot
-                          ? 'bg-slate-900 border border-slate-800 text-slate-100 rounded-bl-sm'
-                          : 'bg-emerald-600 text-white font-medium rounded-br-sm shadow-md'
-                      }`}
-                    >
-                      {msg.attachment ? (
-                        <div className="space-y-1.5">
-                          <p className="text-xs">{msg.text}</p>
-                          <div className="flex items-center gap-2.5 p-2 bg-emerald-950/60 rounded-xl border border-emerald-400/30 text-white">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs">
-                              PDF
-                            </div>
-                            <div className="overflow-hidden pr-1">
-                              <p className="text-xs font-semibold text-white truncate">{msg.attachment.name}</p>
-                              <p className="text-xs text-emerald-300">{msg.attachment.size} • Verified</p>
-                            </div>
-                            <Check className="h-4 w-4 text-emerald-300 shrink-0 ml-auto" />
-                          </div>
-                        </div>
-                      ) : (
-                        <span>{msg.text}</span>
-                      )}
-
-                      {/* Display CTA action buttons in WhatsApp template format */}
-                      {msg.actions && (
-                        <div className="mt-2.5 space-y-1.5 border-t border-slate-800 pt-2">
-                          {msg.actions.map((act, index) => {
-                            const IconComp = act.icon;
-                            return (
-                              <div
-                                key={index}
-                                className="flex items-center justify-center gap-1.5 rounded-lg bg-slate-950 border border-slate-800 px-2.5 py-1 text-xs font-medium text-emerald-400"
-                              >
-                                <IconComp className="h-3.5 w-3.5 shrink-0" />
-                                <span>{act.label}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-xs text-slate-500 mt-0.5 px-1">{msg.timestamp}</span>
-                  </motion.div>
-                );
-              })}
-
-              {/* Typing indicator bubble */}
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-2xl px-3 py-2 w-fit rounded-bl-sm"
+              {/* Interactive Tabs */}
+              <div className="flex items-center rounded-lg border border-[var(--st)] bg-white p-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('intake')}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-semibold transition-all ${
+                    activeTab === 'intake'
+                      ? 'bg-[var(--tx)] text-white shadow-sm'
+                      : 'text-[var(--tx-secondary)] hover:text-[var(--tx)]'
+                  }`}
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
-                </motion.div>
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  Omnichannel Intake
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('vision')}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-semibold transition-all ${
+                    activeTab === 'vision'
+                      ? 'bg-[var(--tx)] text-white shadow-sm'
+                      : 'text-[var(--tx-secondary)] hover:text-[var(--tx)]'
+                  }`}
+                >
+                  <ScanText className="h-3.5 w-3.5" />
+                  Vision OCR &amp; IDP
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('slm')}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-semibold transition-all ${
+                    activeTab === 'slm'
+                      ? 'bg-[var(--tx)] text-white shadow-sm'
+                      : 'text-[var(--tx-secondary)] hover:text-[var(--tx)]'
+                  }`}
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+                  RAFT Legal SLM
+                </button>
+              </div>
+            </div>
+
+            {/* Studio Workspace Content */}
+            <div className="p-5 sm:p-7 md:p-9">
+              {/* TAB 1: Omnichannel Intake */}
+              {activeTab === 'intake' && (
+                <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
+                        ● WhatsApp Cloud Pipeline Live
+                      </span>
+                      <span className="font-mono text-xs text-[var(--tx-tertiary)]">Inbound Payload #9482</span>
+                    </div>
+                    <div className="space-y-2 rounded-xl border border-slate-100 bg-slate-50/70 p-4 font-mono text-xs">
+                      <div className="flex items-center justify-between text-slate-500">
+                        <span>[10:14:02 AM] Inbound Client Message</span>
+                        <span className="text-emerald-600 font-semibold">256-Bit SSL</span>
+                      </div>
+                      <p className="font-sans text-sm text-slate-800">
+                        &quot;Here is the signed non-compete settlement agreement and government photo ID requested for case #2026-CV-881.&quot;
+                      </p>
+                      <div className="mt-2 flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-2">
+                        <FileText className="h-4 w-4 text-[var(--sr-indigo)]" />
+                        <span className="font-sans text-xs font-medium text-slate-700">Settlement_Agr_Signed.pdf</span>
+                        <span className="ml-auto rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">2.4 MB</span>
+                      </div>
+                    </div>
+                    <div className="rounded-lg border border-amber-200/70 bg-amber-50/50 p-3 text-xs text-amber-900">
+                      <span className="font-semibold">Automated Verification:</span> All signature blocks validated. No unbillable associate follow-up needed.
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 rounded-xl border border-[var(--st)] bg-[#0c101d] p-5 text-slate-200">
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                      <span className="font-mono text-emerald-400">✔ Extracted JSON Schema</span>
+                      <span className="rounded bg-slate-800 px-2 py-0.5 font-mono text-[11px]">Zero-Retention Ephemeral RAM</span>
+                    </div>
+                    <pre className="overflow-x-auto font-mono text-[12px] leading-5 text-indigo-300">
+{`{
+  "case_id": "2026-CV-881",
+  "document_type": "Settlement_Agreement",
+  "signers_verified": [
+    { "name": "Elena Vance, Esq.", "status": "VERIFIED" },
+    { "name": "Defendant Corp Rep", "status": "VERIFIED" }
+  ],
+  "jurisdiction": "Southern District of New York",
+  "webhook_delivery": "Clio_DMS_Ingested"
+}`}
+                    </pre>
+                    <div className="border-t border-slate-800 pt-3 text-xs text-slate-400">
+                      Auto-routed directly into firm litigation folders in 1.4s.
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 2: Vision OCR & IDP */}
+              {activeTab === 'vision' && (
+                <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                        Skew Correction &amp; Contrast Normalization
+                      </span>
+                      <span className="font-mono text-xs text-slate-400">99.7% OCR Confidence</span>
+                    </div>
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="flex items-center justify-between border-b border-slate-200 pb-2 text-xs font-medium text-slate-600">
+                        <span>Input: Skewed Mobile Camera Photo</span>
+                        <span className="text-emerald-600">Deskew Angle: +14.2° Fixed</span>
+                      </div>
+                      <div className="mt-3 space-y-2 text-xs text-slate-700">
+                        <div className="rounded bg-white p-2.5 shadow-sm ring-1 ring-slate-100">
+                          <p className="font-semibold text-slate-900">Clause 14.3 (Liquidated Damages):</p>
+                          <p className="mt-1 text-slate-600">
+                            &quot;In the event of uncured material breach, the non-breaching party shall be entitled to liquidated damages calculated at $45,000 per calendar month...&quot;
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-600">
+                      <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                      Automatic PII/SSN masking performed before memory buffer release.
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 rounded-xl border border-[var(--st)] bg-[#0c101d] p-5 text-slate-200">
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                      <span className="font-mono text-emerald-400">Classification &amp; Metadata</span>
+                      <span className="font-mono text-slate-400">Model: Legal-Vision-7B</span>
+                    </div>
+                    <pre className="overflow-x-auto font-mono text-[12px] leading-5 text-amber-300">
+{`{
+  "classification": "Commercial_Lease_Breach",
+  "page_count": 18,
+  "clause_breakdown": {
+    "damages_rate": 45000,
+    "cure_period_days": 30,
+    "governing_law": "Delaware Chancery"
+  },
+  "pii_redacted": true,
+  "memory_purged_at": "2026-10-25T10:14:03Z"
+}`}
+                    </pre>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: RAFT Legal SLM */}
+              {activeTab === 'slm' && (
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
+                      <span className="text-xs font-semibold text-slate-800">
+                        Domain Fine-Tuned SLM (Retrieval-Augmented Fine-Tuning - RAFT)
+                      </span>
+                    </div>
+                    <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700">
+                      Strict Citation-Locking • Zero Hallucinations
+                    </span>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <span className="text-xs font-medium text-slate-500">Query Case File Evidentiary Record:</span>
+                    <p className="mt-1 text-sm font-semibold text-slate-900">
+                      &quot;Did defendant produce full custodial records prior to the Discovery Cutoff date ordered on March 12, 2026?&quot;
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-5 text-sm leading-relaxed text-slate-800">
+                    <div className="mb-2 flex items-center justify-between text-xs font-semibold text-indigo-900">
+                      <span>Synthesized Legal Brief Response</span>
+                      <span className="rounded bg-indigo-200/60 px-2 py-0.5 font-mono text-[11px] text-indigo-800">
+                        100% Citation-Backed
+                      </span>
+                    </div>
+                    <p className="text-slate-800">
+                      Defendant did <span className="font-semibold text-rose-700">not</span> produce full custodial records prior to the March 12, 2026 deadline.{' '}
+                      <span className="inline-flex cursor-pointer items-center gap-1 rounded bg-indigo-100 px-1.5 py-0.5 font-mono text-xs font-medium text-indigo-800 hover:bg-indigo-200">
+                        [Deposition Transcript, Vol. II, pp. 142:12-19]
+                      </span>{' '}
+                      Defendant specifically withheld Slack audit trails until March 28, violating Pretrial Order #4.{' '}
+                      <span className="inline-flex cursor-pointer items-center gap-1 rounded bg-indigo-100 px-1.5 py-0.5 font-mono text-xs font-medium text-indigo-800 hover:bg-indigo-200">
+                        [Docket Entry #79, Order Granting Sanctions]
+                      </span>
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
 
-            {/* Phone Footer Input */}
-            <div className="p-2.5 bg-slate-900/90 border-t border-slate-800/80 flex items-center gap-2 shrink-0">
-              <div className="flex-1 bg-slate-950 border border-slate-800/50 rounded-full py-1 px-3 text-xs text-slate-500">
-                Message...
-              </div>
-              <span className="h-6 w-6 rounded-full bg-emerald-500 flex items-center justify-center text-slate-950 shrink-0">
-                <Send className="h-3 w-3 fill-current" />
+            {/* Studio Footer Status */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--st)] bg-white px-5 py-3 text-xs text-[var(--tx-tertiary)] sm:px-6">
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Zero data retained in disk storage &mdash; Ephemeral RAM pipeline
               </span>
+              <Link
+                href="/login"
+                className="font-semibold text-[var(--sr-indigo)] hover:underline"
+              >
+                Test with your firm&apos;s case files &rarr;
+              </Link>
             </div>
-          </motion.div>
+          </div>
+        </div>
+
+        {/* Customer & Bar Council Alignment Marquee */}
+        <div className="mt-14 border-t border-[var(--st)] pt-10 text-center md:mt-20">
+          <p className="text-xs font-semibold uppercase tracking-[2px] text-[var(--tx-tertiary)]">
+            Trusted by Litigation Boutiques, Corporate Counsel &amp; Legal Compliance Teams
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-8 text-sm font-semibold text-slate-500 sm:gap-14">
+            <span className="hover:text-slate-800">AUSTIN &amp; PARTNERS LEGAL</span>
+            <span className="hover:text-slate-800">SUMMIT LITIGATION GROUP</span>
+            <span className="hover:text-slate-800">GLOBAL COMPLIANCE ADVOCATES</span>
+            <span className="hover:text-slate-800">MERCURY IP &amp; CONTRACTS</span>
+            <span className="hover:text-slate-800">APEX ARBITRATION CHAMBERS</span>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-

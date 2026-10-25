@@ -1,334 +1,151 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Phone, X, Menu } from 'lucide-react';
-const navSections = [
-  { id: 'roi', label: 'ROI Calculator' },
-  { id: 'portfolio', label: 'Case Studies' },
-  { id: 'services', label: 'Features' },
+import { ArrowUpRight, Menu, X, ShieldCheck } from 'lucide-react';
+
+const navigation = [
+  { href: '/#features', label: 'Platform & Pillars' },
+  { href: '/#architecture', label: 'Zero-Retention Architecture' },
+  { href: '/#pricing', label: 'Pricing' },
+  { href: '/#security', label: 'Legal Compliance' },
+  { href: '/#faq', label: 'FAQ' },
 ];
 
 export default function Header() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [activeSection, setActiveSection] = useState<string>('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
 
-  const isInsightsActive = pathname?.startsWith('/insights');
-  const isFaqActive = pathname === '/faq';
-  const isAboutActive = pathname === '/about';
-  const isLogoActive = pathname === '/' && isAtTop;
-  const showActiveSection = pathname === '/' && !isAtTop ? activeSection : '';
-  // Track scroll position for header styling
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-      setIsAtTop(window.scrollY <= 100);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // IntersectionObserver for active section highlighting (only on homepage)
-  useEffect(() => {
-    if (pathname !== '/') {
-      return;
-    }
-
-    const sectionIds = navSections.map((s) => s.id);
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(id);
-          }
-        },
-        { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((obs) => obs.disconnect());
-  }, [pathname]);
-
-  // Smooth scroll click handler
-  const handleNavClick = useCallback((e: React.MouseEvent, id: string) => {
-    if (pathname === '/') {
-      e.preventDefault();
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!mobileOpen) return;
+    menuRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMobileOpen(false);
+        toggleRef.current?.focus();
       }
-      setMobileOpen(false);
-    } else {
-      setMobileOpen(false);
-    }
-  }, [pathname]);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
+    };
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const onDesktop = () => {
+      if (desktop.matches) setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    desktop.addEventListener('change', onDesktop);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      desktop.removeEventListener('change', onDesktop);
+    };
   }, [mobileOpen]);
 
   return (
-    <>
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'border-b border-emerald-500/10 bg-slate-950/90 backdrop-blur-2xl shadow-lg shadow-slate-950/50'
-            : 'border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl'
-        }`}
-      >
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4 md:px-8">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex min-w-0 items-center gap-2.5 group"
-            onClick={(e) => {
-              if (pathname === '/') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }
-            }}
-          >
-            <span
-              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 sm:h-9 sm:w-9 overflow-hidden ${
-                isLogoActive
-                  ? 'border-emerald-500 bg-emerald-500/20'
-                  : scrolled
-                  ? 'border-emerald-500/40 bg-emerald-500/15'
-                  : 'border-emerald-500/25 bg-emerald-500/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20'
-              }`}
-            >
-              <img src="/logo.jpg" alt="Al Astoora Logo" className="h-full w-full object-cover rounded-full" />
+    <header className="sticky top-0 z-50 border-b border-[var(--st)] bg-white/90 backdrop-blur-md transition-all duration-200">
+      <div className="site-container flex h-16 items-center justify-between gap-4 md:h-[72px]">
+        {/* Brand Logo */}
+        <Link
+          href="/"
+          aria-label="Al Astoora Legal AI home"
+          className="flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-[var(--sr-indigo)]"
+          onClick={() => setMobileOpen(false)}
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#1e2238] to-[#07090e] text-white shadow-sm ring-1 ring-white/20">
+            <span className="font-serif text-base font-bold italic tracking-tight text-[#f97316]">A</span>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-[19px] font-semibold tracking-tight text-[var(--tx)]">
+              Al Astoora<span className="text-[var(--sr-terracotta)]">.</span>
             </span>
-            <p
-              className={`whitespace-nowrap text-[15px] font-semibold tracking-tight sm:text-base transition-colors ${
-                isLogoActive
-                  ? 'text-emerald-400'
-                  : 'text-slate-100 group-hover:text-emerald-400'
-              }`}
+            <span className="hidden rounded-full border border-indigo-200 bg-indigo-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--sr-indigo)] sm:inline-block">
+              Legal AI
+            </span>
+          </div>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex xl:gap-2">
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-full px-3.5 py-1.5 text-[13px] font-medium text-[var(--tx-secondary)] transition-colors hover:bg-[var(--sf-secondary)] hover:text-[var(--tx)] focus-visible:outline-2 focus-visible:outline-[var(--sr-indigo)]"
             >
-              Al Astoora
-            </p>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Desktop CTA Action Buttons */}
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/login"
+            aria-label="Sign In to Client Portal"
+            className="btn-sarvam-secondary !min-h-[38px] !px-4 !py-1.5 !text-[13px] max-[520px]:!hidden"
+          >
+            Client Portal
+          </Link>
+          <Link
+            href="/login"
+            aria-label="Launch Workspace or Start Pilot"
+            className="btn-sarvam-primary !min-h-[38px] !px-4 !py-1.5 !text-[13px]"
+          >
+            Launch Workspace <ArrowUpRight className="h-3.5 w-3.5 text-white/80" aria-hidden="true" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1.5">
-            {/* Scrollable sections */}
-            <div className="flex items-center gap-0.5">
-              {navSections.map((section) => {
-                const isActive = showActiveSection === section.id;
-                return (
-                  <Link
-                    key={section.id}
-                    href={`/#${section.id}`}
-                    onClick={(e) => handleNavClick(e, section.id)}
-                    className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? 'text-emerald-400 font-semibold'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {section.label}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-4 rounded-full bg-emerald-500 transition-all" />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* Vertical Separator */}
-            <div className="h-4 w-[1px] bg-slate-800/80 mx-1.5" />
-
-            {/* Separate routes / page links */}
-            <div className="flex items-center gap-1 bg-slate-900/35 px-1.5 py-1 rounded-full border border-slate-900">
-              <Link
-                href="/about"
-                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                  isAboutActive
-                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
-                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                }`}
-              >
-                About Us
-              </Link>
-              <Link
-                href="/faq"
-                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                  isFaqActive
-                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
-                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                }`}
-              >
-                FAQ
-              </Link>
-              <Link
-                href="/insights"
-                className={`relative px-3.5 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 cursor-pointer ${
-                  isInsightsActive
-                    ? 'text-emerald-400 bg-emerald-500/10 font-semibold border border-emerald-500/20'
-                    : 'text-slate-400 hover:text-slate-200 border border-transparent'
-                }`}
-              >
-                Insights
-              </Link>
-            </div>
-          </nav>
-
-          {/* Right CTA group */}
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <a
-              href="https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20test%20the%20intake%20bot"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-analytics-event="whatsapp_clicked"
-              data-analytics-label="header_whatsapp_demo"
-              data-analytics-location="site_header"
-              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-emerald-500 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-emerald-500/15 transition-all hover:bg-emerald-400 hover:shadow-emerald-500/25 active:scale-95 sm:px-5 sm:py-2 sm:text-sm"
-            >
-              Chat on WhatsApp
-            </a>
-
-            {/* Mobile Hamburger */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle navigation menu"
-              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-800 bg-slate-900/50 text-slate-300 transition-all hover:border-slate-700 hover:text-white cursor-pointer"
-            >
-              <div className="relative h-4 w-4">
-                <Menu
-                  className={`absolute inset-0 h-4 w-4 transition-all duration-300 ${
-                    mobileOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
-                  }`}
-                />
-                <X
-                  className={`absolute inset-0 h-4 w-4 transition-all duration-300 ${
-                    mobileOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
-                  }`}
-                />
-              </div>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Overlay Menu */}
-      <div
-        className={`fixed inset-0 z-40 transition-all duration-300 lg:hidden ${
-          mobileOpen ? 'visible' : 'invisible'
-        }`}
-      >
-        {/* Backdrop */}
-        <div
-          className={`absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity duration-300 ${
-            mobileOpen ? 'opacity-100' : 'opacity-0'
-          }`}
-          onClick={() => setMobileOpen(false)}
-        />
-
-        {/* Slide-down Panel */}
-        <div
-          className={`absolute top-[57px] left-0 right-0 border-b border-emerald-500/10 bg-slate-950/95 backdrop-blur-2xl shadow-2xl shadow-slate-950/60 transition-all duration-300 ${
-            mobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
-          }`}
-        >
-          <nav className="mx-auto max-w-6xl px-5 py-6 space-y-1">
-            {navSections.map((section) => {
-              const isActive = showActiveSection === section.id;
-              return (
-                <Link
-                  key={section.id}
-                  href={`/#${section.id}`}
-                  onClick={(e) => handleNavClick(e, section.id)}
-                  className={`w-full flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer border ${
-                    isActive
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                      : 'text-slate-300 hover:bg-slate-900/60 hover:text-white border-transparent'
-                  }`}
-                >
-                  <span>{section.label}</span>
-                  {isActive && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  )}
-                </Link>
-              );
-            })}
-
-            {/* Separator for page routes */}
-            <div className="py-2">
-              <div className="border-t border-slate-900/80" />
-            </div>
-
-            <div className="grid grid-cols-3 gap-2">
-              <Link
-                href="/about"
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
-                  isAboutActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
-                }`}
-              >
-                About Us
-              </Link>
-              <Link
-                href="/faq"
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
-                  isFaqActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
-                }`}
-              >
-                FAQ
-              </Link>
-              <Link
-                href="/insights"
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-center rounded-xl px-2 py-3 text-[13px] font-medium transition-all cursor-pointer border ${
-                  isInsightsActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 border-slate-900 bg-slate-900/30'
-                }`}
-              >
-                Insights
-              </Link>
-            </div>
-
-            <div className="pt-4 border-t border-slate-900 mt-3 flex flex-col gap-2">
-              <a
-                href="https://wa.me/919289581053?text=Hi%20Al%20Astoora%20Team%2C%20I%20want%20to%20test%20the%20intake%20bot"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setMobileOpen(false)}
-                data-analytics-event="whatsapp_clicked"
-                data-analytics-label="mobile_menu_whatsapp"
-                data-analytics-location="mobile_menu"
-                className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-[0.98]"
-              >
-                Chat on WhatsApp
-              </a>
-            </div>
-          </nav>
+          {/* Mobile Menu Toggle */}
+          <button
+            ref={toggleRef}
+            type="button"
+            aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--st)] bg-white text-[var(--tx)] hover:bg-[var(--sf-secondary)] focus-visible:outline-2 focus-visible:outline-[var(--sr-indigo)] lg:hidden"
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
         </div>
       </div>
-    </>
+
+      {/* Mobile Drawer */}
+      <nav
+        ref={menuRef}
+        id="mobile-navigation"
+        aria-label="Mobile navigation"
+        hidden={!mobileOpen}
+        className="max-h-[calc(100dvh-64px)] overflow-y-auto border-t border-[var(--st)] bg-white px-6 pb-8 pt-4 shadow-xl lg:hidden"
+      >
+        <div className="flex flex-col gap-2">
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between border-b border-[var(--st)] py-3 text-sm font-medium text-[var(--tx)] hover:text-[var(--sr-indigo)]"
+            >
+              {item.label}
+              <ArrowUpRight className="h-3.5 w-3.5 text-[var(--tx-tertiary)]" />
+            </Link>
+          ))}
+          <div className="mt-4 flex flex-col gap-2.5 pt-2">
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="btn-sarvam-secondary w-full justify-center text-center"
+            >
+              Client Portal (Sign In)
+            </Link>
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="btn-sarvam-primary w-full justify-center text-center"
+            >
+              Launch Workspace
+            </Link>
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 }
