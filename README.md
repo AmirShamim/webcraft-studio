@@ -1,3 +1,11 @@
+# Al Astoora landing page
+
+The homepage is [public/audit.html](./public/audit.html), a standalone HTML document with inline CSS and JavaScript. The existing Next.js deployment rewrites `/` to this file, without loading the legacy layout, fonts, analytics, or React bundle. For a static-only deployment, serve the same file as `index.html`.
+
+The case inspector deliberately shows unavailable records. Publish excerpts, filing/page citations, checks, verdicts, and traces only from approved audit outputs.
+
+## Archived application
+
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>

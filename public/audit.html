@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Al Astoora | Closed-Record Legal Contradiction Audits</title>
+  <meta name="description" content="Audit US litigation filings for factual conflicts. Inspect verbatim citations and unresolved claims. Start with a public docket PDF or redacted brief.">
+  <link rel="canonical" href="https://alastoora.tech/">
+  <style>
+    :root { color-scheme:light; --paper:#faf9f6; --ink:#111315; --muted:#525866; --line:#e5e5e0; --mono:ui-monospace,Consolas,monospace; --serif:Georgia,'Times New Roman',serif; scroll-padding-top:5rem; scroll-behavior:smooth }
+    * { box-sizing:border-box }
+    body { margin:0; background:var(--paper); color:var(--ink); font:1rem/1.55 system-ui,sans-serif }
+    a { color:inherit; text-underline-offset:.25em }
+    button { font:inherit; cursor:pointer }
+    :focus-visible { outline:3px solid var(--muted); outline-offset:3px }
+    .wrap { width:min(71rem,calc(100% - 2.5rem)); margin-inline:auto }
+    .skip { position:fixed; top:-8rem; z-index:3; background:white; padding:1rem }
+    .skip:focus { top:.5rem }
+    header { position:sticky; top:0; z-index:2; background:var(--paper); border-bottom:1px solid var(--line) }
+    header .wrap,nav,.actions,.foot { display:flex; align-items:center; gap:1rem }
+    header .wrap,.foot { justify-content:space-between }
+    header .wrap { min-height:4rem }
+    .brand { display:inline-flex; align-items:center; gap:.6rem; font:1.5rem var(--serif); text-decoration:none; min-height:44px }
+    .brand::before { content:''; width:.48rem; height:1rem; border-inline:2px solid; transform:skew(-15deg) }
+    nav a,.actions a,.button,summary,[role=tab],.foot a { min-height:44px; display:inline-flex; align-items:center }
+    nav a { min-width:44px; justify-content:center; text-decoration:none }
+    nav a:not(.button),.long { display:none }
+    .button { justify-content:center; padding:.6rem 1rem; background:var(--ink); color:white; border:1px solid var(--ink); text-decoration:none; font-weight:600; font-size:.9rem; transition:background .15s }
+    .button:hover { background:#30343a }
+    section { padding-block:clamp(2.75rem,6vw,5rem); border-bottom:1px solid var(--line) }
+    h1,h2,h3,p { margin:0 }
+    h1,h2 { font-family:var(--serif); font-weight:400; text-wrap:balance }
+    h1 { max-width:19ch; font-size:clamp(2.65rem,6.6vw,5.75rem); line-height:1.02; letter-spacing:-.05em; margin:1.1rem 0 }
+    h2 { font-size:clamp(2rem,4vw,3.45rem); line-height:1.1; letter-spacing:-.035em; margin:.65rem 0 1.5rem }
+    h3 { font-size:1.05rem; line-height:1.35; margin-bottom:.45rem }
+    p { color:var(--muted) }
+    .label,.trust,.case-id { font: .76rem/1.55 var(--mono) }
+    .label { letter-spacing:.11em; text-transform:uppercase }
+    .intro { max-width:58ch; font-size:clamp(1rem,2vw,1.2rem) }
+    .actions { flex-wrap:wrap; gap:.25rem 1.25rem; margin:1.25rem 0 }
+    .trust { padding-top:1rem; border-top:1px solid var(--line) }
+    .tabs { display:flex; flex-wrap:wrap; gap:2px }
+    [role=tab] { padding:.5rem .8rem; font-size:.88rem; border:0; background:transparent; border-bottom:2px solid transparent; color:var(--muted) }
+    [role=tab][aria-selected=true] { border-color:var(--ink); color:var(--ink); font-weight:650 }
+    .sheet,.grid { display:grid; gap:1px; background:var(--line); border:1px solid var(--line) }
+    .sheet > *,article { background:white; padding:clamp(1.15rem,2.8vw,2rem) }
+    .sheet h3,.grid .label { margin-bottom:.8rem }
+    .case-id { display:block; margin-bottom:.45rem }
+    .sheet p,.grid p { max-width:52ch }
+    details { border-top:1px solid var(--line) }
+    summary { display:flex; justify-content:space-between; gap:1rem; padding:.9rem 0; font-weight:600; cursor:pointer; list-style:none }
+    summary::-webkit-details-marker { display:none }
+    summary::after { content:'+'; font-family:var(--mono) }
+    details[open] summary::after { content:'\2212' }
+    details p { padding-bottom:1rem; max-width:75ch }
+    .cta { margin-top:2.5rem; border:1px solid var(--line); background:white; padding:clamp(1.25rem,4vw,3rem) }
+    .cta h2 { margin-top:0 }
+    .cta .actions { margin-bottom:0 }
+    .copy { background:white; color:var(--ink); text-decoration:underline; border-color:transparent }
+    .copy:hover { background:var(--paper) }
+    .status { font-size:.85rem; min-height:1.55em }
+    .foot { flex-wrap:wrap; gap:.25rem 1rem; padding-block:1rem; font-size:.85rem; color:var(--muted) }
+    @media(min-width:768px) { nav a:not(.button) { display:inline-flex } .short { display:none } .long { display:inline } .sheet,.facts { grid-template-columns:repeat(2,1fr) } .steps { grid-template-columns:repeat(3,1fr) } }
+    @media(prefers-reduced-motion:reduce) { :root { scroll-behavior:auto } .button { transition:none } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to content</a>
+  <header><div class="wrap"><a class="brand" href="#main-content">Al Astoora</a><nav aria-label="Main navigation"><a href="#proof">Proof</a><a href="#method">How it works</a><a href="#privacy">Privacy</a><a class="button" href="#sample"><span class="long">Request Sample Audit</span><span class="short">Sample Audit</span></a></nav></div></header>
+  <main id="main-content" tabindex="-1" class="wrap">
+    <section aria-labelledby="headline">
+      <p class="label">Closed-record litigation auditing</p>
+      <h1 id="headline">Find factual contradictions across court filings.</h1>
+      <p class="intro">Built for US litigation records. Every flagged conflict cites verbatim source text. Unresolved claims receive an explicit <code>INSUFFICIENT</code> verdict.</p>
+      <div class="actions"><a class="button" href="#sample">Audit a Public Filing (Free)</a><a href="#proof">Inspect case records &darr;</a></div>
+      <p class="trust">Public filing pilots &middot; Verbatim quote checks &middot; No model training on client files</p>
+    </section>
+    <section id="proof" aria-labelledby="proof-title">
+      <p class="label">01 / Case records</p><h2 id="proof-title">Inspect the audit record.</h2>
+      <div class="tabs" role="tablist" aria-label="Case records">
+        <button role="tab" id="fish" aria-controls="record" aria-selected="true">Fish v. Kobach</button>
+        <button role="tab" id="dixon" aria-controls="record" aria-selected="false" tabindex="-1">Dixon v. Shinn</button>
+        <button role="tab" id="naturel" aria-controls="record" aria-selected="false" tabindex="-1">California Naturel</button>
+      </div>
+      <div class="sheet" id="record" role="tabpanel" aria-labelledby="fish" tabindex="0">
+        <div><span class="case-id" id="case-name">Fish v. Kobach</span><h3>Source record</h3><p>Filing excerpts and page citations are not published here.</p></div>
+        <div><span class="case-id">Report unavailable</span><h3>Engine verdict</h3><p>No verdict, verification checks, or run trace available for inspection.</p></div>
+      </div>
+    </section>
+    <section id="method" aria-labelledby="method-title"><p class="label">02 / Method</p><h2 id="method-title">How the audit works.</h2>
+      <div class="grid steps">
+        <article><p class="label">01</p><h3>Layout-anchored ingestion</h3><p>Azure Document Intelligence maps claims to their page coordinates in each PDF.</p></article>
+        <article><p class="label">02</p><h3>Adversarial cross-check</h3><p>Normalize polarity, remove duplicates, and isolate competing readings before matching entities across filings.</p></article>
+        <article><p class="label">03</p><h3>Deterministic quote lock</h3><p>Check each quote verbatim. If its referent is unclear, return <code>INSUFFICIENT</code> with reasons.</p></article>
+      </div>
+    </section>
+    <section id="privacy" aria-labelledby="privacy-title"><p class="label">03 / Privacy &amp; pilot terms</p><h2 id="privacy-title">Built for legal scrutiny.</h2>
+      <div class="grid facts">
+        <article><h3>Closed-record scope</h3><p>Only submitted filings supply facts. The engine does not search the open web.</p></article>
+        <article><h3>Zero-training inference</h3><p>Stateless enterprise endpoints use zero data retention. Your filings never train models.</p></article>
+        <article><h3>Public filing pilot</h3><p>Test a familiar public docket or redacted brief before involving firm IT.</p></article>
+        <article><h3>Direct engineering support</h3><p>Work directly with the founder in New Delhi, without an account manager.</p></article>
+      </div>
+    </section>
+    <section aria-labelledby="faq-title"><p class="label">04 / Pilot notes</p><h2 id="faq-title">Before you send a filing.</h2>
+      <details><summary>Why return INSUFFICIENT instead of forcing an answer?</summary><p>Guessing risks sanctions. The report identifies the unresolved reference so an associate can check it.</p></details>
+      <details><summary>Do we need confidential client discovery to test it?</summary><p>No. Use a public docket PDF or redacted brief to check for missed conflicts and verify quotations.</p></details>
+      <details><summary>How is this different from uploading PDFs into ChatGPT?</summary><p>A chat summary can smooth over conflicts. This audit checks polarity, isolates competing interpretations, and verifies quotes verbatim.</p></details>
+      <details><summary>Do you have SOC 2 certification today?</summary><p>Not yet. Pilots use public or redacted filings and stateless ZDR endpoints; private deployment is scoped per firm.</p></details>
+      <div class="cta" id="sample"><h2>Test it on a filing you already know.</h2><p>Send a public docket PDF or redacted brief. Receive a verified contradiction audit report within 48 hours.</p>
+        <div class="actions"><a class="button" href="mailto:founder@alastoora.tech?subject=Public%20filing%20audit">Email a Filing &mdash; founder@alastoora.tech</a><button class="button copy" id="copy">Copy email</button></div><p class="status" role="status" id="status"></p>
+      </div>
+    </section>
+  </main>
+  <footer class="foot wrap"><span>Al Astoora &middot; alastoora.tech &middot; <a href="mailto:founder@alastoora.tech">founder@alastoora.tech</a></span><span>Closed-Record Legal Contradiction Auditing</span></footer>
+  <script>
+    const tabs = Array.from(document.querySelectorAll('[role=tab]'));
+    function selectTab(tab) {
+      for (const item of tabs) {
+        item.setAttribute('aria-selected', String(item === tab));
+        item.tabIndex = item === tab ? 0 : -1;
+      }
+      document.getElementById('record').setAttribute('aria-labelledby', tab.id);
+      document.getElementById('case-name').textContent = tab.textContent;
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        const next = {ArrowLeft:(index+tabs.length-1)%tabs.length, ArrowRight:(index+1)%tabs.length, Home:0, End:tabs.length-1}[event.key];
+        if (next === undefined) return;
+        event.preventDefault();
+        selectTab(tabs[next]);
+        tabs[next].focus();
+      });
+    });
+    document.getElementById('copy').addEventListener('click', async () => {
+      const status = document.getElementById('status');
+      try {
+        await navigator.clipboard.writeText('founder@alastoora.tech');
+        status.textContent = 'Email address copied.';
+      } catch {
+        status.textContent = 'Copy unavailable. Select founder@alastoora.tech to copy it manually.';
+      }
+    });
+  </script>
+</body>
+</html>
